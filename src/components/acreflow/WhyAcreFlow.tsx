@@ -1,0 +1,109 @@
+'use client';
+
+import { Shield, CheckCircle2, TrendingUp, Award, Clock, Users } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const stats = [
+  { value: '10,000+', label: 'Verified Properties' },
+  { value: '50+', label: 'Cities Covered' },
+  { value: '5,000+', label: 'Happy Customers' },
+  { value: '₹0', label: 'Brokerage Fee' },
+];
+
+const features = [
+  {
+    icon: CheckCircle2,
+    title: 'Zero Brokerage',
+    description:
+      'Save lakhs on brokerage fees. We connect you directly with property owners.',
+  },
+  {
+    icon: Shield,
+    title: 'Verified Listings',
+    description:
+      'Every listing undergoes rigorous verification including GPS-tagged photos and RERA checks.',
+  },
+  {
+    icon: Users,
+    title: 'Direct Owner Connect',
+    description:
+      'No middlemen. Communicate directly with property owners and builders.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Market Intelligence',
+    description:
+      'Make informed decisions with AI-powered price trends and locality insights.',
+  },
+  {
+    icon: Award,
+    title: 'Secure Transactions',
+    description:
+      'End-to-end legal assistance and secure transaction documentation.',
+  },
+  {
+    icon: Clock,
+    title: '24/7 Support',
+    description:
+      'Round-the-clock customer support to assist you at every step.',
+  },
+];
+
+export default function WhyAcreFlow() {
+  return (
+    <section className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-navy text-center mb-2">
+          Why Choose AcreFlow?
+        </h2>
+        <p className="text-slate-accent text-center mb-12">
+          Experience real estate the way it should be
+        </p>
+
+        {/* Stats counter row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-12">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="bg-sky/50 rounded-xl p-6 flex flex-col items-center justify-center"
+            >
+              <span className="text-3xl md:text-4xl font-bold text-royal">
+                {stat.value}
+              </span>
+              <span className="text-sm text-slate-accent mt-1">
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Feature grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="bg-white rounded-xl border border-border p-6 hover:shadow-lg hover:border-royal/30 transition-all"
+              >
+                <div className="w-12 h-12 rounded-lg bg-sky flex items-center justify-center text-royal mb-4">
+                  <Icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-semibold text-navy mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-slate-accent leading-relaxed">
+                  {feature.description}
+                </p>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

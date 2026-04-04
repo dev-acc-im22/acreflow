@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The real estate website (NoBroker) features the following key elements:  \n\n### 1. **Core Value Proposition & Branding**  \n- Tagline: *“World’s Largest NoBrokerage Property Site”* (emphasizes no brokerage fees).  \n- Navigation: Top menu with options like *“Pay Tuition Fee”*, *“Post Your Property”*, *“Sign up”*, *“Log in”*, and a hamburger menu.  \n\n\n### 2. **Property Search & Listings**  \n- **Search Bar**: Prominent search field with location (e.g., *“Chennai”*) and property type filters (*Buy/Rent/Commercial*).  \n- **Location & Property Type Tabs**: Quick toggles for buying, renting, or commercial properties.  \n- **“Post Free Property Ad”**: Call-to-action for property owners to list properties without brokerage.  \n\n\n### 3. **Service Categories (Icons + Text)**  \nIcons represent key services:  \n- *Builder Projects, Sale Agreement, Home Loan, Property Legal Services, Home Interiors, NoBroker for NRIs* (catering to diverse real estate needs).  \n\n\n### 4. **“Why Use NoBroker” Section**  \nHighlights unique selling points:  \n- *Avoid Brokers, Free Listing, Shortlist without Visit, Rental Agreement* (focus on cost-saving, convenience, and transparency).  \n\n\n### 5. **Business Assist Plan (For Builders)**  \n- Targeted at builders: *“Get in touch with us to Sell or Rent Your Projects”* with a *“Contact Now”* button.  \n\n\n### 6. **Impact Metrics (“We Make A Difference”)**  \n- *₹130 cr+ Brokerage saved monthly*, *30 Lakh+ Customers Connected Monthly*, *2 Lakh+ New Listings Monthly* (showcases scale and value).  \n\n\n### 7. **Customer Testimonials**  \n- Video testimonial (*“NoBroker Reviews - Why our customers love us?”*) and written reviews with star ratings (builds trust).  \n\n\n### 8. **Mobile App Promotion**  \n- *“Find A New Home On The Go”*: Promotes the mobile app with download links for Google Play and App Store.  \n\n\n### 9. **Property Categories (Bottom Section)**  \n- Extensive listings organized by city/property type:  \n  - *Flats for Sale/Rent, PG/Hostels, Flatmates, Commercial, New Projects & Plots, Independent Houses & Villas*.  \n  - City-specific subcategories (e.g., *Bangalore, Mumbai, Chennai, Pune, Hyderabad, Delhi, Noida*).  \n\n\n### 10. **Services & Resources**  \n- *“NoBroker services”*: Detailed links for *Buy/Rent* (e.g., *Property Legal Services, Home Loan EMI Calculator, Rental Agreement*) and other real estate needs.  \n\n\n### 11. **Footer**  \n- *“Find Property”* and *“List Your Property”* CTAs, plus links to *About Us, Careers, Terms & Conditions, Privacy Policy, Testimonials, Sitemap, FAQs*.  \n- Social media icons and app download buttons (reinforce mobile accessibility).  \n\n\n### 12. **Design & Usability**  \n- Clean, structured layout with clear sections, icons, and contrasting colors (e.g., red for CTAs) to guide user flow.  \n- Emphasis on **no brokerage** and **transparency** to differentiate from traditional real estate platforms.  \n\n\nThis website balances user-centric features (search, testimonials, app access) with business-focused tools (builder services, legal support) to cater to both property seekers and owners.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1775379065,
+  "id": "202604051650285f3357d882d941d6",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202604051650285f3357d882d941d6",
+  "usage": {
+    "completion_tokens": 762,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 6091,
+    "prompt_tokens_details": {
+      "cached_tokens": 5
+    },
+    "total_tokens": 6853
+  }
+}
