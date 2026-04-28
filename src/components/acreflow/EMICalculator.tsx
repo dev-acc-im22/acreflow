@@ -127,13 +127,13 @@ function SliderField({
 }: FieldProps) {
   return (
     <div className="space-y-3">
-      <Label className="text-sm font-medium text-navy flex items-center gap-2">
+      <Label className="text-sm font-medium text-navy dark:text-white flex items-center gap-2">
         {icon}
         {label}
       </Label>
       <div className="flex items-center gap-2">
         {suffix === '₹' && (
-          <span className="text-sm text-slate-accent font-medium min-w-[20px]">₹</span>
+          <span className="text-sm text-slate-accent dark:text-[#94A3B8] font-medium min-w-[20px]">₹</span>
         )}
         <Input
           type="number"
@@ -151,10 +151,10 @@ function SliderField({
           min={min}
           max={max}
           step={step}
-          className="h-12 rounded-xl border-border focus:border-royal focus:ring-royal text-navy"
+          className="h-12 rounded-xl border-border dark:border-[#1D3461] focus:border-royal focus:ring-royal text-navy dark:text-white bg-white dark:bg-[#1D3461]"
         />
         {suffix !== '₹' && (
-          <span className="text-sm text-slate-accent font-medium min-w-[30px]">{suffix}</span>
+          <span className="text-sm text-slate-accent dark:text-[#94A3B8] font-medium min-w-[30px]">{suffix}</span>
         )}
       </div>
       <Slider
@@ -165,7 +165,7 @@ function SliderField({
         step={sliderStep}
         className="w-full"
       />
-      <div className="flex justify-between text-xs text-slate-accent">
+      <div className="flex justify-between text-xs text-slate-accent dark:text-[#94A3B8]">
         <span>{suffix === '₹' ? formatCompact(sliderMin) : `${sliderMin}${suffix}`}</span>
         <span>{suffix === '₹' ? formatCompact(sliderMax) : `${sliderMax}${suffix}`}</span>
       </div>
@@ -278,36 +278,36 @@ export default function EMICalculator() {
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 bg-cream dark:bg-[#0A192F] min-h-screen">
       {/* Top bar */}
       <div className="flex items-center gap-4 mb-8">
         <Button
           variant="ghost"
           size="icon"
           onClick={goBack}
-          className="rounded-full hover:bg-cream"
+          className="rounded-full hover:bg-cream dark:hover:bg-[#1D3461] text-navy dark:text-white"
         >
-          <ArrowLeft className="h-5 w-5 text-navy" />
+          <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="text-xl font-bold text-navy flex items-center gap-2">
-          <Calculator className="h-5 w-5 text-royal" />
+        <h1 className="text-xl font-bold text-navy dark:text-white flex items-center gap-2">
+          <Calculator className="h-5 w-5 text-royal dark:text-[#60A5FA]" />
           Calculators
         </h1>
       </div>
 
       {/* Tabs */}
       <Tabs defaultValue="emi" className="w-full">
-        <TabsList className="w-full bg-cream rounded-xl h-12 p-1">
+        <TabsList className="w-full bg-cream dark:bg-[#1D3461] rounded-xl h-12 p-1">
           <TabsTrigger
             value="emi"
-            className="flex-1 flex items-center gap-2 rounded-lg text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-royal data-[state=active]:shadow-sm"
+            className="flex-1 flex items-center gap-2 rounded-lg text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-[#112240] data-[state=active]:text-royal data-[state=active]:dark:text-[#60A5FA] data-[state=active]:shadow-sm text-slate-accent dark:text-[#94A3B8]"
           >
             <IndianRupee className="h-4 w-4" />
             EMI Calculator
           </TabsTrigger>
           <TabsTrigger
             value="budget"
-            className="flex-1 flex items-center gap-2 rounded-lg text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-royal data-[state=active]:shadow-sm"
+            className="flex-1 flex items-center gap-2 rounded-lg text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-[#112240] data-[state=active]:text-royal data-[state=active]:dark:text-[#60A5FA] data-[state=active]:shadow-sm text-slate-accent dark:text-[#94A3B8]"
           >
             <PiggyBank className="h-4 w-4" />
             Budget Calculator
@@ -320,15 +320,15 @@ export default function EMICalculator() {
         <TabsContent value="emi">
           <div className="grid lg:grid-cols-2 gap-6 mt-6">
             {/* Left Column – Input Form */}
-            <div className="bg-white rounded-2xl border p-6 space-y-6">
-              <h2 className="text-lg font-semibold text-navy flex items-center gap-2">
-                <Banknote className="h-5 w-5 text-royal" />
+            <div className="bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] p-6 space-y-6">
+              <h2 className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+                <Banknote className="h-5 w-5 text-royal dark:text-[#60A5FA]" />
                 Loan Details
               </h2>
 
               <SliderField
                 label="Loan Amount"
-                icon={<IndianRupee className="h-4 w-4 text-royal" />}
+                icon={<IndianRupee className="h-4 w-4 text-royal dark:text-[#60A5FA]" />}
                 value={loanAmount}
                 onChange={setLoanAmount}
                 suffix="₹"
@@ -342,7 +342,7 @@ export default function EMICalculator() {
 
               <SliderField
                 label="Interest Rate"
-                icon={<Percent className="h-4 w-4 text-royal" />}
+                icon={<Percent className="h-4 w-4 text-royal dark:text-[#60A5FA]" />}
                 value={interestRate}
                 onChange={setInterestRate}
                 suffix="%"
@@ -356,7 +356,7 @@ export default function EMICalculator() {
 
               <SliderField
                 label="Loan Tenure"
-                icon={<Calendar className="h-4 w-4 text-royal" />}
+                icon={<Calendar className="h-4 w-4 text-royal dark:text-[#60A5FA]" />}
                 value={tenure}
                 onChange={setTenure}
                 suffix="Years"
@@ -370,7 +370,7 @@ export default function EMICalculator() {
             </div>
 
             {/* Right Column – Results */}
-            <div className="bg-navy text-white rounded-2xl p-6 flex flex-col">
+            <div className="bg-navy text-white rounded-2xl p-6 flex flex-col border border-transparent dark:border-[#1D3461]">
               <h2 className="text-lg font-semibold text-white/80 flex items-center gap-2 mb-6">
                 <TrendingUp className="h-5 w-5" />
                 EMI Breakdown
@@ -412,7 +412,7 @@ export default function EMICalculator() {
                   </div>
                   <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-sky rounded-full transition-all duration-500"
+                      className="h-full bg-sky dark:bg-[#1D3461] rounded-full transition-all duration-500"
                       style={{ width: `${emiResults.interestPercent}%` }}
                     />
                   </div>
@@ -460,17 +460,17 @@ export default function EMICalculator() {
         {/* ═══════════════════════════════════════════════════════════════════ */}
         <TabsContent value="budget">
           <div className="mt-6">
-            <Card className="bg-white rounded-2xl border p-6">
+            <Card className="bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] p-6">
               <CardHeader className="p-0 pb-4 mb-4">
-                <CardTitle className="text-lg font-semibold text-navy flex items-center gap-2">
-                  <PiggyBank className="h-5 w-5 text-royal" />
+                <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+                  <PiggyBank className="h-5 w-5 text-royal dark:text-[#60A5FA]" />
                   Your Financial Details
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-0 space-y-5">
                 <SliderField
                   label="Monthly Income"
-                  icon={<Banknote className="h-4 w-4 text-royal" />}
+                  icon={<Banknote className="h-4 w-4 text-royal dark:text-[#60A5FA]" />}
                   value={monthlyIncome}
                   onChange={setMonthlyIncome}
                   suffix="₹"
@@ -484,7 +484,7 @@ export default function EMICalculator() {
 
                 <SliderField
                   label="Monthly Expenses"
-                  icon={<Home className="h-4 w-4 text-royal" />}
+                  icon={<Home className="h-4 w-4 text-royal dark:text-[#60A5FA]" />}
                   value={monthlyExpenses}
                   onChange={setMonthlyExpenses}
                   suffix="₹"
@@ -498,7 +498,7 @@ export default function EMICalculator() {
 
                 <SliderField
                   label="Existing EMIs"
-                  icon={<Calendar className="h-4 w-4 text-royal" />}
+                  icon={<Calendar className="h-4 w-4 text-royal dark:text-[#60A5FA]" />}
                   value={existingEMIs}
                   onChange={setExistingEMIs}
                   suffix="₹"
@@ -512,7 +512,7 @@ export default function EMICalculator() {
 
                 <SliderField
                   label="Down Payment Available"
-                  icon={<IndianRupee className="h-4 w-4 text-royal" />}
+                  icon={<IndianRupee className="h-4 w-4 text-royal dark:text-[#60A5FA]" />}
                   value={downPayment}
                   onChange={setDownPayment}
                   suffix="₹"
@@ -526,7 +526,7 @@ export default function EMICalculator() {
 
                 <SliderField
                   label="Interest Rate"
-                  icon={<Percent className="h-4 w-4 text-royal" />}
+                  icon={<Percent className="h-4 w-4 text-royal dark:text-[#60A5FA]" />}
                   value={budgetInterestRate}
                   onChange={setBudgetInterestRate}
                   suffix="%"
@@ -540,7 +540,7 @@ export default function EMICalculator() {
 
                 <SliderField
                   label="Loan Tenure"
-                  icon={<Calendar className="h-4 w-4 text-royal" />}
+                  icon={<Calendar className="h-4 w-4 text-royal dark:text-[#60A5FA]" />}
                   value={budgetTenure}
                   onChange={setBudgetTenure}
                   suffix="Years"
@@ -555,36 +555,36 @@ export default function EMICalculator() {
             </Card>
 
             {/* Budget Results */}
-            <div className="bg-cream rounded-2xl p-6 mt-6">
-              <h3 className="text-lg font-semibold text-navy flex items-center gap-2 mb-4">
-                <TrendingUp className="h-5 w-5 text-royal" />
+            <div className="bg-cream dark:bg-[#1D3461] rounded-2xl p-6 mt-6">
+              <h3 className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2 mb-4">
+                <TrendingUp className="h-5 w-5 text-royal dark:text-[#60A5FA]" />
                 Affordability Analysis
               </h3>
 
               {budgetResults.canAfford ? (
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-slate-accent mb-1">Affordable Property Value</p>
-                    <p className="text-3xl font-bold text-royal">
+                    <p className="text-sm text-slate-accent dark:text-[#94A3B8] mb-1">Affordable Property Value</p>
+                    <p className="text-3xl font-bold text-royal dark:text-[#60A5FA]">
                       {formatCurrencyFull(budgetResults.affordableProperty)}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="bg-white rounded-xl border p-4">
-                      <p className="text-xs text-slate-accent mb-1">Recommended Loan Amount</p>
-                      <p className="text-xl font-semibold text-navy">
+                    <div className="bg-white dark:bg-[#112240] rounded-xl border border-border dark:border-[#1D3461] p-4">
+                      <p className="text-xs text-slate-accent dark:text-[#94A3B8] mb-1">Recommended Loan Amount</p>
+                      <p className="text-xl font-semibold text-navy dark:text-white">
                         {formatCurrency(budgetResults.recommendedLoan)}
                       </p>
                     </div>
-                    <div className="bg-white rounded-xl border p-4">
-                      <p className="text-xs text-slate-accent mb-1">Monthly EMI</p>
-                      <p className="text-xl font-semibold text-navy">
+                    <div className="bg-white dark:bg-[#112240] rounded-xl border border-border dark:border-[#1D3461] p-4">
+                      <p className="text-xs text-slate-accent dark:text-[#94A3B8] mb-1">Monthly EMI</p>
+                      <p className="text-xl font-semibold text-navy dark:text-white">
                         {formatCurrencyFull(budgetResults.monthlyEMI)}
                       </p>
                     </div>
-                    <div className="bg-white rounded-xl border p-4">
-                      <p className="text-xs text-slate-accent mb-1">EMI to Income Ratio</p>
+                    <div className="bg-white dark:bg-[#112240] rounded-xl border border-border dark:border-[#1D3461] p-4">
+                      <p className="text-xs text-slate-accent dark:text-[#94A3B8] mb-1">EMI to Income Ratio</p>
                       <p
                         className={`text-xl font-semibold ${
                           budgetResults.emiToIncomeRatio < 30
@@ -596,7 +596,7 @@ export default function EMICalculator() {
                       >
                         {budgetResults.emiToIncomeRatio.toFixed(1)}%
                       </p>
-                      <p className="text-xs text-slate-accent mt-1">
+                      <p className="text-xs text-slate-accent dark:text-[#94A3B8] mt-1">
                         {budgetResults.emiToIncomeRatio < 30
                           ? 'Healthy ratio'
                           : budgetResults.emiToIncomeRatio <= 40
@@ -608,32 +608,32 @@ export default function EMICalculator() {
                 </div>
               ) : (
                 <div className="text-center py-6">
-                  <p className="text-slate-accent text-sm">
+                  <p className="text-slate-accent dark:text-[#94A3B8] text-sm">
                     Your current expenses and existing EMIs leave insufficient room for a new home loan.
                   </p>
-                  <p className="text-slate-accent text-sm mt-1">
+                  <p className="text-slate-accent dark:text-[#94A3B8] text-sm mt-1">
                     Try reducing expenses or increasing income to see affordability.
                   </p>
                 </div>
               )}
 
               {/* Tips Card */}
-              <div className="bg-white rounded-xl border p-4 mt-4">
-                <h4 className="text-sm font-semibold text-navy flex items-center gap-2 mb-3">
-                  <Info className="h-4 w-4 text-royal" />
+              <div className="bg-white dark:bg-[#112240] rounded-xl border border-border dark:border-[#1D3461] p-4 mt-4">
+                <h4 className="text-sm font-semibold text-navy dark:text-white flex items-center gap-2 mb-3">
+                  <Info className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                   Tips
                 </h4>
                 <ul className="space-y-2">
-                  <li className="text-xs text-slate-accent flex items-start gap-2">
-                    <span className="text-royal font-bold mt-0.5">•</span>
+                  <li className="text-xs text-slate-accent dark:text-[#94A3B8] flex items-start gap-2">
+                    <span className="text-royal dark:text-[#60A5FA] font-bold mt-0.5">•</span>
                     Keep EMI under 30% of monthly income for comfortable repayment
                   </li>
-                  <li className="text-xs text-slate-accent flex items-start gap-2">
-                    <span className="text-royal font-bold mt-0.5">•</span>
+                  <li className="text-xs text-slate-accent dark:text-[#94A3B8] flex items-start gap-2">
+                    <span className="text-royal dark:text-[#60A5FA] font-bold mt-0.5">•</span>
                     Consider saving 20-25% of property value as down payment
                   </li>
-                  <li className="text-xs text-slate-accent flex items-start gap-2">
-                    <span className="text-royal font-bold mt-0.5">•</span>
+                  <li className="text-xs text-slate-accent dark:text-[#94A3B8] flex items-start gap-2">
+                    <span className="text-royal dark:text-[#60A5FA] font-bold mt-0.5">•</span>
                     A longer tenure reduces EMI but increases total interest paid
                   </li>
                 </ul>

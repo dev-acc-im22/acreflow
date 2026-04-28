@@ -134,7 +134,7 @@ function StarRating({ score }: { score: number }) {
           className={`h-3.5 w-3.5 ${
             star <= Math.round(score)
               ? 'fill-amber-500 text-amber-500'
-              : 'fill-gray-200 text-gray-200'
+              : 'fill-gray-200 dark:fill-[#475569] text-gray-200 dark:text-[#475569]'
           }`}
         />
       ))}
@@ -199,13 +199,13 @@ function PriceTrendChart({ locality }: { locality: string }) {
   const areaPath = `${linePath} L${points[points.length - 1].x},${padding.top + innerH} L${points[0].x},${padding.top + innerH} Z`;
 
   return (
-    <Card className="bg-white rounded-2xl border overflow-hidden">
+    <Card className="bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-semibold text-navy flex items-center gap-2">
-          <Tag className="h-4 w-4 text-royal" />
+        <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+          <Tag className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
           Price Trend
         </CardTitle>
-        <p className="text-xs text-slate-accent">
+        <p className="text-xs text-slate-accent dark:text-[#94A3B8]">
           6-month price trend for {locality}
         </p>
       </CardHeader>
@@ -229,34 +229,34 @@ function PriceTrendChart({ locality }: { locality: string }) {
                 <g key={i}>
                   <circle cx={p.x} cy={p.y} r="3.5" fill="#1E40AF" stroke="white" strokeWidth="1.5" />
                   {/* Month labels */}
-                  <text x={p.x} y={chartHeight - 4} textAnchor="middle" className="text-[9px] fill-slate-accent" fontSize="9">
+                  <text x={p.x} y={chartHeight - 4} textAnchor="middle" className="text-[9px] fill-slate-accent dark:fill-[#94A3B8]" fontSize="9">
                     {chartData[i].month}
                   </text>
                 </g>
               ))}
               {/* Price labels on first and last */}
-              <text x={points[0].x} y={points[0].y - 8} textAnchor="middle" className="text-[8px] fill-royal font-semibold" fontSize="8">
+              <text x={points[0].x} y={points[0].y - 8} textAnchor="middle" className="text-[8px] fill-royal dark:fill-[#60A5FA] font-semibold" fontSize="8">
                 {prices[0]}
               </text>
-              <text x={points[points.length - 1].x} y={points[points.length - 1].y - 8} textAnchor="middle" className="text-[8px] fill-royal font-semibold" fontSize="8">
+              <text x={points[points.length - 1].x} y={points[points.length - 1].y - 8} textAnchor="middle" className="text-[8px] fill-royal dark:fill-[#60A5FA] font-semibold" fontSize="8">
                 {prices[prices.length - 1]}
               </text>
             </svg>
           </div>
           {/* Stats */}
           <div className="flex flex-col gap-2 sm:min-w-[140px]">
-            <div className="bg-cream rounded-xl p-3">
-              <p className="text-xs text-slate-accent">Avg Price</p>
-              <p className="text-lg font-bold text-royal">₹{avgPrice.toLocaleString('en-IN')}/sqft</p>
+            <div className="bg-cream dark:bg-[#1D3461] rounded-xl p-3">
+              <p className="text-xs text-slate-accent dark:text-[#94A3B8]">Avg Price</p>
+              <p className="text-lg font-bold text-royal dark:text-[#60A5FA]">₹{avgPrice.toLocaleString('en-IN')}/sqft</p>
             </div>
-            <div className="bg-cream rounded-xl p-3 flex items-center gap-2">
+            <div className="bg-cream dark:bg-[#1D3461] rounded-xl p-3 flex items-center gap-2">
               {Number(yoyChange) >= 0 ? (
                 <ArrowRight className="h-4 w-4 text-green-600 rotate-[-45deg]" />
               ) : (
                 <ArrowRight className="h-4 w-4 text-red-500 rotate-45" />
               )}
               <div>
-                <p className="text-xs text-slate-accent">YoY</p>
+                <p className="text-xs text-slate-accent dark:text-[#94A3B8]">YoY</p>
                 <p className={`text-sm font-bold ${Number(yoyChange) >= 0 ? 'text-green-600' : 'text-red-500'}`}>
                   {Number(yoyChange) >= 0 ? '↑' : '↓'} {Math.abs(Number(yoyChange))}%
                 </p>
@@ -304,7 +304,7 @@ export default function PropertyDetail() {
   // No property selected — render skeleton
   if (!selectedProperty) {
     return (
-      <div className="min-h-screen bg-cream">
+      <div className="min-h-screen bg-cream dark:bg-[#0A192F]">
         <div className="max-w-5xl mx-auto px-4 pt-4">
           <Skeleton className="h-8 w-32 mb-4" />
           <Skeleton className="h-64 md:h-96 rounded-2xl mb-4" />
@@ -440,17 +440,17 @@ export default function PropertyDetail() {
   const priceDisplay = formatPrice(property.price, property.category);
 
   return (
-    <div className="min-h-screen bg-cream pb-36 md:pb-24">
+    <div className="min-h-screen bg-cream dark:bg-[#0A192F] pb-36 md:pb-24">
       {/* ═══════ STICKY ACTION BAR (T3: above MobileNav on mobile) ═══════ */}
-      <div className="fixed bottom-16 z-40 bg-white border-t shadow-2xl md:bottom-4 md:mx-auto md:max-w-lg md:rounded-2xl md:border">
+      <div className="fixed bottom-16 z-40 bg-white dark:bg-[#112240] border-t dark:border-[#1D3461] shadow-2xl md:bottom-4 md:mx-auto md:max-w-lg md:rounded-2xl md:border md:border-border md:dark:border-[#1D3461]">
         <div className="flex items-center gap-3 p-3 md:p-4">
           {/* Price + EMI */}
           <div className="flex flex-col min-w-0">
-            <span className="text-lg font-bold text-royal whitespace-nowrap">
+            <span className="text-lg font-bold text-royal dark:text-[#60A5FA] whitespace-nowrap">
               {priceDisplay}
             </span>
             {emiText && (
-              <span className="text-xs text-slate-accent">{emiText}</span>
+              <span className="text-xs text-slate-accent dark:text-[#94A3B8]">{emiText}</span>
             )}
           </div>
           {/* T1: Add to Compare button */}
@@ -460,7 +460,7 @@ export default function PropertyDetail() {
             className={`h-10 rounded-xl font-semibold px-3 hidden sm:flex ${
               inComparison
                 ? 'bg-royal text-white hover:bg-royal-dark'
-                : 'border-royal/30 text-royal hover:bg-royal/5'
+                : 'border-royal/30 text-royal dark:text-[#60A5FA] hover:bg-royal/5'
             }`}
           >
             <GitCompareArrows className="h-4 w-4 mr-1.5" />
@@ -493,7 +493,7 @@ export default function PropertyDetail() {
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={goBack}
-            className="flex items-center gap-1.5 text-sm text-slate-accent hover:text-navy transition-colors min-h-10"
+            className="flex items-center gap-1.5 text-sm text-slate-accent dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors min-h-10"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>Back to Results</span>
@@ -502,36 +502,36 @@ export default function PropertyDetail() {
             {/* T5: Working Wishlist Heart */}
             <button
               onClick={handleSave}
-              className="p-2 rounded-full hover:bg-white transition-colors min-h-10 min-w-10 flex items-center justify-center"
+              className="p-2 rounded-full hover:bg-white dark:hover:bg-[#112240] transition-colors min-h-10 min-w-10 flex items-center justify-center"
               aria-label="Save property"
             >
               <Heart
                 className={`h-5 w-5 ${
                   saved
                     ? 'fill-red-500 text-red-500'
-                    : 'text-slate-accent hover:text-red-500'
+                    : 'text-slate-accent dark:text-[#94A3B8] hover:text-red-500'
                 } transition-colors`}
               />
             </button>
             {/* T6: Actual Share */}
             <button
               onClick={handleShare}
-              className="p-2 rounded-full hover:bg-white transition-colors min-h-10 min-w-10 flex items-center justify-center"
+              className="p-2 rounded-full hover:bg-white dark:hover:bg-[#112240] transition-colors min-h-10 min-w-10 flex items-center justify-center"
               aria-label="Share property"
             >
-              <Share2 className="h-5 w-5 text-slate-accent hover:text-royal transition-colors" />
+              <Share2 className="h-5 w-5 text-slate-accent dark:text-[#94A3B8] hover:text-royal dark:hover:text-[#60A5FA] transition-colors" />
             </button>
             {/* T1: Add to Compare (mobile, shown in top bar) */}
             <button
               onClick={handleCompare}
               className={`p-2 rounded-full transition-colors min-h-10 min-w-10 flex items-center justify-center ${
-                inComparison ? 'bg-royal/10' : 'hover:bg-white'
+                inComparison ? 'bg-royal/10' : 'hover:bg-white dark:hover:bg-[#112240]'
               }`}
               aria-label="Compare"
             >
               <GitCompareArrows
                 className={`h-5 w-5 ${
-                  inComparison ? 'text-royal' : 'text-slate-accent hover:text-royal'
+                  inComparison ? 'text-royal dark:text-[#60A5FA]' : 'text-slate-accent dark:text-[#94A3B8] hover:text-royal dark:hover:text-[#60A5FA]'
                 } transition-colors`}
               />
             </button>
@@ -539,7 +539,7 @@ export default function PropertyDetail() {
         </div>
 
         {/* ─── Media Gallery ───────────────────────────────────────── */}
-        <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden bg-muted group">
+        <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden bg-muted dark:bg-[#1D3461] group">
           {/* Main Image */}
           <img
             src={currentImageSrc}
@@ -593,19 +593,19 @@ export default function PropertyDetail() {
           {/* T23: Left navigation arrow - always visible on mobile */}
           <button
             onClick={prevImage}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-[#112240]/90 hover:bg-white dark:hover:bg-[#112240] rounded-full p-2 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
             aria-label="Previous image"
           >
-            <ChevronLeft className="h-5 w-5 text-navy" />
+            <ChevronLeft className="h-5 w-5 text-navy dark:text-white" />
           </button>
 
           {/* T23: Right navigation arrow - always visible on mobile */}
           <button
             onClick={nextImage}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-[#112240]/90 hover:bg-white dark:hover:bg-[#112240] rounded-full p-2 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
             aria-label="Next image"
           >
-            <ChevronRight className="h-5 w-5 text-navy" />
+            <ChevronRight className="h-5 w-5 text-navy dark:text-white" />
           </button>
 
           {/* Image dot indicators */}
@@ -635,8 +635,8 @@ export default function PropertyDetail() {
               onClick={() => setCurrentImageIndex(idx)}
               className={`flex-shrink-0 h-16 w-16 rounded-lg overflow-hidden transition-all ${
                 idx === currentImageIndex
-                  ? 'border-2 border-royal ring-2 ring-royal/20'
-                  : 'border border-border hover:border-slate-accent/40'
+                  ? 'border-2 border-royal dark:border-[#60A5FA] ring-2 ring-royal/20'
+                  : 'border border-border dark:border-[#1D3461] hover:border-slate-accent/40'
               }`}
             >
               {hasMultipleImages && property.images[idx] ? (
@@ -646,8 +646,8 @@ export default function PropertyDetail() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-muted flex items-center justify-center">
-                  <Camera className="h-4 w-4 text-slate-accent" />
+                <div className="w-full h-full bg-muted dark:bg-[#1D3461] flex items-center justify-center">
+                  <Camera className="h-4 w-4 text-slate-accent dark:text-[#94A3B8]" />
                 </div>
               )}
             </button>
@@ -655,38 +655,38 @@ export default function PropertyDetail() {
         </div>
 
         {/* ─── Property Info Card ──────────────────────────────────── */}
-        <Card className="mt-4 bg-white rounded-2xl border overflow-hidden">
+        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardContent className="p-6">
             {/* Price */}
             <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-2xl md:text-3xl font-bold text-royal">
+              <span className="text-2xl md:text-3xl font-bold text-royal dark:text-[#60A5FA]">
                 {priceDisplay}
               </span>
               {property.originalPrice && (
-                <span className="text-lg text-slate-accent line-through">
+                <span className="text-lg text-slate-accent dark:text-[#94A3B8] line-through">
                   {formatPrice(property.originalPrice, property.category)}
                 </span>
               )}
               {emiText && (
-                <Badge variant="secondary" className="bg-cream text-slate-accent border-0 text-xs">
+                <Badge variant="secondary" className="bg-cream dark:bg-[#1D3461] text-slate-accent dark:text-[#94A3B8] border-0 text-xs">
                   {emiText}
                 </Badge>
               )}
             </div>
 
             {/* Title */}
-            <h1 className="text-xl font-semibold text-navy mt-2 leading-tight">
+            <h1 className="text-xl font-semibold text-navy dark:text-white mt-2 leading-tight">
               {property.title}
             </h1>
 
             {/* Location */}
-            <div className="flex items-center gap-1 text-sm text-slate-accent mt-1.5">
+            <div className="flex items-center gap-1 text-sm text-slate-accent dark:text-[#94A3B8] mt-1.5">
               <MapPin className="h-4 w-4 flex-shrink-0" />
               <span className="truncate">{property.address}</span>
             </div>
 
             {/* Views + Posted */}
-            <div className="flex items-center gap-4 mt-2 text-xs text-slate-accent">
+            <div className="flex items-center gap-4 mt-2 text-xs text-slate-accent dark:text-[#94A3B8]">
               <span className="flex items-center gap-1">
                 <Eye className="h-3.5 w-3.5" />
                 {property.views.toLocaleString()} views
@@ -702,50 +702,50 @@ export default function PropertyDetail() {
             </div>
 
             {/* Quick Specs Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 p-4 bg-cream rounded-xl">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 p-4 bg-cream dark:bg-[#1D3461] rounded-xl">
               {property.bhk > 0 && (
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-sky flex items-center justify-center">
-                    <BedDouble className="h-4 w-4 text-royal" />
+                  <div className="w-9 h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
+                    <BedDouble className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-navy">{property.bhk} Beds</p>
-                    <p className="text-xs text-slate-accent">Bedrooms</p>
+                    <p className="text-sm font-semibold text-navy dark:text-white">{property.bhk} Beds</p>
+                    <p className="text-xs text-slate-accent dark:text-[#94A3B8]">Bedrooms</p>
                   </div>
                 </div>
               )}
               {property.bathrooms > 0 && (
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-sky flex items-center justify-center">
-                    <Bath className="h-4 w-4 text-royal" />
+                  <div className="w-9 h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
+                    <Bath className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-navy">{property.bathrooms} Baths</p>
-                    <p className="text-xs text-slate-accent">Bathrooms</p>
+                    <p className="text-sm font-semibold text-navy dark:text-white">{property.bathrooms} Baths</p>
+                    <p className="text-xs text-slate-accent dark:text-[#94A3B8]">Bathrooms</p>
                   </div>
                 </div>
               )}
               {property.carpetArea > 0 && (
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-sky flex items-center justify-center">
-                    <Maximize className="h-4 w-4 text-royal" />
+                  <div className="w-9 h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
+                    <Maximize className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-navy">
+                    <p className="text-sm font-semibold text-navy dark:text-white">
                       {property.carpetArea.toLocaleString()} sqft
                     </p>
-                    <p className="text-xs text-slate-accent">Carpet Area</p>
+                    <p className="text-xs text-slate-accent dark:text-[#94A3B8]">Carpet Area</p>
                   </div>
                 </div>
               )}
               {property.ageOfProperty && property.ageOfProperty !== 'N/A' && (
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-sky flex items-center justify-center">
-                    <Calendar className="h-4 w-4 text-royal" />
+                  <div className="w-9 h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
+                    <Calendar className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-navy">{property.ageOfProperty}</p>
-                    <p className="text-xs text-slate-accent">Age</p>
+                    <p className="text-sm font-semibold text-navy dark:text-white">{property.ageOfProperty}</p>
+                    <p className="text-xs text-slate-accent dark:text-[#94A3B8]">Age</p>
                   </div>
                 </div>
               )}
@@ -754,22 +754,22 @@ export default function PropertyDetail() {
             {/* Additional Specs */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4 text-sm">
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-accent">Furnishing</span>
-                <span className="font-medium text-navy capitalize">
+                <span className="text-slate-accent dark:text-[#94A3B8]">Furnishing</span>
+                <span className="font-medium text-navy dark:text-white capitalize">
                   {property.furnishing === 'semifurnished' ? 'Semi-Furnished' : property.furnishing === 'unfurnished' ? 'Unfurnished' : 'Furnished'}
                 </span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-accent">Floor</span>
-                <span className="font-medium text-navy">{property.floor}</span>
+                <span className="text-slate-accent dark:text-[#94A3B8]">Floor</span>
+                <span className="font-medium text-navy dark:text-white">{property.floor}</span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-accent">Total Floors</span>
-                <span className="font-medium text-navy">{property.totalFloors > 0 ? property.totalFloors : 'N/A'}</span>
+                <span className="text-slate-accent dark:text-[#94A3B8]">Total Floors</span>
+                <span className="font-medium text-navy dark:text-white">{property.totalFloors > 0 ? property.totalFloors : 'N/A'}</span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-accent">Possession</span>
-                <span className="font-medium text-navy capitalize">
+                <span className="text-slate-accent dark:text-[#94A3B8]">Possession</span>
+                <span className="font-medium text-navy dark:text-white capitalize">
                   {property.possessionStatus === 'ready'
                     ? 'Ready to Move'
                     : property.possessionStatus === 'under-construction'
@@ -779,14 +779,14 @@ export default function PropertyDetail() {
               </div>
               {property.plotArea && property.plotArea > 0 && (
                 <div className="flex justify-between py-1.5">
-                  <span className="text-slate-accent">Plot Area</span>
-                  <span className="font-medium text-navy">{property.plotArea.toLocaleString()} sqft</span>
+                  <span className="text-slate-accent dark:text-[#94A3B8]">Plot Area</span>
+                  <span className="font-medium text-navy dark:text-white">{property.plotArea.toLocaleString()} sqft</span>
                 </div>
               )}
               {property.superBuiltUpArea && property.superBuiltUpArea > 0 && (
                 <div className="flex justify-between py-1.5">
-                  <span className="text-slate-accent">Super Built-up</span>
-                  <span className="font-medium text-navy">{property.superBuiltUpArea.toLocaleString()} sqft</span>
+                  <span className="text-slate-accent dark:text-[#94A3B8]">Super Built-up</span>
+                  <span className="font-medium text-navy dark:text-white">{property.superBuiltUpArea.toLocaleString()} sqft</span>
                 </div>
               )}
             </div>
@@ -794,15 +794,15 @@ export default function PropertyDetail() {
         </Card>
 
         {/* ─── Description ─────────────────────────────────────────── */}
-        <Card className="mt-4 bg-white rounded-2xl border overflow-hidden">
+        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-navy flex items-center gap-2">
-              <Copy className="h-4 w-4 text-royal" />
+            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+              <Copy className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
               Property Description
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-slate-accent leading-relaxed">
+            <p className="text-sm text-slate-accent dark:text-[#94A3B8] leading-relaxed">
               {descriptionExpanded
                 ? property.description
                 : property.description.length > 150
@@ -812,7 +812,7 @@ export default function PropertyDetail() {
             {property.description.length > 150 && (
               <button
                 onClick={() => setDescriptionExpanded(!descriptionExpanded)}
-                className="text-sm font-semibold text-royal hover:text-royal-dark mt-2 transition-colors"
+                className="text-sm font-semibold text-royal dark:text-[#60A5FA] hover:text-royal-dark mt-2 transition-colors"
               >
                 {descriptionExpanded ? 'Show less' : 'Read more'}
               </button>
@@ -821,10 +821,10 @@ export default function PropertyDetail() {
         </Card>
 
         {/* ─── Amenities ───────────────────────────────────────────── */}
-        <Card className="mt-4 bg-white rounded-2xl border overflow-hidden">
+        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-navy flex items-center gap-2">
-              <Star className="h-4 w-4 text-royal" />
+            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+              <Star className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
               Amenities
             </CardTitle>
           </CardHeader>
@@ -838,14 +838,14 @@ export default function PropertyDetail() {
                     key={amenityId}
                     className="flex items-center gap-2 text-sm"
                   >
-                    <div className="bg-sky rounded-lg w-8 h-8 flex items-center justify-center flex-shrink-0">
+                    <div className="bg-sky dark:bg-[#1D3461] rounded-lg w-8 h-8 flex items-center justify-center flex-shrink-0">
                       {IconComponent ? (
-                        <IconComponent className="h-4 w-4 text-royal" />
+                        <IconComponent className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                       ) : (
-                        <CheckCircle2 className="h-4 w-4 text-royal" />
+                        <CheckCircle2 className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                       )}
                     </div>
-                    <span className="text-navy font-medium">
+                    <span className="text-navy dark:text-white font-medium">
                       {amenityDef?.label || amenityId}
                     </span>
                   </div>
@@ -861,10 +861,10 @@ export default function PropertyDetail() {
         </div>
 
         {/* ─── T15: Owner Details Card ─────────────────────────────── */}
-        <Card className="mt-4 bg-white rounded-2xl border overflow-hidden">
+        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-navy flex items-center gap-2">
-              <UserRound className="h-4 w-4 text-royal" />
+            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+              <UserRound className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
               About the Owner/Agent
             </CardTitle>
           </CardHeader>
@@ -872,13 +872,13 @@ export default function PropertyDetail() {
             <div className="flex items-start gap-4">
               {/* Owner avatar - first letter circle */}
               <div className="w-14 h-14 rounded-full bg-royal/10 flex items-center justify-center flex-shrink-0">
-                <span className="text-xl font-bold text-royal">
+                <span className="text-xl font-bold text-royal dark:text-[#60A5FA]">
                   {property.ownerName.charAt(0).toUpperCase()}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-base font-semibold text-navy">
+                  <h3 className="text-base font-semibold text-navy dark:text-white">
                     {property.ownerName}
                   </h3>
                   {/* Verified badge */}
@@ -890,18 +890,18 @@ export default function PropertyDetail() {
                   )}
                 </div>
                 {/* Label: Owner or Agent */}
-                <p className="text-sm text-slate-accent mt-0.5">
+                <p className="text-sm text-slate-accent dark:text-[#94A3B8] mt-0.5">
                   {property.directFromOwner ? 'Property Owner' : 'Agent'}
                 </p>
                 {/* Response time */}
-                <div className="flex items-center gap-1.5 mt-1.5 text-xs text-slate-accent">
+                <div className="flex items-center gap-1.5 mt-1.5 text-xs text-slate-accent dark:text-[#94A3B8]">
                   <Clock className="h-3 w-3" />
                   <span>Usually responds within 1 hour</span>
                 </div>
                 {/* View All Listings button */}
                 <Button
                   variant="outline"
-                  className="mt-3 h-10 rounded-xl border-royal/30 text-royal hover:bg-royal/5 font-semibold text-sm"
+                  className="mt-3 h-10 rounded-xl border-royal/30 text-royal dark:text-[#60A5FA] hover:bg-royal/5 font-semibold text-sm"
                 >
                   <Building2 className="h-4 w-4 mr-1.5" />
                   View All Listings
@@ -912,24 +912,24 @@ export default function PropertyDetail() {
         </Card>
 
         {/* ─── Location & Neighborhood ─────────────────────────────── */}
-        <Card className="mt-4 bg-white rounded-2xl border overflow-hidden">
+        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-navy flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-royal" />
+            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
               Location
             </CardTitle>
           </CardHeader>
           <CardContent>
             {/* Map placeholder */}
-            <div className="bg-cream rounded-xl h-48 flex flex-col items-center justify-center border-2 border-dashed border-border">
-              <MapPin className="h-8 w-8 text-slate-accent mb-2" />
-              <span className="text-sm font-medium text-slate-accent">Map View</span>
-              <span className="text-xs text-slate-accent mt-0.5">{property.locality}, {property.city}</span>
+            <div className="bg-cream dark:bg-[#1D3461] rounded-xl h-48 flex flex-col items-center justify-center border-2 border-dashed border-border dark:border-[#1D3461]">
+              <MapPin className="h-8 w-8 text-slate-accent dark:text-[#94A3B8] mb-2" />
+              <span className="text-sm font-medium text-slate-accent dark:text-[#94A3B8]">Map View</span>
+              <span className="text-xs text-slate-accent dark:text-[#94A3B8] mt-0.5">{property.locality}, {property.city}</span>
             </div>
 
             {/* Nearby Places */}
             <div className="mt-4">
-              <h3 className="text-sm font-semibold text-navy mb-3">Nearby Places</h3>
+              <h3 className="text-sm font-semibold text-navy dark:text-white mb-3">Nearby Places</h3>
               <div className="flex flex-col gap-2.5">
                 {NEARBY_PLACES.map((place, idx) => {
                   const PlaceIcon = place.icon;
@@ -938,16 +938,16 @@ export default function PropertyDetail() {
                       key={idx}
                       className="flex items-center gap-3 py-1"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-cream flex items-center justify-center flex-shrink-0">
-                        <PlaceIcon className="h-4 w-4 text-slate-accent" />
+                      <div className="w-8 h-8 rounded-lg bg-cream dark:bg-[#1D3461] flex items-center justify-center flex-shrink-0">
+                        <PlaceIcon className="h-4 w-4 text-slate-accent dark:text-[#94A3B8]" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-navy truncate">{place.name}</p>
-                        <p className="text-xs text-slate-accent">{place.type}</p>
+                        <p className="text-sm font-medium text-navy dark:text-white truncate">{place.name}</p>
+                        <p className="text-xs text-slate-accent dark:text-[#94A3B8]">{place.type}</p>
                       </div>
                       <Badge
                         variant="secondary"
-                        className="bg-cream text-slate-accent border-0 text-xs whitespace-nowrap"
+                        className="bg-cream dark:bg-[#1D3461] text-slate-accent dark:text-[#94A3B8] border-0 text-xs whitespace-nowrap"
                       >
                         {place.distance}
                       </Badge>
@@ -960,13 +960,13 @@ export default function PropertyDetail() {
         </Card>
 
         {/* ─── Locality Ratings ────────────────────────────────────── */}
-        <Card className="mt-4 bg-white rounded-2xl border overflow-hidden">
+        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-navy flex items-center gap-2">
-              <Shield className="h-4 w-4 text-royal" />
+            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+              <Shield className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
               Locality Insights
             </CardTitle>
-            <p className="text-xs text-slate-accent">
+            <p className="text-xs text-slate-accent dark:text-[#94A3B8]">
               Ratings for {property.locality} neighbourhood
             </p>
           </CardHeader>
@@ -977,9 +977,9 @@ export default function PropertyDetail() {
                   key={rating.label}
                   className="flex flex-col items-center gap-1.5 min-w-[90px]"
                 >
-                  <span className="text-sm text-navy font-medium">{rating.label}</span>
+                  <span className="text-sm text-navy dark:text-white font-medium">{rating.label}</span>
                   <StarRating score={rating.score} />
-                  <span className="text-xs text-slate-accent">{rating.score}/5</span>
+                  <span className="text-xs text-slate-accent dark:text-[#94A3B8]">{rating.score}/5</span>
                 </div>
               ))}
             </div>
@@ -988,36 +988,36 @@ export default function PropertyDetail() {
 
         {/* ─── T28: Quick Enquiry Inline Form (desktop only) ───────── */}
         <div className="mt-4 hidden lg:block">
-          <Card className="bg-cream rounded-xl border">
+          <Card className="bg-cream dark:bg-[#1D3461] rounded-xl border border-border dark:border-[#1D3461]">
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-semibold text-navy flex items-center gap-2">
-                <Send className="h-4 w-4 text-royal" />
+              <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+                <Send className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                 Quick Enquiry
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4">
-              <p className="text-sm text-slate-accent mb-4">
-                I&apos;m interested in <span className="font-semibold text-navy">{property.title}</span>
+              <p className="text-sm text-slate-accent dark:text-[#94A3B8] mb-4">
+                I&apos;m interested in <span className="font-semibold text-navy dark:text-white">{property.title}</span>
               </p>
               <div className="flex items-end gap-3">
                 <div className="flex-1">
-                  <Label htmlFor="eq-name" className="text-xs text-slate-accent mb-1.5">Name</Label>
+                  <Label htmlFor="eq-name" className="text-xs text-slate-accent dark:text-[#94A3B8] mb-1.5">Name</Label>
                   <Input
                     id="eq-name"
                     placeholder="Your name"
                     value={eqName}
                     onChange={(e) => setEqName(e.target.value)}
-                    className="bg-white h-10 rounded-lg"
+                    className="bg-white dark:bg-[#112240] h-10 rounded-lg"
                   />
                 </div>
                 <div className="flex-1">
-                  <Label htmlFor="eq-phone" className="text-xs text-slate-accent mb-1.5">Phone</Label>
+                  <Label htmlFor="eq-phone" className="text-xs text-slate-accent dark:text-[#94A3B8] mb-1.5">Phone</Label>
                   <Input
                     id="eq-phone"
                     placeholder="+91 98765 43210"
                     value={eqPhone}
                     onChange={(e) => setEqPhone(e.target.value)}
-                    className="bg-white h-10 rounded-lg"
+                    className="bg-white dark:bg-[#112240] h-10 rounded-lg"
                   />
                 </div>
                 <Button
@@ -1034,8 +1034,8 @@ export default function PropertyDetail() {
 
         {/* ─── Similar Properties ──────────────────────────────────── */}
         <div className="mt-4 mb-8">
-          <h2 className="text-lg font-semibold text-navy flex items-center gap-2 mb-4">
-            <Home className="h-4 w-4 text-royal" />
+          <h2 className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2 mb-4">
+            <Home className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
             Similar Properties
           </h2>
           <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin">
@@ -1043,10 +1043,10 @@ export default function PropertyDetail() {
               <button
                 key={sp.id}
                 onClick={() => handleSimilarClick(sp)}
-                className="w-64 flex-shrink-0 bg-white rounded-xl border overflow-hidden hover:shadow-lg hover:border-royal/20 transition-all text-left"
+                className="w-64 flex-shrink-0 bg-white dark:bg-[#112240] rounded-xl border border-border dark:border-[#1D3461] overflow-hidden hover:shadow-lg hover:border-royal/20 transition-all text-left"
               >
                 {/* Image */}
-                <div className="relative h-32 bg-muted">
+                <div className="relative h-32 bg-muted dark:bg-[#1D3461]">
                   <img
                     src={sp.images[0]}
                     alt={sp.title}
@@ -1061,13 +1061,13 @@ export default function PropertyDetail() {
                 </div>
                 {/* Content */}
                 <div className="p-3">
-                  <p className="text-sm font-bold text-royal">{formatPrice(sp.price, sp.category)}</p>
-                  <p className="text-sm font-medium text-navy mt-0.5 truncate">{sp.title}</p>
-                  <p className="text-xs text-slate-accent flex items-center gap-1 mt-1 truncate">
-                    <MapPin className="h-3 w-3 flex-shrink-0" />
+                  <p className="text-sm font-bold text-royal dark:text-[#60A5FA]">{formatPrice(sp.price, sp.category)}</p>
+                  <p className="text-sm font-medium text-navy dark:text-white mt-0.5 truncate">{sp.title}</p>
+                  <p className="text-xs text-slate-accent dark:text-[#94A3B8] flex items-center gap-1 mt-1 truncate">
+                    <MapPin className="h-3 h-3 flex-shrink-0" />
                     {sp.locality}, {sp.city}
                   </p>
-                  <div className="flex items-center gap-3 mt-2 text-xs text-slate-accent">
+                  <div className="flex items-center gap-3 mt-2 text-xs text-slate-accent dark:text-[#94A3B8]">
                     {sp.bhk > 0 && (
                       <span className="flex items-center gap-1">
                         <BedDouble className="h-3 w-3" />
@@ -1096,10 +1096,10 @@ export default function PropertyDetail() {
 
       {/* ═══════ T13: CONTACT / LEAD CAPTURE MODAL ═══════ */}
       <Dialog open={showContactModal} onOpenChange={setShowContactModal}>
-        <DialogContent className="sm:max-w-md rounded-2xl">
+        <DialogContent className="sm:max-w-md rounded-2xl bg-white dark:bg-[#112240] border-border dark:border-[#1D3461]">
           <DialogHeader>
-            <DialogTitle className="text-navy text-xl">Get Owner Details</DialogTitle>
-            <DialogDescription className="text-slate-accent">
+            <DialogTitle className="text-navy dark:text-white text-xl">Get Owner Details</DialogTitle>
+            <DialogDescription className="text-slate-accent dark:text-[#94A3B8]">
               Fill in your details to receive the owner&apos;s contact information
             </DialogDescription>
           </DialogHeader>
@@ -1111,7 +1111,7 @@ export default function PropertyDetail() {
                 placeholder="Your full name"
                 value={contactName}
                 onChange={(e) => setContactName(e.target.value)}
-                className="h-10 rounded-lg"
+                className="h-10 rounded-lg bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
               />
             </div>
             <div className="space-y-2">
@@ -1121,7 +1121,7 @@ export default function PropertyDetail() {
                 placeholder="+91 98765 43210"
                 value={contactPhone}
                 onChange={(e) => setContactPhone(e.target.value)}
-                className="h-10 rounded-lg"
+                className="h-10 rounded-lg bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
               />
             </div>
             <div className="space-y-2">
@@ -1131,7 +1131,7 @@ export default function PropertyDetail() {
                 placeholder="Your message..."
                 value={contactMessage}
                 onChange={(e) => setContactMessage(e.target.value)}
-                className="rounded-lg min-h-[80px]"
+                className="rounded-lg min-h-[80px] bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
               />
             </div>
           </div>
@@ -1140,7 +1140,7 @@ export default function PropertyDetail() {
             <Button
               type="button"
               variant="outline"
-              className="w-full h-10 rounded-xl border-royal/30 text-royal hover:bg-royal/5 font-semibold"
+              className="w-full h-10 rounded-xl border-royal/30 text-royal dark:text-[#60A5FA] hover:bg-royal/5 font-semibold"
               onClick={() => {
                 setShowContactModal(false);
                 // Pre-fill visit name/phone from contact form if available
@@ -1166,10 +1166,10 @@ export default function PropertyDetail() {
 
       {/* ═══════ T12: SCHEDULE VISIT DIALOG ═══════ */}
       <Dialog open={showScheduleDialog} onOpenChange={setShowScheduleDialog}>
-        <DialogContent className="sm:max-w-md rounded-2xl">
+        <DialogContent className="sm:max-w-md rounded-2xl bg-white dark:bg-[#112240] border-border dark:border-[#1D3461]">
           <DialogHeader>
-            <DialogTitle className="text-navy text-xl">Schedule a Visit</DialogTitle>
-            <DialogDescription className="text-slate-accent">
+            <DialogTitle className="text-navy dark:text-white text-xl">Schedule a Visit</DialogTitle>
+            <DialogDescription className="text-slate-accent dark:text-[#94A3B8]">
               Pick a date and time slot to visit {property.title}
             </DialogDescription>
           </DialogHeader>
@@ -1183,7 +1183,7 @@ export default function PropertyDetail() {
                 value={visitDate}
                 onChange={(e) => setVisitDate(e.target.value)}
                 min={new Date().toISOString().split('T')[0]}
-                className="h-10 rounded-lg"
+                className="h-10 rounded-lg bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
               />
             </div>
             {/* Time slot selection */}
@@ -1195,10 +1195,10 @@ export default function PropertyDetail() {
                     key={slot.id}
                     type="button"
                     onClick={() => setVisitTimeSlot(slot.id)}
-                    className={`min-h-10 rounded-xl border px-3 py-2 text-center transition-all ${
+                    className={`min-h-10 rounded-xl border border-border dark:border-[#1D3461] px-3 py-2 text-center transition-all ${
                       visitTimeSlot === slot.id
-                        ? 'border-royal bg-royal/10 text-royal font-semibold'
-                        : 'border-border hover:border-royal/30 text-slate-accent hover:text-navy'
+                        ? 'border-royal dark:border-[#60A5FA] bg-royal/10 text-royal dark:text-[#60A5FA] font-semibold'
+                        : 'border-border dark:border-[#1D3461] hover:border-royal/30 text-slate-accent dark:text-[#94A3B8] hover:text-navy dark:hover:text-white'
                     }`}
                   >
                     <p className="text-sm font-medium">{slot.label}</p>
@@ -1215,7 +1215,7 @@ export default function PropertyDetail() {
                 placeholder="Your full name"
                 value={visitName}
                 onChange={(e) => setVisitName(e.target.value)}
-                className="h-10 rounded-lg"
+                className="h-10 rounded-lg bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
               />
             </div>
             {/* Phone */}
@@ -1226,7 +1226,7 @@ export default function PropertyDetail() {
                 placeholder="+91 98765 43210"
                 value={visitPhone}
                 onChange={(e) => setVisitPhone(e.target.value)}
-                className="h-10 rounded-lg"
+                className="h-10 rounded-lg bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
               />
             </div>
           </div>

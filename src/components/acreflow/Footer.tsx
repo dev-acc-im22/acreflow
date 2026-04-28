@@ -81,8 +81,8 @@ export default function Footer() {
 
   return (
     <footer className="font-montserrat">
-      {/* Main Footer */}
-      <div className="bg-navy text-white">
+      {/* Main Footer — bg-navy is already dark; add top border for dark mode separation */}
+      <div className="bg-navy text-white border-t border-gray-200 dark:border-[#1D3461]">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {/* Column 1 - Branding */}

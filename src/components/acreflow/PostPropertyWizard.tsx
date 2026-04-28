@@ -198,7 +198,7 @@ export default function PostPropertyWizard() {
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="text-xl font-bold text-navy">Post Property</h1>
+        <h1 className="text-xl font-bold text-navy dark:text-white">Post Property</h1>
       </div>
 
       {/* Progress Steps */}
@@ -212,7 +212,7 @@ export default function PostPropertyWizard() {
                     ? 'bg-success text-white'
                     : idx === currentStep
                     ? 'bg-royal text-white'
-                    : 'bg-muted text-slate-accent border border-border'
+                    : 'bg-muted text-slate-accent border border-border dark:bg-[#1D3461] dark:text-[#94A3B8] dark:border-[#1D3461]'
                 }`}
               >
                 {idx < currentStep ? (
@@ -221,12 +221,12 @@ export default function PostPropertyWizard() {
                   idx + 1
                 )}
               </div>
-              <span className="text-xs text-slate-accent font-medium">{step}</span>
+              <span className="text-xs text-slate-accent font-medium dark:text-[#94A3B8]">{step}</span>
             </div>
             {idx < STEPS.length - 1 && (
               <div
                 className={`w-16 h-0.5 mb-5 transition-colors ${
-                  idx < currentStep ? 'bg-success' : 'bg-border'
+                  idx < currentStep ? 'bg-success' : 'bg-border dark:bg-[#1D3461]'
                 }`}
               />
             )}
@@ -236,11 +236,11 @@ export default function PostPropertyWizard() {
 
       {/* Step 1 - Property Details */}
       {currentStep === 0 && (
-        <Card className="border-border">
+        <Card className="border-border dark:border-[#1D3461]">
           <CardContent className="p-6 space-y-8">
             {/* Property Category */}
             <div className="space-y-3">
-              <Label className="text-sm font-semibold text-navy flex items-center gap-2">
+              <Label className="text-sm font-semibold text-navy dark:text-white flex items-center gap-2">
                 <FileText className="h-4 w-4" />
                 Property Category
               </Label>
@@ -260,7 +260,7 @@ export default function PostPropertyWizard() {
                     className={`flex-1 h-12 rounded-lg text-base font-medium transition-all cursor-pointer ${
                       category === opt.value
                         ? 'bg-royal text-white shadow-sm'
-                        : 'bg-white text-gray-600 border border-gray-300 hover:border-royal/40 hover:text-navy'
+                        : 'bg-white text-gray-600 border border-gray-300 hover:border-royal/40 hover:text-navy dark:bg-[#112240] dark:text-[#94A3B8] dark:border-[#1D3461] dark:hover:border-royal/40 dark:hover:text-white'
                     }`
                     }
                   >
@@ -272,7 +272,7 @@ export default function PostPropertyWizard() {
 
             {/* Property Type */}
             <div className="space-y-3">
-              <Label className="text-sm font-semibold text-navy flex items-center gap-2">
+              <Label className="text-sm font-semibold text-navy dark:text-white flex items-center gap-2">
                 <Building2 className="h-4 w-4" />
                 Property Type
               </Label>
@@ -284,18 +284,18 @@ export default function PostPropertyWizard() {
                     onClick={() => setPropertyType(type)}
                     className={`p-4 rounded-xl border cursor-pointer flex flex-col items-center gap-2 transition-all ${
                       propertyType === type
-                        ? 'border-royal bg-sky/30'
-                        : 'border-border hover:border-royal/40'
+                        ? 'border-royal bg-sky/30 dark:bg-[#1D3461]/30'
+                        : 'border-border hover:border-royal/40 dark:border-[#1D3461] dark:hover:border-royal/40'
                     }`}
                   >
                     <Icon
                       className={`h-6 w-6 ${
-                        propertyType === type ? 'text-royal' : 'text-slate-accent'
+                        propertyType === type ? 'text-royal dark:text-[#60A5FA]' : 'text-slate-accent dark:text-[#94A3B8]'
                       }`}
                     />
                     <span
                       className={`text-sm font-medium ${
-                        propertyType === type ? 'text-royal' : 'text-navy'
+                        propertyType === type ? 'text-royal dark:text-[#60A5FA]' : 'text-navy dark:text-white'
                       }`}
                     >
                       {label}
@@ -307,10 +307,10 @@ export default function PostPropertyWizard() {
 
             {/* Basic Details */}
             <div className="space-y-4">
-              <Label className="text-sm font-semibold text-navy">Basic Details</Label>
+              <Label className="text-sm font-semibold text-navy dark:text-white">Basic Details</Label>
 
               <div className="space-y-2">
-                <Label className="text-sm text-slate-accent">Property Title *</Label>
+                <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Property Title *</Label>
                 <Input
                   placeholder="e.g., Spacious 3 BHK in Anna Nagar"
                   value={title}
@@ -321,7 +321,7 @@ export default function PostPropertyWizard() {
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-accent">BHK</Label>
+                  <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">BHK</Label>
                   <Select value={bhk} onValueChange={setBhk}>
                     <SelectTrigger className="h-12 rounded-xl">
                       <SelectValue placeholder="Select" />
@@ -338,7 +338,7 @@ export default function PostPropertyWizard() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-accent">Bathrooms</Label>
+                  <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Bathrooms</Label>
                   <Select value={bathrooms} onValueChange={setBathrooms}>
                     <SelectTrigger className="h-12 rounded-xl">
                       <SelectValue placeholder="Select" />
@@ -354,7 +354,7 @@ export default function PostPropertyWizard() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-accent">Balconies</Label>
+                  <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Balconies</Label>
                   <Select value={balconies} onValueChange={setBalconies}>
                     <SelectTrigger className="h-12 rounded-xl">
                       <SelectValue placeholder="Select" />
@@ -369,7 +369,7 @@ export default function PostPropertyWizard() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-accent">Carpet Area (sqft)</Label>
+                  <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Carpet Area (sqft)</Label>
                   <Input
                     type="number"
                     placeholder="e.g., 1200"
@@ -382,9 +382,9 @@ export default function PostPropertyWizard() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-accent">
+                  <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">
                     Super Built-up Area (sqft)
-                    <span className="text-xs text-slate-light ml-1">optional</span>
+                    <span className="text-xs text-slate-light ml-1 dark:text-[#475569]">optional</span>
                   </Label>
                   <Input
                     type="number"
@@ -399,13 +399,13 @@ export default function PostPropertyWizard() {
 
             {/* Pricing */}
             <div className="space-y-4">
-              <Label className="text-sm font-semibold text-navy">Pricing</Label>
+              <Label className="text-sm font-semibold text-navy dark:text-white">Pricing</Label>
 
               {category !== 'rent' ? (
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-accent">Expected Price *</Label>
+                  <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Expected Price *</Label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-accent font-medium">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-accent font-medium dark:text-[#94A3B8]">
                       ₹
                     </span>
                     <Input
@@ -420,9 +420,9 @@ export default function PostPropertyWizard() {
               ) : (
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-sm text-slate-accent">Monthly Rent *</Label>
+                    <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Monthly Rent *</Label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-accent font-medium">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-accent font-medium dark:text-[#94A3B8]">
                         ₹
                       </span>
                       <Input
@@ -435,9 +435,9 @@ export default function PostPropertyWizard() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-sm text-slate-accent">Deposit</Label>
+                    <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Deposit</Label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-accent font-medium">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-accent font-medium dark:text-[#94A3B8]">
                         ₹
                       </span>
                       <Input
@@ -455,7 +455,7 @@ export default function PostPropertyWizard() {
 
             {/* Furnishing */}
             <div className="space-y-2">
-              <Label className="text-sm font-semibold text-navy">Furnishing</Label>
+              <Label className="text-sm font-semibold text-navy dark:text-white">Furnishing</Label>
               <Select value={furnishing} onValueChange={(v) => setFurnishing(v as Furnishing)}>
                 <SelectTrigger className="h-12 rounded-xl">
                   <SelectValue placeholder="Select furnishing" />
@@ -470,7 +470,7 @@ export default function PostPropertyWizard() {
 
             {/* Age of Property */}
             <div className="space-y-2">
-              <Label className="text-sm font-semibold text-navy">Age of Property</Label>
+              <Label className="text-sm font-semibold text-navy dark:text-white">Age of Property</Label>
               <Select value={ageOfProperty} onValueChange={setAgeOfProperty}>
                 <SelectTrigger className="h-12 rounded-xl">
                   <SelectValue placeholder="Select age" />
@@ -487,7 +487,7 @@ export default function PostPropertyWizard() {
 
             {/* Possession Status */}
             <div className="space-y-2">
-              <Label className="text-sm font-semibold text-navy">Possession Status</Label>
+              <Label className="text-sm font-semibold text-navy dark:text-white">Possession Status</Label>
               <Select
                 value={possessionStatus}
                 onValueChange={(v) => setPossessionStatus(v as PossessionStatus)}
@@ -505,13 +505,13 @@ export default function PostPropertyWizard() {
 
             {/* Location */}
             <div className="space-y-4">
-              <Label className="text-sm font-semibold text-navy flex items-center gap-2">
+              <Label className="text-sm font-semibold text-navy dark:text-white flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
                 Location
               </Label>
 
               <div className="space-y-2">
-                <Label className="text-sm text-slate-accent">Address</Label>
+                <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Address</Label>
                 <Textarea
                   placeholder="Full property address"
                   value={address}
@@ -523,7 +523,7 @@ export default function PostPropertyWizard() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-accent">Locality</Label>
+                  <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Locality</Label>
                   <Input
                     placeholder="e.g., Anna Nagar"
                     value={locality}
@@ -532,7 +532,7 @@ export default function PostPropertyWizard() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-accent">City</Label>
+                  <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">City</Label>
                   <Select value={city} onValueChange={setCity}>
                     <SelectTrigger className="h-12 rounded-xl">
                       <SelectValue placeholder="Select city" />
@@ -551,15 +551,15 @@ export default function PostPropertyWizard() {
 
             {/* Amenities */}
             <div className="space-y-4">
-              <Label className="text-sm font-semibold text-navy">Amenities</Label>
+              <Label className="text-sm font-semibold text-navy dark:text-white">Amenities</Label>
               <div className="grid grid-cols-3 gap-3">
                 {AMENITIES.map((amenity) => (
                   <label
                     key={amenity.id}
                     className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-all ${
                       selectedAmenities.includes(amenity.id)
-                        ? 'border-royal bg-sky/30'
-                        : 'border-border hover:border-royal/40'
+                        ? 'border-royal bg-sky/30 dark:bg-[#1D3461]/30'
+                        : 'border-border hover:border-royal/40 dark:border-[#1D3461] dark:hover:border-royal/40'
                     }`}
                   >
                     <Checkbox
@@ -567,7 +567,7 @@ export default function PostPropertyWizard() {
                       onCheckedChange={() => toggleAmenity(amenity.id)}
                       className="data-[state=checked]:bg-royal data-[state=checked]:border-royal"
                     />
-                    <span className="text-sm text-navy">{amenity.label}</span>
+                    <span className="text-sm text-navy dark:text-white">{amenity.label}</span>
                   </label>
                 ))}
               </div>
@@ -575,14 +575,14 @@ export default function PostPropertyWizard() {
 
             {/* Owner Info */}
             <div className="space-y-4">
-              <Label className="text-sm font-semibold text-navy flex items-center gap-2">
+              <Label className="text-sm font-semibold text-navy dark:text-white flex items-center gap-2">
                 <User className="h-4 w-4" />
                 Owner Information
               </Label>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-accent">Owner Name *</Label>
+                  <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Owner Name *</Label>
                   <Input
                     placeholder="Full name"
                     value={ownerName}
@@ -591,9 +591,9 @@ export default function PostPropertyWizard() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-accent">Phone *</Label>
+                  <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">Phone *</Label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-accent" />
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-accent dark:text-[#94A3B8]" />
                     <Input
                       type="tel"
                       placeholder="+91 XXXXX XXXXX"
@@ -606,9 +606,9 @@ export default function PostPropertyWizard() {
               </div>
 
               <div className="space-y-2">
-                <Label className="text-sm text-slate-accent">
+                <Label className="text-sm text-slate-accent dark:text-[#94A3B8]">
                   RERA ID
-                  <span className="text-xs text-slate-light ml-1">optional</span>
+                  <span className="text-xs text-slate-light ml-1 dark:text-[#475569]">optional</span>
                 </Label>
                 <Input
                   placeholder="e.g., RERA/2024/001234"
@@ -624,17 +624,17 @@ export default function PostPropertyWizard() {
 
       {/* Step 2 - Media Upload */}
       {currentStep === 1 && (
-        <Card className="border-border">
+        <Card className="border-border dark:border-[#1D3461]">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-navy flex items-center gap-2">
-              <Camera className="h-5 w-5 text-royal" />
+            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+              <Camera className="h-5 w-5 text-royal dark:text-[#60A5FA]" />
               Upload Property Photos
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6 space-y-6">
             {/* Drag & Drop Area */}
             <div
-              className="border-2 border-dashed rounded-xl p-12 text-center hover:border-royal transition-colors cursor-pointer"
+              className="border-2 border-dashed rounded-xl p-12 text-center hover:border-royal transition-colors cursor-pointer dark:border-[#1D3461] dark:hover:border-[#60A5FA]"
               onClick={() => {
                 const input = document.createElement('input');
                 input.type = 'file';
@@ -650,29 +650,29 @@ export default function PostPropertyWizard() {
                 input.click();
               }}
             >
-              <Upload className="h-10 w-10 text-slate-accent mx-auto mb-3" />
-              <p className="text-sm font-medium text-navy mb-1">
+              <Upload className="h-10 w-10 text-slate-accent mx-auto mb-3 dark:text-[#94A3B8]" />
+              <p className="text-sm font-medium text-navy mb-1 dark:text-white">
                 Drag & drop photos here
               </p>
-              <p className="text-sm text-royal font-medium mb-2">or click to browse</p>
-              <p className="text-xs text-slate-accent">
+              <p className="text-sm text-royal font-medium mb-2 dark:text-[#60A5FA]">or click to browse</p>
+              <p className="text-xs text-slate-accent dark:text-[#94A3B8]">
                 Supports JPG, PNG up to 5MB each
               </p>
             </div>
 
             {/* Thumbnail Grid */}
             <div className="space-y-3">
-              <Label className="text-sm font-medium text-navy">
+              <Label className="text-sm font-medium text-navy dark:text-white">
                 Uploaded Photos ({uploadedFiles.length})
               </Label>
               <div className="flex flex-wrap gap-3">
                 {uploadedFiles.map((file, idx) => (
                   <div
                     key={`${file}-${idx}`}
-                    className="w-24 h-24 rounded-lg bg-muted border flex items-center justify-center relative group"
+                    className="w-24 h-24 rounded-lg bg-muted border flex items-center justify-center relative group dark:bg-[#1D3461] dark:border-[#1D3461]"
                   >
-                    <ImageIcon className="h-6 w-6 text-slate-accent" />
-                    <span className="absolute bottom-1 left-1 right-1 text-[9px] text-slate-accent truncate">
+                    <ImageIcon className="h-6 w-6 text-slate-accent dark:text-[#94A3B8]" />
+                    <span className="absolute bottom-1 left-1 right-1 text-[9px] text-slate-accent truncate dark:text-[#94A3B8]">
                       {file}
                     </span>
                     <button
@@ -708,9 +708,9 @@ export default function PostPropertyWizard() {
                       };
                       input.click();
                     }}
-                    className="w-24 h-24 rounded-lg bg-muted border border-dashed border-border flex flex-col items-center justify-center hover:border-royal transition-colors"
+                    className="w-24 h-24 rounded-lg bg-muted border border-dashed border-border flex flex-col items-center justify-center hover:border-royal transition-colors dark:bg-[#1D3461] dark:border-[#1D3461] dark:hover:border-[#60A5FA]"
                   >
-                    <Plus className="h-6 w-6 text-slate-accent" />
+                    <Plus className="h-6 w-6 text-slate-accent dark:text-[#94A3B8]" />
                   </button>
                 )}
               </div>
@@ -719,7 +719,7 @@ export default function PostPropertyWizard() {
             {/* Add More Button */}
             <Button
               variant="outline"
-              className="w-full rounded-xl border-royal text-royal hover:bg-sky/30 h-12"
+              className="w-full rounded-xl border-royal text-royal hover:bg-sky/30 h-12 dark:border-[#60A5FA] dark:text-[#60A5FA] dark:hover:bg-[#1D3461]/30"
               onClick={() => {
                 const input = document.createElement('input');
                 input.type = 'file';
@@ -740,14 +740,14 @@ export default function PostPropertyWizard() {
             </Button>
 
             {/* Tips */}
-            <div className="bg-cream rounded-xl p-4 space-y-2">
-              <p className="text-sm font-medium text-navy">Tips for better results</p>
+            <div className="bg-cream rounded-xl p-4 space-y-2 dark:bg-[#0A192F]">
+              <p className="text-sm font-medium text-navy dark:text-white">Tips for better results</p>
               <ul className="space-y-1">
-                <li className="text-xs text-slate-accent flex items-center gap-2">
+                <li className="text-xs text-slate-accent flex items-center gap-2 dark:text-[#94A3B8]">
                   <CheckCircle2 className="h-3.5 w-3.5 text-success flex-shrink-0" />
                   Add at least 5 photos for best results
                 </li>
-                <li className="text-xs text-slate-accent flex items-center gap-2">
+                <li className="text-xs text-slate-accent flex items-center gap-2 dark:text-[#94A3B8]">
                   <CheckCircle2 className="h-3.5 w-3.5 text-success flex-shrink-0" />
                   First photo will be the cover image
                 </li>
@@ -759,56 +759,56 @@ export default function PostPropertyWizard() {
 
       {/* Step 3 - Review & Submit */}
       {currentStep === 2 && (
-        <Card className="border-border">
+        <Card className="border-border dark:border-[#1D3461]">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-navy">
+            <CardTitle className="text-lg font-semibold text-navy dark:text-white">
               Review Your Listing
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6 space-y-6">
             {/* Summary */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-navy">Property Overview</h3>
+              <h3 className="text-sm font-semibold text-navy dark:text-white">Property Overview</h3>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-slate-accent">Category</p>
-                  <p className="text-sm font-medium text-navy">{category === 'buy' ? 'For Sale' : category === 'rent' ? 'For Rent' : 'For Commercial'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Category</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{category === 'buy' ? 'For Sale' : category === 'rent' ? 'For Rent' : 'For Commercial'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">Property Type</p>
-                  <p className="text-sm font-medium text-navy capitalize">
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Property Type</p>
+                  <p className="text-sm font-medium text-navy dark:text-white capitalize">
                     {propertyType.replace(/-/g, ' ')}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">Title</p>
-                  <p className="text-sm font-medium text-navy">{title || '—'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Title</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{title || '—'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">BHK</p>
-                  <p className="text-sm font-medium text-navy">
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">BHK</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">
                     {bhk === 'studio' ? 'Studio' : bhk ? `${bhk} BHK` : '—'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">Bathrooms</p>
-                  <p className="text-sm font-medium text-navy">{bathrooms || '—'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Bathrooms</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{bathrooms || '—'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">Balconies</p>
-                  <p className="text-sm font-medium text-navy">{balconies || '—'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Balconies</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{balconies || '—'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">Carpet Area</p>
-                  <p className="text-sm font-medium text-navy">
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Carpet Area</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">
                     {carpetArea ? `${carpetArea} sqft` : '—'}
                   </p>
                 </div>
                 {superBuiltUpArea && (
                   <div>
-                    <p className="text-sm text-slate-accent">Super Built-up Area</p>
-                    <p className="text-sm font-medium text-navy">
+                    <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Super Built-up Area</p>
+                    <p className="text-sm font-medium text-navy dark:text-white">
                       {superBuiltUpArea} sqft
                     </p>
                   </div>
@@ -816,30 +816,30 @@ export default function PostPropertyWizard() {
               </div>
             </div>
 
-            <div className="h-px bg-border" />
+            <div className="h-px bg-border dark:bg-[#1D3461]" />
 
             {/* Pricing Summary */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-navy">Pricing</h3>
+              <h3 className="text-sm font-semibold text-navy dark:text-white">Pricing</h3>
               <div className="grid grid-cols-2 gap-4">
                 {category !== 'rent' ? (
                   <div>
-                    <p className="text-sm text-slate-accent">Expected Price</p>
-                    <p className="text-sm font-medium text-navy">
+                    <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Expected Price</p>
+                    <p className="text-sm font-medium text-navy dark:text-white">
                       {expectedPrice ? formatPrice(expectedPrice) : '—'}
                     </p>
                   </div>
                 ) : (
                   <>
                     <div>
-                      <p className="text-sm text-slate-accent">Monthly Rent</p>
-                      <p className="text-sm font-medium text-navy">
+                      <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Monthly Rent</p>
+                      <p className="text-sm font-medium text-navy dark:text-white">
                         {monthlyRent ? formatPrice(monthlyRent) : '—'}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-accent">Deposit</p>
-                      <p className="text-sm font-medium text-navy">
+                      <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Deposit</p>
+                      <p className="text-sm font-medium text-navy dark:text-white">
                         {deposit ? formatPrice(deposit) : '—'}
                       </p>
                     </div>
@@ -848,15 +848,15 @@ export default function PostPropertyWizard() {
               </div>
             </div>
 
-            <div className="h-px bg-border" />
+            <div className="h-px bg-border dark:bg-[#1D3461]" />
 
             {/* Details Summary */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-navy">Property Details</h3>
+              <h3 className="text-sm font-semibold text-navy dark:text-white">Property Details</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-slate-accent">Furnishing</p>
-                  <p className="text-sm font-medium text-navy capitalize">
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Furnishing</p>
+                  <p className="text-sm font-medium text-navy dark:text-white capitalize">
                     {furnishing
                       ? furnishing === 'furnished'
                         ? 'Fully Furnished'
@@ -867,12 +867,12 @@ export default function PostPropertyWizard() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">Age of Property</p>
-                  <p className="text-sm font-medium text-navy">{ageOfProperty || '—'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Age of Property</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{ageOfProperty || '—'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">Possession</p>
-                  <p className="text-sm font-medium text-navy">
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Possession</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">
                     {possessionStatus
                       ? possessionStatus === 'ready'
                         ? 'Ready to Move'
@@ -883,41 +883,41 @@ export default function PostPropertyWizard() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">RERA ID</p>
-                  <p className="text-sm font-medium text-navy">{reraId || '—'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">RERA ID</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{reraId || '—'}</p>
                 </div>
               </div>
             </div>
 
-            <div className="h-px bg-border" />
+            <div className="h-px bg-border dark:bg-[#1D3461]" />
 
             {/* Location Summary */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-navy flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-navy dark:text-white flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
                 Location
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2">
-                  <p className="text-sm text-slate-accent">Address</p>
-                  <p className="text-sm font-medium text-navy">{address || '—'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Address</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{address || '—'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">Locality</p>
-                  <p className="text-sm font-medium text-navy">{locality || '—'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Locality</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{locality || '—'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">City</p>
-                  <p className="text-sm font-medium text-navy">{city || '—'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">City</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{city || '—'}</p>
                 </div>
               </div>
             </div>
 
-            <div className="h-px bg-border" />
+            <div className="h-px bg-border dark:bg-[#1D3461]" />
 
             {/* Amenities */}
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-navy">Amenities</h3>
+              <h3 className="text-sm font-semibold text-navy dark:text-white">Amenities</h3>
               {selectedAmenities.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
                   {selectedAmenities.map((id) => {
@@ -925,62 +925,62 @@ export default function PostPropertyWizard() {
                     return (
                       <Badge
                         key={id}
-                        className="bg-sky text-royal border-0 text-xs"
+                        className="bg-sky text-royal border-0 text-xs dark:bg-[#1D3461] dark:text-[#60A5FA]"
                       >
                         {amenity?.label || id}
                       </Badge>
                     );
                   })}
-                  <span className="text-sm text-slate-accent ml-2">
+                  <span className="text-sm text-slate-accent ml-2 dark:text-[#94A3B8]">
                     ({selectedAmenities.length} selected)
                   </span>
                 </div>
               ) : (
-                <p className="text-sm text-slate-accent">No amenities selected</p>
+                <p className="text-sm text-slate-accent dark:text-[#94A3B8]">No amenities selected</p>
               )}
             </div>
 
-            <div className="h-px bg-border" />
+            <div className="h-px bg-border dark:bg-[#1D3461]" />
 
             {/* Owner Info */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-navy flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-navy dark:text-white flex items-center gap-2">
                 <User className="h-4 w-4" />
                 Owner Information
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-slate-accent">Name</p>
-                  <p className="text-sm font-medium text-navy">{ownerName || '—'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Name</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{ownerName || '—'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-accent">Phone</p>
-                  <p className="text-sm font-medium text-navy">{ownerPhone || '—'}</p>
+                  <p className="text-sm text-slate-accent dark:text-[#94A3B8]">Phone</p>
+                  <p className="text-sm font-medium text-navy dark:text-white">{ownerPhone || '—'}</p>
                 </div>
               </div>
             </div>
 
             {/* Photos */}
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-navy flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-navy dark:text-white flex items-center gap-2">
                 <Camera className="h-4 w-4" />
                 Photos
               </h3>
-              <p className="text-sm text-slate-accent">
+              <p className="text-sm text-slate-accent dark:text-[#94A3B8]">
                 {uploadedFiles.length} photo{uploadedFiles.length !== 1 ? 's' : ''}{' '}
                 uploaded
               </p>
             </div>
 
             {/* Confirmation Checkbox */}
-            <div className="flex items-start gap-3 bg-cream rounded-xl p-4">
+            <div className="flex items-start gap-3 bg-cream rounded-xl p-4 dark:bg-[#0A192F]">
               <Checkbox
                 id="confirm"
                 checked={confirmed}
                 onCheckedChange={(checked) => setConfirmed(checked === true)}
                 className="data-[state=checked]:bg-royal data-[state=checked]:border-royal mt-0.5"
               />
-              <Label htmlFor="confirm" className="text-sm text-navy cursor-pointer">
+              <Label htmlFor="confirm" className="text-sm text-navy cursor-pointer dark:text-white">
                 I confirm that the details provided are accurate and I am authorized to
                 list this property on AcreFlow.
               </Label>

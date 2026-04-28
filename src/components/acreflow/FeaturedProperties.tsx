@@ -130,15 +130,15 @@ export default function FeaturedProperties() {
   };
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white dark:bg-[#0A192F]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-navy">
+            <h2 className="text-2xl md:text-3xl font-bold text-navy dark:text-white">
               Featured Properties
             </h2>
-            <p className="text-sm text-slate-accent mt-1">
+            <p className="text-sm text-slate-accent dark:text-[#94A3B8] mt-1">
               Handpicked premium listings for you
             </p>
           </div>
@@ -166,12 +166,12 @@ export default function FeaturedProperties() {
           {featuredProperties.map((property) => (
             <Card
               key={property.id}
-              className="overflow-hidden rounded-xl border border-border property-card cursor-pointer"
+              className="overflow-hidden rounded-xl border border-border dark:border-[#1D3461] bg-white dark:bg-[#112240] property-card cursor-pointer"
               onClick={() => handleCardClick(property)}
             >
               <CardContent className="p-0">
                 {/* Image Container */}
-                <div className="relative h-48 overflow-hidden bg-muted">
+                <div className="relative h-48 overflow-hidden bg-muted dark:bg-[#1D3461]">
                   <img
                     src={property.images[0]}
                     alt={property.title}
@@ -202,20 +202,20 @@ export default function FeaturedProperties() {
                   {/* Top-right action icons */}
                   <div className="absolute top-3 right-3 flex flex-col gap-2">
                     <button
-                      className="bg-white/90 rounded-full p-2 shadow hover:bg-white transition-colors"
+                      className="bg-white/90 dark:bg-[#0A192F]/90 rounded-full p-2 shadow hover:bg-white dark:hover:bg-[#112240] transition-colors"
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
                     >
-                      <Heart className="w-4 h-4 text-slate-accent" />
+                      <Heart className="w-4 h-4 text-slate-accent dark:text-[#94A3B8]" />
                     </button>
                     <button
-                      className="bg-white/90 rounded-full p-2 shadow hover:bg-white transition-colors"
+                      className="bg-white/90 dark:bg-[#0A192F]/90 rounded-full p-2 shadow hover:bg-white dark:hover:bg-[#112240] transition-colors"
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
                     >
-                      <Share2 className="w-4 h-4 text-slate-accent" />
+                      <Share2 className="w-4 h-4 text-slate-accent dark:text-[#94A3B8]" />
                     </button>
                   </div>
 
@@ -230,17 +230,17 @@ export default function FeaturedProperties() {
                 {/* Card Body */}
                 <div className="p-4">
                   {/* Price */}
-                  <p className="text-xl font-bold text-royal">
+                  <p className="text-xl font-bold text-royal dark:text-[#60A5FA]">
                     {property.priceLabel}
                   </p>
 
                   {/* Title */}
-                  <h3 className="text-base font-semibold text-navy mt-1 line-clamp-1">
+                  <h3 className="text-base font-semibold text-navy dark:text-white mt-1 line-clamp-1">
                     {property.title}
                   </h3>
 
                   {/* Location */}
-                  <div className="flex items-center gap-1 text-sm text-slate-accent mt-1">
+                  <div className="flex items-center gap-1 text-sm text-slate-accent dark:text-[#94A3B8] mt-1">
                     <MapPin className="w-3.5 h-3.5 shrink-0" />
                     <span className="line-clamp-1">
                       {property.locality}, {property.city}
@@ -248,7 +248,7 @@ export default function FeaturedProperties() {
                   </div>
 
                   {/* Specs Row */}
-                  <div className="flex gap-4 text-sm text-slate-accent mt-3">
+                  <div className="flex gap-4 text-sm text-slate-accent dark:text-[#94A3B8] mt-3">
                     {property.bhk > 0 && (
                       <div className="flex items-center gap-1">
                         <BedDouble className="w-4 h-4" />
@@ -266,16 +266,16 @@ export default function FeaturedProperties() {
                   </div>
 
                   {/* Divider */}
-                  <div className="border-t border-border my-3" />
+                  <div className="border-t border-border dark:border-[#1D3461] my-3" />
 
                   {/* Footer */}
                   <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-1 text-xs text-slate-accent">
+                    <div className="flex items-center gap-1 text-xs text-slate-accent dark:text-[#94A3B8]">
                       <Building2 className="w-3.5 h-3.5 shrink-0" />
                       <span className="line-clamp-1">{property.ownerName}</span>
                     </div>
                     <button
-                      className="text-royal text-sm font-semibold hover:underline flex items-center gap-1"
+                      className="text-royal dark:text-[#60A5FA] text-sm font-semibold hover:underline flex items-center gap-1"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleCardClick(property);

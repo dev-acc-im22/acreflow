@@ -68,15 +68,15 @@ const projects = [
 
 export default function BuilderProjects() {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white dark:bg-[#112240]">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="flex justify-between items-center flex-wrap gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-navy font-montserrat">
+            <h2 className="text-2xl font-bold text-navy dark:text-white font-montserrat">
               Top Builder Projects
             </h2>
-            <p className="text-sm text-slate-accent font-montserrat">
+            <p className="text-sm text-slate-accent dark:text-[#94A3B8] font-montserrat">
               Premium projects from trusted builders
             </p>
           </div>
@@ -90,33 +90,33 @@ export default function BuilderProjects() {
           {projects.map((p, i) => (
             <div
               key={i}
-              className="bg-white rounded-xl border overflow-hidden property-card"
+              className="bg-white dark:bg-[#0A192F] rounded-xl border dark:border-[#1D3461] overflow-hidden property-card"
             >
               {/* Image area */}
-              <div className="h-44 bg-gradient-to-br from-navy/5 to-royal/10 flex flex-col items-center justify-center relative">
-                <Building2 size={40} className="text-royal/20" />
-                <span className="text-xs text-royal/40 font-medium mt-2 font-montserrat">
+              <div className="h-44 bg-gradient-to-br from-navy/5 to-royal/10 dark:from-navy/10 dark:to-royal/20 flex flex-col items-center justify-center relative">
+                <Building2 size={40} className="text-royal/20 dark:text-[#60A5FA]/20" />
+                <span className="text-xs text-royal/40 dark:text-[#60A5FA]/40 font-medium mt-2 font-montserrat">
                   {p.name}
                 </span>
               </div>
 
               {/* Content */}
               <div className="p-4">
-                <p className="text-xs text-slate-accent font-montserrat">
+                <p className="text-xs text-slate-accent dark:text-[#94A3B8] font-montserrat">
                   {p.builder}
                 </p>
-                <h3 className="text-base font-semibold text-navy mt-1 font-montserrat">
+                <h3 className="text-base font-semibold text-navy dark:text-white mt-1 font-montserrat">
                   {p.name}
                 </h3>
 
                 <div className="flex items-center gap-1 mt-1.5">
-                  <MapPin size={13} className="text-slate-accent" />
-                  <span className="text-sm text-slate-accent font-montserrat">
+                  <MapPin size={13} className="text-slate-accent dark:text-[#94A3B8]" />
+                  <span className="text-sm text-slate-accent dark:text-[#94A3B8] font-montserrat">
                     {p.locality}, Chennai
                   </span>
                 </div>
 
-                <p className="text-sm font-bold text-royal mt-2 font-montserrat">
+                <p className="text-sm font-bold text-royal dark:text-[#60A5FA] mt-2 font-montserrat">
                   {p.price}
                 </p>
 
@@ -125,7 +125,7 @@ export default function BuilderProjects() {
                   {p.configs.map((c) => (
                     <span
                       key={c}
-                      className="bg-sky rounded-full px-2 py-0.5 text-xs text-navy font-montserrat"
+                      className="bg-sky dark:bg-[#1D3461] rounded-full px-2 py-0.5 text-xs text-navy dark:text-white font-montserrat"
                     >
                       {c} {p.type}
                     </span>
@@ -141,13 +141,13 @@ export default function BuilderProjects() {
                     </span>
                   )}
                   {p.rera && (
-                    <span className="text-xs text-slate-accent font-montserrat">
+                    <span className="text-xs text-slate-accent dark:text-[#94A3B8] font-montserrat">
                       RERA Approved
                     </span>
                   )}
                 </div>
 
-                <button className="text-royal text-sm font-semibold hover:underline mt-3 font-montserrat">
+                <button className="text-royal dark:text-[#60A5FA] text-sm font-semibold hover:underline mt-3 font-montserrat">
                   View Details →
                 </button>
               </div>

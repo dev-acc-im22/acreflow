@@ -65,12 +65,12 @@ function ComparisonRow({ label, values, highlightBest, rowIdx }: ComparisonRowPr
   return (
     <div
       className={`grid gap-0 ${
-        isEven ? 'bg-cream' : 'bg-white'
+        isEven ? 'bg-cream dark:bg-[#0A192F]' : 'bg-white dark:bg-[#112240]'
       }`}
     >
       {/* Label column */}
       <div
-        className={`min-w-[140px] p-3 text-xs font-medium text-slate-accent border-r border-border flex items-center`}
+        className={`min-w-[140px] p-3 text-xs font-medium text-slate-accent dark:text-[#94A3B8] border-r border-border flex items-center`}
       >
         {label}
       </div>
@@ -78,15 +78,15 @@ function ComparisonRow({ label, values, highlightBest, rowIdx }: ComparisonRowPr
       {values.map((val, idx) => (
         <div
           key={idx}
-          className={`min-w-[180px] p-3 text-sm text-navy font-medium flex items-center border-r border-border last:border-r-0 ${
-            bestIdx === idx ? 'text-success bg-success/10' : ''
+          className={`min-w-[180px] p-3 text-sm text-navy dark:text-white font-medium flex items-center border-r border-border last:border-r-0 ${
+            bestIdx === idx ? 'text-success bg-success/10 dark:bg-success/20' : ''
           }`}
         >
           {typeof val === 'boolean' ? (
             val ? (
               <CheckCircle2 className="h-4 w-4 text-success" />
             ) : (
-              <X className="h-4 w-4 text-slate-light" />
+              <X className="h-4 w-4 text-slate-light dark:text-[#64748B]" />
             )
           ) : (
             <span>{val !== undefined && val !== '' ? val : '—'}</span>
@@ -110,18 +110,18 @@ export default function ComparisonTray() {
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl border-t comparison-tray ${
+      className={`fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#112240] rounded-t-2xl shadow-2xl border-t comparison-tray ${
         showComparison ? 'translate-y-0' : 'translate-y-full'
       }`}
     >
       {/* Handle bar */}
-      <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mt-2" />
+      <div className="w-12 h-1.5 bg-gray-300 dark:bg-[#475569] rounded-full mx-auto mt-2" />
 
       {/* Header */}
-      <div className="flex justify-between items-center p-4 border-b">
+      <div className="flex justify-between items-center p-4 border-b dark:border-[#1D3461]">
         <div className="flex items-center gap-3">
-          <h2 className="text-lg font-bold text-navy">Compare Properties</h2>
-          <Badge variant="secondary" className="bg-sky text-royal text-xs">
+          <h2 className="text-lg font-bold text-navy dark:text-white">Compare Properties</h2>
+          <Badge variant="secondary" className="bg-sky dark:bg-[#1D3461] text-royal dark:text-[#60A5FA] text-xs">
             Up to 3
           </Badge>
         </div>
@@ -129,7 +129,7 @@ export default function ComparisonTray() {
           {comparisonList.length > 0 && (
             <button
               onClick={clearComparison}
-              className="text-sm text-slate-accent hover:text-danger transition-colors"
+              className="text-sm text-slate-accent dark:text-[#94A3B8] hover:text-danger transition-colors"
             >
               Clear All
             </button>
@@ -148,13 +148,13 @@ export default function ComparisonTray() {
       {/* Content */}
       {comparisonList.length === 0 ? (
         <div className="py-12 px-4 text-center">
-          <div className="w-16 h-16 rounded-full bg-cream flex items-center justify-center mx-auto mb-4">
-            <Plus className="h-8 w-8 text-slate-accent" />
+          <div className="w-16 h-16 rounded-full bg-cream dark:bg-[#1D3461] flex items-center justify-center mx-auto mb-4">
+            <Plus className="h-8 w-8 text-slate-accent dark:text-[#94A3B8]" />
           </div>
-          <p className="text-sm font-medium text-navy mb-1">
+          <p className="text-sm font-medium text-navy dark:text-white mb-1">
             Add properties to compare
           </p>
-          <p className="text-xs text-slate-accent">
+          <p className="text-xs text-slate-accent dark:text-[#94A3B8]">
             Click the compare icon on listings to add them here. You can compare up to 3
             properties at a time.
           </p>
@@ -170,10 +170,10 @@ export default function ComparisonTray() {
               {/* Property card columns */}
               {comparisonList.map((property) => (
                 <div key={property.id} className="min-w-[280px] p-3">
-                  <Card className="overflow-hidden border border-border rounded-xl relative">
+                  <Card className="overflow-hidden border border-border dark:border-[#1D3461] rounded-xl relative dark:bg-[#0A192F]">
                     <button
                       onClick={() => removeFromComparison(property.id)}
-                      className="absolute top-2 right-2 z-10 w-7 h-7 bg-white/90 rounded-full flex items-center justify-center hover:bg-danger hover:text-white transition-colors"
+                      className="absolute top-2 right-2 z-10 w-7 h-7 bg-white/90 dark:bg-[#112240] rounded-full flex items-center justify-center hover:bg-danger hover:text-white transition-colors"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -184,22 +184,22 @@ export default function ComparisonTray() {
                         className="h-40 w-full object-cover"
                       />
                     ) : (
-                      <div className="h-40 w-full bg-cream flex items-center justify-center">
-                        <Building2 className="h-10 w-10 text-slate-accent" />
+                      <div className="h-40 w-full bg-cream dark:bg-[#1D3461] flex items-center justify-center">
+                        <Building2 className="h-10 w-10 text-slate-accent dark:text-[#94A3B8]" />
                       </div>
                     )}
                     <CardContent className="p-3">
-                      <h3 className="text-sm font-semibold text-navy line-clamp-1">
+                      <h3 className="text-sm font-semibold text-navy dark:text-white line-clamp-1">
                         {property.title}
                       </h3>
-                      <p className="text-xs text-slate-accent flex items-center gap-1 mt-1">
+                      <p className="text-xs text-slate-accent dark:text-[#94A3B8] flex items-center gap-1 mt-1">
                         <MapPin className="h-3 w-3 flex-shrink-0" />
                         {property.locality}, {property.city}
                       </p>
-                      <p className="text-lg font-bold text-royal mt-2">
+                      <p className="text-lg font-bold text-royal dark:text-[#60A5FA] mt-2">
                         {formatPrice(property.price)}
                         {property.category === 'rent' && (
-                          <span className="text-xs font-normal text-slate-accent">/mo</span>
+                          <span className="text-xs font-normal text-slate-accent dark:text-[#94A3B8]">/mo</span>
                         )}
                       </p>
                     </CardContent>
@@ -211,7 +211,7 @@ export default function ComparisonTray() {
             <Separator className="my-2" />
 
             {/* Comparison Rows */}
-            <div className="rounded-xl border border-border overflow-hidden">
+            <div className="rounded-xl border border-border dark:border-[#1D3461] overflow-hidden">
               {/* Property Type */}
               <ComparisonRow
                 label="Property Type"
@@ -226,7 +226,7 @@ export default function ComparisonTray() {
                 label="Beds"
                 values={comparisonList.map((p) => (
                   <span key={p.id} className="flex items-center">
-                    <BedDouble className="h-3.5 w-3.5 mr-1 text-slate-accent inline" />
+                    <BedDouble className="h-3.5 w-3.5 mr-1 text-slate-accent dark:text-[#94A3B8] inline" />
                     {p.bhk} BHK
                   </span>
                 ))}
@@ -238,7 +238,7 @@ export default function ComparisonTray() {
                 label="Bathrooms"
                 values={comparisonList.map((p) => (
                   <span key={p.id} className="flex items-center">
-                    <Bath className="h-3.5 w-3.5 mr-1 text-slate-accent inline" />
+                    <Bath className="h-3.5 w-3.5 mr-1 text-slate-accent dark:text-[#94A3B8] inline" />
                     {p.bathrooms}
                   </span>
                 ))}
@@ -250,7 +250,7 @@ export default function ComparisonTray() {
                 label="Carpet Area"
                 values={comparisonList.map((p) => (
                   <span key={p.id} className="flex items-center">
-                    <Maximize className="h-3.5 w-3.5 mr-1 text-slate-accent inline" />
+                    <Maximize className="h-3.5 w-3.5 mr-1 text-slate-accent dark:text-[#94A3B8] inline" />
                     {p.carpetArea} sqft
                   </span>
                 ))}
@@ -306,7 +306,7 @@ export default function ComparisonTray() {
                     {p.verified ? (
                       <CheckCircle2 className="h-4 w-4 text-success" />
                     ) : (
-                      <X className="h-4 w-4 text-slate-light" />
+                      <X className="h-4 w-4 text-slate-light dark:text-[#64748B]" />
                     )}
                     {p.verified ? 'Verified' : 'Not Verified'}
                   </span>
@@ -322,7 +322,7 @@ export default function ComparisonTray() {
                     {p.reraRegistered ? (
                       <Shield className="h-4 w-4 text-success" />
                     ) : (
-                      <X className="h-4 w-4 text-slate-light" />
+                      <X className="h-4 w-4 text-slate-light dark:text-[#64748B]" />
                     )}
                     {p.reraRegistered ? 'Registered' : 'Not Registered'}
                   </span>
@@ -339,8 +339,8 @@ export default function ComparisonTray() {
               />
 
               {/* Amenities Chips */}
-              <div className={`grid gap-0 ${10 % 2 === 0 ? 'bg-white' : 'bg-cream'}`}>
-                <div className="min-w-[140px] p-3 text-xs font-medium text-slate-accent border-r border-border items-start">
+              <div className={`grid gap-0 ${10 % 2 === 0 ? 'bg-white dark:bg-[#112240]' : 'bg-cream dark:bg-[#0A192F]'}`}>
+                <div className="min-w-[140px] p-3 text-xs font-medium text-slate-accent dark:text-[#94A3B8] border-r border-border items-start">
                   Amenities List
                 </div>
                 {comparisonList.map((property) => (
@@ -356,7 +356,7 @@ export default function ComparisonTray() {
                           <Badge
                             key={amenityId}
                             variant="secondary"
-                            className="bg-sky text-royal text-[10px] px-1.5 py-0"
+                            className="bg-sky dark:bg-[#1D3461] text-royal dark:text-[#60A5FA] text-[10px] px-1.5 py-0"
                           >
                             {IconComponent && <IconComponent className="h-3 w-3 mr-0.5" />}
                             {amenityId}
@@ -364,7 +364,7 @@ export default function ComparisonTray() {
                         );
                       })}
                       {property.amenities.length > 6 && (
-                        <span className="text-[10px] text-slate-accent">
+                        <span className="text-[10px] text-slate-accent dark:text-[#94A3B8]">
                           +{property.amenities.length - 6} more
                         </span>
                       )}
@@ -376,12 +376,12 @@ export default function ComparisonTray() {
 
             {/* Price comparison highlight */}
             <div className="mt-4 px-4 pb-4">
-              <Card className="bg-sky/50 border-royal/20">
+              <Card className="bg-sky/50 dark:bg-[#1D3461]/50 border-royal/20 dark:border-[#60A5FA]/20">
                 <CardContent className="p-4 flex items-center gap-3">
-                  <Star className="h-5 w-5 text-royal flex-shrink-0" />
+                  <Star className="h-5 w-5 text-royal dark:text-[#60A5FA] flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-semibold text-navy">Best Value</p>
-                    <p className="text-xs text-slate-accent">
+                    <p className="text-sm font-semibold text-navy dark:text-white">Best Value</p>
+                    <p className="text-xs text-slate-accent dark:text-[#94A3B8]">
                       {(() => {
                         const prices = comparisonList
                           .filter((p) => p.category !== 'rent')

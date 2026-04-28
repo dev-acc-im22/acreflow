@@ -51,7 +51,7 @@ export default function MobileNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-border shadow-lg"
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white dark:bg-[#112240] border-t border-border dark:border-[#1D3461] shadow-lg dark:shadow-none"
       style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
     >
       <div className="flex items-center justify-around px-2 py-1">
@@ -71,12 +71,12 @@ export default function MobileNav() {
                 </span>
               )}
               <Icon
-                className={`size-5 transition-colors ${active ? 'text-royal' : 'text-slate-accent'}`}
+                className={`size-5 transition-colors ${active ? 'text-royal' : 'text-slate-accent dark:text-[#64748B]'}`}
                 strokeWidth={active ? 2.5 : 1.8}
               />
               <span
                 className={`text-[10px] leading-tight font-medium transition-colors ${
-                  active ? 'text-royal' : 'text-slate-accent'
+                  active ? 'text-royal' : 'text-slate-accent dark:text-[#64748B]'
                 }`}
               >
                 {item.label}

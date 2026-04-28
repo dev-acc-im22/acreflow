@@ -421,12 +421,12 @@ function generateFallbackLocalityData(locality: string): LocalityTrendData {
 }
 
 const insightItems = [
-  { key: 'safety' as const, label: 'Safety', icon: Shield, color: 'bg-emerald-50 text-emerald-600' },
-  { key: 'connectivity' as const, label: 'Connectivity', icon: Bus, color: 'bg-sky text-royal' },
-  { key: 'infrastructure' as const, label: 'Healthcare', icon: Hospital, color: 'bg-red-50 text-red-500' },
-  { key: 'airQuality' as const, label: 'Education', icon: GraduationCap, color: 'bg-purple-50 text-purple-600' },
-  { key: 'restaurants' as const, label: 'Shopping', icon: ShoppingBag, color: 'bg-amber-50 text-amber-600' },
-  { key: 'nightlife' as const, label: 'Nightlife', icon: Star, color: 'bg-indigo-50 text-indigo-600' },
+  { key: 'safety' as const, label: 'Safety', icon: Shield, color: 'bg-emerald-50 dark:bg-[#1D3461] text-emerald-600' },
+  { key: 'connectivity' as const, label: 'Connectivity', icon: Bus, color: 'bg-sky dark:bg-[#1D3461] text-royal dark:text-[#60A5FA]' },
+  { key: 'infrastructure' as const, label: 'Healthcare', icon: Hospital, color: 'bg-red-50 dark:bg-[#1D3461] text-red-500' },
+  { key: 'airQuality' as const, label: 'Education', icon: GraduationCap, color: 'bg-purple-50 dark:bg-[#1D3461] text-purple-600' },
+  { key: 'restaurants' as const, label: 'Shopping', icon: ShoppingBag, color: 'bg-amber-50 dark:bg-[#1D3461] text-amber-600' },
+  { key: 'nightlife' as const, label: 'Nightlife', icon: Star, color: 'bg-indigo-50 dark:bg-[#1D3461] text-indigo-600' },
 ];
 
 // ── SVG Chart Helpers ─────────────────────────────────────────────────────
@@ -457,7 +457,7 @@ function StarRating({ rating }: { rating: number }) {
                 ? 'fill-amber-500 text-amber-500'
                 : halfFilled
                   ? 'fill-amber-500/50 text-amber-500'
-                  : 'fill-gray-300 text-gray-300'
+                  : 'fill-gray-300 dark:fill-[#334155] text-gray-300 dark:text-[#334155]'
             }`}
           />
         );
@@ -518,7 +518,7 @@ function PriceChart({ data }: { data: PriceTrend[] }) {
             y1={y}
             x2={CHART_W - PAD_RIGHT}
             y2={y}
-            stroke="#E2E8F0"
+            className="stroke-slate-200 dark:stroke-[#1D3461]"
             strokeWidth={1}
             strokeDasharray="4 4"
           />
@@ -532,7 +532,7 @@ function PriceChart({ data }: { data: PriceTrend[] }) {
           x={PAD_LEFT - 6}
           y={yFn(tick) + 4}
           textAnchor="end"
-          className="fill-slate-accent"
+          className="fill-slate-accent dark:fill-[#94A3B8]"
           style={{ fontSize: '10px' }}
         >
           ₹{(tick / 1000).toFixed(0)}K
@@ -562,10 +562,8 @@ function PriceChart({ data }: { data: PriceTrend[] }) {
               cx={cx}
               cy={cy}
               r={3.5}
-              fill="#FFFFFF"
-              stroke="#1E40AF"
+              className="fill-white dark:fill-[#0A192F] stroke-blue-800 dark:stroke-[#60A5FA] transition-all hover:r-5 hover:fill-royal"
               strokeWidth={2}
-              className="transition-all hover:r-5 hover:fill-royal"
             />
           </g>
         );
@@ -578,7 +576,7 @@ function PriceChart({ data }: { data: PriceTrend[] }) {
           x={xFn(i)}
           y={CHART_H - 6}
           textAnchor="middle"
-          className="fill-slate-accent"
+          className="fill-slate-accent dark:fill-[#94A3B8]"
           style={{ fontSize: '9px' }}
         >
           {d.month}
@@ -610,28 +608,28 @@ export default function MarketIntel() {
   const isLocalPositive = parseFloat(localityInfo.yoy) > 0;
 
   return (
-    <section className="py-16 bg-cream">
+    <section className="py-16 bg-cream dark:bg-[#0A192F]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <h2 className="text-2xl md:text-3xl font-bold text-navy text-center mb-2">
+        <h2 className="text-2xl md:text-3xl font-bold text-navy dark:text-white text-center mb-2">
           Market Intelligence
         </h2>
-        <p className="text-slate-accent text-center mb-2">
+        <p className="text-slate-accent dark:text-[#94A3B8] text-center mb-2">
           Data-driven insights to help you make smarter property decisions
         </p>
-        <p className="text-royal text-center text-sm font-medium mb-10">
+        <p className="text-royal dark:text-[#60A5FA] text-center text-sm font-medium mb-10">
           <MapPin className="inline w-4 h-4 mr-1" />
           Showing data for {selectedCity}
         </p>
 
         {/* City-level summary */}
         <div className="flex justify-center gap-6 mb-8">
-          <div className="bg-white rounded-xl border px-5 py-3 text-center shadow-sm">
-            <p className="text-xs text-slate-accent mb-0.5">Avg. Price</p>
-            <p className="text-lg font-bold text-navy">₹{cityAvg.toLocaleString('en-IN')}/sqft</p>
+          <div className="bg-white dark:bg-[#112240] rounded-xl border dark:border-[#1D3461] px-5 py-3 text-center shadow-sm">
+            <p className="text-xs text-slate-accent dark:text-[#94A3B8] mb-0.5">Avg. Price</p>
+            <p className="text-lg font-bold text-navy dark:text-white">₹{cityAvg.toLocaleString('en-IN')}/sqft</p>
           </div>
-          <div className="bg-white rounded-xl border px-5 py-3 text-center shadow-sm">
-            <p className="text-xs text-slate-accent mb-0.5">YoY Growth</p>
+          <div className="bg-white dark:bg-[#112240] rounded-xl border dark:border-[#1D3461] px-5 py-3 text-center shadow-sm">
+            <p className="text-xs text-slate-accent dark:text-[#94A3B8] mb-0.5">YoY Growth</p>
             <p className={`text-lg font-bold ${isCityPositive ? 'text-success' : 'text-danger'}`}>
               {isCityPositive ? '↑' : '↓'} {cityYoy}%
             </p>
@@ -643,7 +641,7 @@ export default function MarketIntel() {
           {/* ── Left: Price Trends ── */}
           <Card className="shadow-sm hover:shadow-md transition-shadow">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-navy">
+              <CardTitle className="text-lg font-semibold text-navy dark:text-white">
                 Price Trends
               </CardTitle>
             </CardHeader>
@@ -673,7 +671,7 @@ export default function MarketIntel() {
 
               {/* Summary */}
               <div className="flex justify-between text-sm mt-2">
-                <span className="text-royal font-semibold">
+                <span className="text-royal dark:text-[#60A5FA] font-semibold">
                   Avg. Price: ₹{localityInfo.avg.toLocaleString('en-IN')}/sqft
                 </span>
                 <span
@@ -695,7 +693,7 @@ export default function MarketIntel() {
           {/* ── Right: Locality Insights ── */}
           <Card className="shadow-sm hover:shadow-md transition-shadow">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-navy">
+              <CardTitle className="text-lg font-semibold text-navy dark:text-white">
                 Locality Insights
               </CardTitle>
             </CardHeader>
@@ -728,15 +726,15 @@ export default function MarketIntel() {
                               key={item.key}
                               className="flex items-center gap-3"
                             >
-                              <div className="w-10 h-10 rounded-lg bg-sky flex items-center justify-center shrink-0">
-                                <Icon className="h-5 w-5 text-royal" />
+                              <div className={`w-10 h-10 rounded-lg ${item.color} flex items-center justify-center shrink-0`}>
+                                <Icon className="h-5 w-5 text-royal dark:text-[#60A5FA]" />
                               </div>
                               <div className="min-w-0">
-                                <p className="text-sm font-medium text-navy">
+                                <p className="text-sm font-medium text-navy dark:text-white">
                                   {item.label}
                                 </p>
                                 <StarRating rating={score} />
-                                <p className="text-xs text-slate-accent mt-0.5">
+                                <p className="text-xs text-slate-accent dark:text-[#94A3B8] mt-0.5">
                                   {score}/5
                                 </p>
                               </div>
@@ -747,7 +745,7 @@ export default function MarketIntel() {
 
                       {/* Nearby places */}
                       <div className="mt-6">
-                        <h4 className="text-sm font-semibold text-navy mb-3">
+                        <h4 className="text-sm font-semibold text-navy dark:text-white mb-3">
                           Nearby Essentials
                         </h4>
                         <div className="space-y-3">
@@ -756,12 +754,12 @@ export default function MarketIntel() {
                               key={place.name}
                               className="flex items-center gap-3 text-sm"
                             >
-                              <span className="w-2 h-2 rounded-full bg-royal shrink-0" />
+                              <span className="w-2 h-2 rounded-full bg-royal dark:bg-[#60A5FA] shrink-0" />
                               <div className="flex items-center justify-between gap-2 min-w-0 flex-1">
-                                <span className="text-navy truncate">
+                                <span className="text-navy dark:text-white truncate">
                                   {place.name}
                                 </span>
-                                <span className="text-slate-accent whitespace-nowrap text-xs">
+                                <span className="text-slate-accent dark:text-[#94A3B8] whitespace-nowrap text-xs">
                                   {place.time}
                                 </span>
                               </div>

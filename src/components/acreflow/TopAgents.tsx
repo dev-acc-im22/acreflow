@@ -32,12 +32,12 @@ const agents = [
 
 export default function TopAgents() {
   return (
-    <section className="py-16 bg-cream">
+    <section className="py-16 bg-cream dark:bg-[#0A192F]">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-2xl font-bold text-navy text-center font-montserrat">
+        <h2 className="text-2xl font-bold text-navy dark:text-white text-center font-montserrat">
           Trusted Agents &amp; Builders
         </h2>
-        <p className="text-slate-accent text-center font-montserrat">
+        <p className="text-slate-accent dark:text-[#94A3B8] text-center font-montserrat">
           Verified professionals with proven track records
         </p>
 
@@ -49,25 +49,25 @@ export default function TopAgents() {
             return (
               <div
                 key={i}
-                className="bg-white rounded-xl border p-5 text-center hover:shadow-md transition"
+                className="bg-white dark:bg-[#112240] rounded-xl border dark:border-[#1D3461] p-5 text-center hover:shadow-md transition"
               >
                 {/* Avatar */}
-                <div className="w-16 h-16 mx-auto rounded-full bg-sky flex items-center justify-center">
-                  <Building2 size={28} className="text-royal" />
+                <div className="w-16 h-16 mx-auto rounded-full bg-sky dark:bg-[#1D3461] flex items-center justify-center">
+                  <Building2 size={28} className="text-royal dark:text-[#60A5FA]" />
                 </div>
 
                 {/* Name */}
-                <p className="text-sm font-semibold text-navy mt-3 font-montserrat">
+                <p className="text-sm font-semibold text-navy dark:text-white mt-3 font-montserrat">
                   {a.name}
                 </p>
 
                 {/* Experience */}
-                <p className="text-xs text-slate-accent font-montserrat">
+                <p className="text-xs text-slate-accent dark:text-[#94A3B8] font-montserrat">
                   {a.experience}
                 </p>
 
                 {/* Deals */}
-                <p className="text-xs font-medium text-royal mt-1 font-montserrat">
+                <p className="text-xs font-medium text-royal dark:text-[#60A5FA] mt-1 font-montserrat">
                   {a.deals} Deals
                 </p>
 
@@ -80,14 +80,14 @@ export default function TopAgents() {
                       className={
                         si < fullStars
                           ? 'text-amber-400 fill-amber-400'
-                          : 'text-gray-200'
+                          : 'text-gray-200 dark:text-[#334155]'
                       }
                     />
                   ))}
                 </div>
 
                 {/* Rating number */}
-                <p className="text-xs text-slate-accent mt-0.5 font-montserrat">
+                <p className="text-xs text-slate-accent dark:text-[#94A3B8] mt-0.5 font-montserrat">
                   {a.rating}★
                 </p>
 

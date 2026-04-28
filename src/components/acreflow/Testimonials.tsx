@@ -55,12 +55,12 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white dark:bg-[#112240]">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-navy text-center font-montserrat">
+        <h2 className="text-2xl md:text-3xl font-bold text-navy dark:text-white text-center font-montserrat">
           What Our Customers Say
         </h2>
-        <p className="text-slate-accent text-center font-montserrat">
+        <p className="text-slate-accent dark:text-[#94A3B8] text-center font-montserrat">
           Real stories from real homeowners
         </p>
 
@@ -68,18 +68,18 @@ export default function Testimonials() {
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="bg-white rounded-xl border p-6 hover:shadow-md transition"
+              className="bg-white dark:bg-[#0A192F] rounded-xl border dark:border-[#1D3461] p-6 hover:shadow-md transition"
             >
               {/* Avatar + Name */}
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-sky flex items-center justify-center text-royal font-bold text-lg font-montserrat shrink-0">
+                <div className="w-12 h-12 rounded-full bg-sky dark:bg-[#1D3461] flex items-center justify-center text-royal dark:text-[#60A5FA] font-bold text-lg font-montserrat shrink-0">
                   {t.name.charAt(0)}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-navy font-montserrat">
+                  <p className="text-sm font-semibold text-navy dark:text-white font-montserrat">
                     {t.name}
                   </p>
-                  <p className="text-xs text-slate-accent font-montserrat">
+                  <p className="text-xs text-slate-accent dark:text-[#94A3B8] font-montserrat">
                     {t.role}
                   </p>
                 </div>
@@ -94,19 +94,19 @@ export default function Testimonials() {
                     className={
                       si < t.stars
                         ? 'text-amber-400 fill-amber-400'
-                        : 'text-gray-200'
+                        : 'text-gray-200 dark:text-[#334155]'
                     }
                   />
                 ))}
               </div>
 
               {/* Quote */}
-              <p className="text-sm text-slate-accent italic leading-relaxed mt-3 font-montserrat">
+              <p className="text-sm text-slate-accent dark:text-[#94A3B8] italic leading-relaxed mt-3 font-montserrat">
                 &ldquo;{t.quote}&rdquo;
               </p>
 
               {/* Property info */}
-              <p className="text-xs text-slate-light mt-2 font-montserrat">
+              <p className="text-xs text-slate-light dark:text-[#64748B] mt-2 font-montserrat">
                 {t.property}
               </p>
             </div>

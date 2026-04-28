@@ -335,3 +335,413 @@ Stage Summary:
 - No changes needed to page.tsx (imports remain the same)
 - Lint: All checks pass, dev server compiles successfully, returns HTTP 200
 
+---
+Task ID: 2a
+Agent: Dark Mode - Layout Components
+Task: Add dark: Tailwind classes to Header.tsx, MobileNav.tsx, Footer.tsx, UrgencyBanner.tsx
+
+Work Log:
+- Added comprehensive dark mode support using Navy blue palette (#0A192F, #112240, #1D3461, #94A3B8, #64748B, #F1F5F9)
+- Header.tsx: Added dark:bg, dark:border, dark:text, dark:hover classes to main header bar, EMI Calculator link, notification bell/button/dropdown panel, dark mode toggle, divider, login/signup buttons, Post Property CTA, mobile menu trigger, mobile nav links, mobile CTA section, category tabs bar, search bar container, city selector/dropdown, auto-suggest dropdown. Did NOT modify the mobile sheet's bg-navy header (already dark-themed).
+- MobileNav.tsx: Added dark:bg-[#112240], dark:border-[#1D3461], dark:shadow-none to nav bar. Added dark:text-[#64748B] to inactive icon/text states.
+- Footer.tsx: Added border-t border-gray-200 dark:border-[#1D3461] to main footer for dark mode visual separation (footer bg-navy blends with dark page bg #0A192F). All inner content already dark-themed (text-white, text-slate-light, bg-white/10) — no further changes needed.
+- UrgencyBanner.tsx: Added border-b border-white/10 dark:border-[#1D3461] for dark mode separation. Added dark:hover:bg-gray-200 to Post Now button.
+
+Files modified (4):
+- src/components/acreflow/Header.tsx
+- src/components/acreflow/MobileNav.tsx
+- src/components/acreflow/Footer.tsx
+- src/components/acreflow/UrgencyBanner.tsx
+
+Lint: All checks pass (0 errors, 0 warnings). Dev server compiles successfully.
+
+---
+## Task ID: 2b - Dark Mode: Home Sections Part 1
+### Agent: Dark Mode - Home Sections Part 1
+### Work Task
+Add dark mode support to HeroSearch.tsx, ServiceIcons.tsx, FeaturedProperties.tsx, and WhyAcreFlow.tsx using `dark:` Tailwind classes with the AcreFlow dark color palette.
+
+### Work Summary
+
+**HeroSearch.tsx:**
+- Section: `bg-white` → `dark:bg-[#0A192F]`, border → `dark:border-[#1D3461]`
+- Headline: `text-navy` → `dark:text-white`, span → `dark:text-[#60A5FA]`
+- Subheadline: `text-gray-500` → `dark:text-[#94A3B8]`
+- Trust stats (mobile & desktop): icon `dark:text-[#60A5FA]`, value `dark:text-white`, label `dark:text-[#64748B]`, icon bg `dark:bg-[#1D3461]/50`, divider `dark:bg-[#1D3461]`
+- Quick Explore cards: `dark:bg-[#112240]`, border `dark:border-[#1D3461]`, icon bg `dark:bg-[#1D3461]/50`, icon `dark:text-[#60A5FA]`, label `dark:text-[#94A3B8]`, chevron `dark:text-[#64748B]`
+- "Quick Explore" heading: `dark:text-[#64748B]`
+
+**ServiceIcons.tsx:**
+- Section: `bg-cream` → `dark:bg-[#0A192F]`
+- Headings: `text-navy` → `dark:text-white`, `text-slate-accent` → `dark:text-[#94A3B8]`
+- Service cards: `dark:bg-[#112240]`, border `dark:border-[#1D3461]`, icon circle `dark:bg-[#1D3461]`, icon `dark:text-[#60A5FA]`, title `dark:text-white`, desc `dark:text-[#94A3B8]`
+- Dialog: `dark:bg-[#112240]`, all text colors, feature list bg `dark:bg-[#0A192F]`, price box `dark:bg-[#1D3461]/50`, Learn More button `dark:text-white` + `dark:hover:bg-[#1D3461]`
+
+**FeaturedProperties.tsx:**
+- Section: `bg-white` → `dark:bg-[#0A192F]`
+- Heading: `text-navy` → `dark:text-white`, subtitle `dark:text-[#94A3B8]`
+- Cards: `dark:bg-[#112240]`, border `dark:border-[#1D3461]`, image bg `dark:bg-[#1D3461]`
+- Action buttons (heart/share): `dark:bg-[#0A192F]/90`, `dark:hover:bg-[#112240]`, icons `dark:text-[#94A3B8]`
+- Card body: price `dark:text-[#60A5FA]`, title `dark:text-white`, location/specs/footer `dark:text-[#94A3B8]`, divider `dark:border-[#1D3461]`, view details `dark:text-[#60A5FA]`
+
+**WhyAcreFlow.tsx:**
+- Section: `bg-white` → `dark:bg-[#0A192F]`
+- Headings & paragraphs: `text-navy` → `dark:text-white`, `text-slate-accent` → `dark:text-[#94A3B8]`
+- Feature cards: `dark:bg-[#112240]`, border `dark:border-[#1D3461]`, icon bg `dark:bg-[#1D3461]`, icon `dark:text-[#60A5FA]`, title `dark:text-white`, desc `dark:text-[#94A3B8]`
+
+**Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully.
+
+---
+## Task ID: 2d - Dark Mode: Home Sections Part 3
+### Agent: Dark Mode - Home Sections Part 3
+### Work Task
+Add dark mode support to MobileAppCTA.tsx, SkeletonLoader.tsx (create new), ComparisonTray.tsx, and globals.css dark skeleton-shimmer variant. Check page.tsx for any dark-specific adjustments.
+
+### Work Summary
+
+**MobileAppCTA.tsx:**
+- App store buttons: `bg-white` → `dark:bg-[#112240]`, `hover:bg-white/90` → `dark:hover:bg-[#1D3461]`
+- Store button text/icons: `text-slate-accent` → `dark:text-[#94A3B8]`, `text-navy` → `dark:text-white`
+- Phone mockup: `bg-white/10` → `dark:bg-white/5`, border `dark:border-white/10`
+- Phone inner bg: `bg-sky` → `dark:bg-[#1D3461]`
+- Brand text: `text-navy` → `dark:text-white`
+- Icon accents: `text-royal` → `dark:text-[#60A5FA]`
+
+**SkeletonLoader.tsx (NEW FILE):**
+- Created comprehensive skeleton loading components with built-in dark mode support
+- `PropertyCardSkeleton` — Single property card skeleton with image, price, title, location, tags, footer
+- `PropertyCardGridSkeleton` — Grid of N property card skeletons (default 6, 3-col responsive)
+- `SectionTitleSkeleton` — Section heading + subtitle placeholders
+- `StatCardSkeleton` — Stat card with icon, value, label placeholders
+- `TextLineSkeleton` — Generic text line with configurable width
+- `DetailPageSkeleton` — Full property detail page skeleton (breadcrumb, gallery, thumbnails, content, sidebar)
+- All skeletons use `skeleton-shimmer` CSS class + dark variants via `dark:bg-[#112240]`, `dark:bg-[#1D3461]`, `dark:border-[#1D3461]`
+
+**ComparisonTray.tsx:**
+- Tray container: `bg-white` → `dark:bg-[#112240]`
+- Handle bar: `bg-gray-300` → `dark:bg-[#475569]`
+- Header border: `dark:border-[#1D3461]`
+- Heading: `text-navy` → `dark:text-white`
+- Badge: `bg-sky` → `dark:bg-[#1D3461]`, `text-royal` → `dark:text-[#60A5FA]`
+- Clear All text: `dark:text-[#94A3B8]`
+- Empty state: circle bg `dark:bg-[#1D3461]`, icon `dark:text-[#94A3B8]`, text `dark:text-white`
+- Comparison rows: even rows `bg-cream` → `dark:bg-[#0A192F]`, odd rows `bg-white` → `dark:bg-[#112240]`
+- Label column: `dark:text-[#94A3B8]`
+- Value cells: `text-navy` → `dark:text-white`, highlight bg `dark:bg-success/20`
+- Boolean icons (X marks): `text-slate-light` → `dark:text-[#64748B]`
+- Property cards: `dark:bg-[#0A192F]`, border `dark:border-[#1D3461]`
+- Remove button: `bg-white/90` → `dark:bg-[#112240]`
+- Fallback image: `bg-cream` → `dark:bg-[#1D3461]`
+- Card content: title `dark:text-white`, location `dark:text-[#94A3B8]`, price `dark:text-[#60A5FA]`
+- Amenities chips: `bg-sky` → `dark:bg-[#1D3461]`, `text-royal` → `dark:text-[#60A5FA]`
+- "+N more" text: `dark:text-[#94A3B8]`
+- Best Value card: `bg-sky/50` → `dark:bg-[#1D3461]/50`, border `dark:border-[#60A5FA]/20`
+- Star icon: `dark:text-[#60A5FA]`
+- Best Value title: `dark:text-white`, desc `dark:text-[#94A3B8]`
+
+**globals.css:**
+- Added `.dark .skeleton-shimmer` animation variant: uses darker gradient colors `#1D3461 25%, #233554 50%, #1D3461 75%`
+- Updated `.filter-chip-inactive` with dark mode: `dark:bg-[#112240]`, `dark:text-[#94A3B8]`, `dark:border-[#1D3461]`, `dark:hover:border-[#60A5FA]`, `dark:hover:text-[#60A5FA]`
+
+**page.tsx:**
+- Reviewed — no changes needed. Main wrapper uses `bg-background` which already handles dark mode via CSS variables. Comparison floating button uses `bg-navy`/`bg-royal` which are dark-appropriate.
+
+**Files modified (3):**
+- `src/components/acreflow/MobileAppCTA.tsx`
+- `src/components/acreflow/ComparisonTray.tsx`
+- `src/app/globals.css`
+
+**Files created (1):**
+- `src/components/acreflow/SkeletonLoader.tsx`
+
+**Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully.
+
+---
+## Task ID: 2c - Dark Mode: Home Sections Part 2
+### Agent: Dark Mode - Home Sections Part 2
+### Work Task
+Add dark mode support to MarketIntel.tsx, Testimonials.tsx, FAQ.tsx, BuilderProjects.tsx, and TopAgents.tsx using `dark:` Tailwind classes with the AcreFlow dark color palette.
+
+### Work Summary
+
+**MarketIntel.tsx:**
+- Section: `bg-cream` → `dark:bg-[#0A192F]`
+- Headings: `text-navy` → `dark:text-white`, `text-slate-accent` → `dark:text-[#94A3B8]`, `text-royal` → `dark:text-[#60A5FA]`
+- City summary cards: `bg-white` → `dark:bg-[#112240]`, border `dark:border-[#1D3461]`
+- Card titles: `text-navy` → `dark:text-white`
+- Insight items: icon bg colors (`bg-emerald-50`, `bg-red-50`, `bg-purple-50`, `bg-amber-50`, `bg-indigo-50`) all → `dark:bg-[#1D3461]`; `bg-sky` → `dark:bg-[#1D3461]`
+- Insight icons: `text-royal` → `dark:text-[#60A5FA]`
+- StarRating empty stars: `fill-gray-300 text-gray-300` → `dark:fill-[#334155] dark:text-[#334155]`
+- Nearby places: `bg-royal` dot → `dark:bg-[#60A5FA]`, `text-navy` → `dark:text-white`, `text-slate-accent` → `dark:text-[#94A3B8]`
+- SVG Price Chart:
+  - Grid lines: `stroke="#E2E8F0"` converted to className `stroke-slate-200 dark:stroke-[#1D3461]`
+  - Y-axis/X-axis text: `className="fill-slate-accent"` → `dark:fill-[#94A3B8]`
+  - Data point circles: `fill="#FFFFFF" stroke="#1E40AF"` converted to className `fill-white dark:fill-[#0A192F] stroke-blue-800 dark:stroke-[#60A5FA]`
+  - Gradient fills kept as-is (blue tones work well on dark backgrounds)
+
+**Testimonials.tsx:**
+- Section: `bg-white` → `dark:bg-[#112240]`
+- Testimonial cards: `bg-white` → `dark:bg-[#0A192F]`, border `dark:border-[#1D3461]`
+- Avatar circle: `bg-sky` → `dark:bg-[#1D3461]`, text `dark:text-[#60A5FA]`
+- Name: `text-navy` → `dark:text-white`, role: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Empty stars: `text-gray-200` → `dark:text-[#334155]`
+- Quote: `text-slate-accent` → `dark:text-[#94A3B8]`, property info: `text-slate-light` → `dark:text-[#64748B]`
+
+**FAQ.tsx:**
+- Section: `bg-cream` → `dark:bg-[#0A192F]`
+- Heading: `text-navy` → `dark:text-white`
+- Accordion trigger: `text-navy` → `dark:text-white`
+- Accordion content: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Note: shadcn Accordion `border-border` already has dark CSS variable support
+
+**BuilderProjects.tsx:**
+- Section: `bg-white` → `dark:bg-[#112240]`
+- Project cards: `bg-white` → `dark:bg-[#0A192F]`, border `dark:border-[#1D3461]`
+- Image area gradient: `from-navy/5 to-royal/10` → `dark:from-navy/10 dark:to-royal/20`
+- Building2 icon: `text-royal/20` → `dark:text-[#60A5FA]/20`
+- Builder name: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Project name: `text-navy` → `dark:text-white`
+- MapPin & location: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Price: `text-royal` → `dark:text-[#60A5FA]`
+- Config badges: `bg-sky` → `dark:bg-[#1D3461]`, `text-navy` → `dark:text-white`
+- RERA text: `text-slate-accent` → `dark:text-[#94A3B8]`
+- View Details: `text-royal` → `dark:text-[#60A5FA]`
+
+**TopAgents.tsx:**
+- Section: `bg-cream` → `dark:bg-[#0A192F]`
+- Agent cards: `bg-white` → `dark:bg-[#112240]`, border `dark:border-[#1D3461]`
+- Avatar circle: `bg-sky` → `dark:bg-[#1D3461]`, icon `dark:text-[#60A5FA]`
+- Name: `text-navy` → `dark:text-white`
+- Experience: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Deals: `text-royal` → `dark:text-[#60A5FA]`
+- Empty stars: `text-gray-200` → `dark:text-[#334155]`
+- Rating text: `text-slate-accent` → `dark:text-[#94A3B8]`
+
+**Files modified (5):**
+- src/components/acreflow/MarketIntel.tsx
+- src/components/acreflow/Testimonials.tsx
+- src/components/acreflow/FAQ.tsx
+- src/components/acreflow/BuilderProjects.tsx
+- src/components/acreflow/TopAgents.tsx
+
+**Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully.
+
+---
+## Task ID: 2f - Dark Mode: Inner Pages Part 2
+### Agent: Dark Mode - Inner Pages Part 2
+### Work Task
+Add dark mode support to PostPropertyWizard.tsx and LeadCenter.tsx using `dark:` Tailwind classes with the AcreFlow dark color palette.
+
+### Work Summary
+
+**PostPropertyWizard.tsx:**
+- Top bar heading: `text-navy` → `dark:text-white`
+- Progress step circles (inactive): `bg-muted` → `dark:bg-[#1D3461]`, text `dark:text-[#94A3B8]`, border `dark:border-[#1D3461]`
+- Progress step labels: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Progress connector lines: `bg-border` → `dark:bg-[#1D3461]`
+- Category buttons (inactive): `bg-white text-gray-600 border-gray-300` → `dark:bg-[#112240] dark:text-[#94A3B8] dark:border-[#1D3461]`, hover `dark:hover:border-royal/40 dark:hover:text-white`
+- Property type cards (active): `bg-sky/30` → `dark:bg-[#1D3461]/30`, icon/text `dark:text-[#60A5FA]`
+- Property type cards (inactive): `border-border` → `dark:border-[#1D3461]`, icon `dark:text-[#94A3B8]`, text `dark:text-white`
+- All section labels (`text-navy`): → `dark:text-white`
+- All input labels (`text-slate-accent`): → `dark:text-[#94A3B8]`
+- Optional text (`text-slate-light`): → `dark:text-[#475569]`
+- Price rupee prefix: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Card borders (`border-border`): → `dark:border-[#1D3461]`
+- Amenities checkboxes (active): `bg-sky/30` → `dark:bg-[#1D3461]/30`, label text `dark:text-white`
+- Amenities checkboxes (inactive): border `dark:border-[#1D3461]`
+- Upload area border: `dark:border-[#1D3461]`, hover `dark:hover:border-[#60A5FA]`
+- Upload icon/text: `text-slate-accent` → `dark:text-[#94A3B8]`, `text-navy` → `dark:text-white`, `text-royal` → `dark:text-[#60A5FA]`
+- Thumbnail grid items: `bg-muted` → `dark:bg-[#1D3461]`, border `dark:border-[#1D3461]`
+- Plus button for more uploads: `dark:bg-[#1D3461]`, border `dark:border-[#1D3461]`, hover `dark:hover:border-[#60A5FA]`
+- Add More Photos button: `dark:border-[#60A5FA]`, `dark:text-[#60A5FA]`, hover `dark:hover:bg-[#1D3461]/30`
+- Tips box: `bg-cream` → `dark:bg-[#0A192F]`, heading `dark:text-white`, text `dark:text-[#94A3B8]`
+- Review section separators (`bg-border`): → `dark:bg-[#1D3461]`
+- Review section headings: `dark:text-white`
+- Review labels: `dark:text-[#94A3B8]`
+- Review values: `dark:text-white`
+- Amenity badges: `bg-sky` → `dark:bg-[#1D3461]`, `text-royal` → `dark:text-[#60A5FA]`
+- Confirmation checkbox box: `bg-cream` → `dark:bg-[#0A192F]`, label `dark:text-white`
+
+**LeadCenter.tsx:**
+- Top bar heading: `text-navy` → `dark:text-white`, back button `dark:hover:bg-[#1D3461]`
+- Stat cards: `bg-white` → `dark:bg-[#112240]`, border `dark:border-[#1D3461]`
+- Active stat card ring highlights: `dark:ring-[#60A5FA]/30 dark:border-[#60A5FA]/30`, hot `dark:ring-red-500/30`, warm `dark:ring-amber-500/30`, cold `dark:ring-blue-500/30`
+- Stat icon backgrounds: `bg-royal/10` → `dark:bg-[#1D3461]`, `bg-red-50` → `dark:bg-red-900/20`, `bg-amber-50` → `dark:bg-amber-900/20`, `bg-blue-50` → `dark:bg-blue-900/20`
+- Stat icon colors: `text-royal` → `dark:text-[#60A5FA]`, `text-red-600` → `dark:text-red-400`, `text-amber-600` → `dark:text-amber-400`, `text-blue-600` → `dark:text-blue-400`
+
+---
+## Task ID: 2e - Dark Mode: Inner Pages Part 1
+### Agent: Dark Mode - Inner Pages Part 1
+### Work Task
+Add dark mode support to SearchResults.tsx (remaining card content), PropertyDetail.tsx, and EMICalculator.tsx using `dark:` Tailwind classes with the AcreFlow dark color palette.
+
+### Work Summary
+
+**SearchResults.tsx (remaining property card content area):**
+- Compare button (inactive): `bg-white/90 hover:bg-white` → `dark:bg-[#112240]/90 dark:hover:bg-[#112240]`
+- Compare icon (inactive): `text-slate-accent` → `dark:text-[#94A3B8]`
+- Card price: `text-royal` → `dark:text-[#60A5FA]`
+- Card title: `text-navy` → `dark:text-white`
+- Card location: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Card specs: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Card footer border: `border-t border-border` → `dark:border-[#1D3461]`
+- Card footer owner: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Card "View Details" link: `text-royal` → `dark:text-[#60A5FA]`
+- Note: FilterSidebarContent, MapPlaceholderView, CardSkeleton, breadcrumb, tabs, sidebar, top bar, and other sections already had dark mode classes from prior work.
+
+**PropertyDetail.tsx (comprehensive dark mode — 100+ edits):**
+- Page wrapper: `bg-cream` → `dark:bg-[#0A192F]`
+- Skeleton loader: `bg-cream` → `dark:bg-[#0A192F]`
+- Sticky action bar: `bg-white border-t` → `dark:bg-[#112240] dark:border-[#1D3461]`
+- Price text: `text-royal` → `dark:text-[#60A5FA]`
+- EMI text: `text-slate-accent` → `dark:text-[#94A3B8]`
+- Compare button text: `text-royal` → `dark:text-[#60A5FA]`
+- Back button: `text-slate-accent hover:text-navy` → `dark:text-[#94A3B8] dark:hover:text-white`
+- Action buttons (save/share/compare): `hover:bg-white` → `dark:hover:bg-[#112240]`, `text-slate-accent` → `dark:text-[#94A3B8]`, `text-royal` → `dark:text-[#60A5FA]`
+- Image gallery: `bg-muted` → `dark:bg-[#1D3461]`
+- Gallery arrows: `bg-white/90 hover:bg-white` → `dark:bg-[#112240]/90 dark:hover:bg-[#112240]`, `text-navy` → `dark:text-white`
+- Thumbnail strip: `border-border` → `dark:border-[#1D3461]`, `bg-muted` → `dark:bg-[#1D3461]`
+- Property Info Card: `bg-white` → `dark:bg-[#112240]`, `border` → `dark:border-[#1D3461]`
+- Price display, original price, EMI badge: `dark:text-[#60A5FA]`, `dark:text-[#94A3B8]`, `dark:bg-[#1D3461]`
+- Title, location, views/posted: `text-navy` → `dark:text-white`, `text-slate-accent` → `dark:text-[#94A3B8]`
+- Quick Specs Row: `bg-cream` → `dark:bg-[#1D3461]`, icon bg `bg-sky` → `dark:bg-[#1D3461]`, icons `dark:text-[#60A5FA]`, text `dark:text-white`/`dark:text-[#94A3B8]`
+- Additional Specs: labels `dark:text-[#94A3B8]`, values `dark:text-white`
+- Description Card: `bg-white` → `dark:bg-[#112240]`, heading `dark:text-white`, text `dark:text-[#94A3B8]`, "Read more" `dark:text-[#60A5FA]`
+- Amenities Card: `bg-white` → `dark:bg-[#112240]`, heading `dark:text-white`, icon bg `dark:bg-[#1D3461]`, icon `dark:text-[#60A5FA]`, text `dark:text-white`
+- PriceTrendChart: Card `bg-white` → `dark:bg-[#112240]`, heading `dark:text-white`, subtitle `dark:text-[#94A3B8]`, stat boxes `dark:bg-[#1D3461]`, price/yoY text `dark:text-[#60A5FA]`/`dark:text-[#94A3B8]`, SVG text `dark:fill-[#94A3B8]`/`dark:fill-[#60A5FA]`
+- StarRating empty stars: `fill-gray-200 text-gray-200` → `dark:fill-[#475569] dark:text-[#475569]`
+- Owner Details Card: `bg-white` → `dark:bg-[#112240]`, heading `dark:text-white`, owner name `dark:text-white`, avatar text `dark:text-[#60A5FA]`, label/response `dark:text-[#94A3B8]`
+- Location Card: `bg-white` → `dark:bg-[#112240]`, map placeholder `dark:bg-[#1D3461]`, icon/text `dark:text-[#94A3B8]`, nearby place icons `dark:bg-[#1D3461]`, name `dark:text-white`, badge `dark:bg-[#1D3461]`
+- Locality Insights: `bg-white` → `dark:bg-[#112240]`, heading `dark:text-white`, subtitle `dark:text-[#94A3B8]`, labels `dark:text-white`, ratings `dark:text-[#94A3B8]`
+- Quick Enquiry: card `bg-cream` → `dark:bg-[#1D3461]`, heading `dark:text-white`, text `dark:text-[#94A3B8]`, name `dark:text-white`, inputs `dark:bg-[#112240]`
+- Similar Properties: heading `dark:text-white`, cards `dark:bg-[#112240]`, image bg `dark:bg-[#1D3461]`, price `dark:text-[#60A5FA]`, title `dark:text-white`, location/specs `dark:text-[#94A3B8]`
+- Contact Dialog: `dark:bg-[#112240]`, heading `dark:text-white`, description `dark:text-[#94A3B8]`, inputs `dark:bg-[#1D3461] dark:text-white dark:border-[#1D3461]`
+- Schedule Visit Dialog: `dark:bg-[#112240]`, heading `dark:text-white`, description `dark:text-[#94A3B8]`, inputs `dark:bg-[#1D3461] dark:text-white dark:border-[#1D3461]`, time slots `dark:border-[#1D3461] dark:text-[#94A3B8]`, active slot `dark:border-[#60A5FA] dark:bg-[#60A5FA]`
+
+**EMICalculator.tsx (comprehensive dark mode — full rewrite):**
+- Page wrapper: `bg-cream` → `dark:bg-[#0A192F]` (added `min-h-screen`)
+- Back button: `hover:bg-cream` → `dark:hover:bg-[#1D3461]`, `text-navy` → `dark:text-white`
+- Heading: `text-navy` → `dark:text-white`, icon `dark:text-[#60A5FA]`
+- Tabs bar: `bg-cream` → `dark:bg-[#1D3461]`, active tab `dark:bg-[#112240] dark:text-[#60A5FA]`, inactive `dark:text-[#94A3B8]`
+- SliderField labels: `text-navy` → `dark:text-white`
+- SliderField prefix/suffix: `text-slate-accent` → `dark:text-[#94A3B8]`
+- SliderField input: `border-border` → `dark:border-[#1D3461]`, `text-navy` → `dark:text-white`, `bg-white` → `dark:bg-[#1D3461]`
+- SliderField range labels: `text-slate-accent` → `dark:text-[#94A3B8]`
+- EMI Calculator input card: `bg-white` → `dark:bg-[#112240]`, border `dark:border-[#1D3461]`, heading `dark:text-white`
+- Budget Calculator card: `bg-white` → `dark:bg-[#112240]`, border `dark:border-[#1D3461]`, heading `dark:text-white`
+- Results panel (bg-navy): Already dark-themed, no changes needed
+- Budget results section: `bg-cream` → `dark:bg-[#1D3461]`, heading `dark:text-white`, text `dark:text-[#94A3B8]`, value `dark:text-[#60A5FA]`
+- Budget result cards: `bg-white` → `dark:bg-[#112240]`, border `dark:border-[#1D3461]`, label `dark:text-[#94A3B8]`, value `dark:text-white`
+- Tips card: `bg-white` → `dark:bg-[#112240]`, border `dark:border-[#1D3461]`, heading `dark:text-white`, text `dark:text-[#94A3B8]`, bullet `dark:text-[#60A5FA]`
+
+**Files modified (3):**
+- src/components/acreflow/SearchResults.tsx
+- src/components/acreflow/PropertyDetail.tsx
+- src/components/acreflow/EMICalculator.tsx
+
+**Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully.00`
+- Stat values: `text-navy` → `dark:text-white`, labels `text-slate-accent` → `dark:text-[#94A3B8]`
+- Filter bar search icon: `dark:text-[#94A3B8]`
+- Filter/sort select icons: `dark:text-[#94A3B8]`
+- Add Lead form card: `bg-sky/5` → `dark:bg-[#0A192F]`, border `dark:border-[#60A5FA]/20`
+- Add Lead form heading: `dark:text-white`, Cancel button `dark:text-[#94A3B8] dark:hover:text-white`
+- Add Lead form labels: `dark:text-white`
+- Tabs bar: `bg-cream` → `dark:bg-[#0A192F]`
+- Tab triggers (active): `data-[state=active]:bg-white` → `dark:data-[state=active]:bg-[#112240]`, `data-[state=active]:text-navy` → `dark:data-[state=active]:text-white`
+- Tab triggers (inactive): `dark:text-[#94A3B8]`
+- Empty state: circle `bg-cream` → `dark:bg-[#1D3461]`, icon `dark:text-[#94A3B8]`, heading `dark:text-white`, text `dark:text-[#94A3B8]`
+- Lead card: border `dark:border-[#1D3461]`
+- Lead avatar: `bg-sky` → `dark:bg-[#1D3461]`, text `dark:text-white`
+- Lead name: `dark:text-white`
+- Status badges: `bg-red-100 text-red-700` → `dark:bg-red-900/30 dark:text-red-400`, `bg-amber-100 text-amber-700` → `dark:bg-amber-900/30 dark:text-amber-400`, `bg-blue-100 text-blue-700` → `dark:bg-blue-900/30 dark:text-blue-400`
+- Lead timestamp: `dark:text-[#94A3B8]`
+- Lead property/message text: `dark:text-[#94A3B8]`
+- Action buttons - Call: `bg-sky` → `dark:bg-[#1D3461]`, `text-royal` → `dark:text-[#60A5FA]`
+- Action buttons - Email/Filter/Edit (inactive): `bg-cream` → `dark:bg-[#1D3461]`, `text-slate-accent` → `dark:text-[#94A3B8]`, hover `dark:hover:bg-[#1D3461]/80`
+- Action buttons - Edit (active): `dark:bg-[#60A5FA]/10`, `dark:text-[#60A5FA]`
+- Action buttons - Delete: `bg-cream` → `dark:bg-[#1D3461]`, hover `dark:hover:bg-red-900/20`, hover text `dark:hover:text-red-500`
+- Edit mode Save/Cancel buttons: Cancel border `dark:border-[#1D3461]`, text `dark:text-[#94A3B8]`, hover `dark:hover:bg-[#1D3461]`
+- Status select trigger (in card): `dark:bg-[#1D3461]`, filter icon `dark:text-[#94A3B8]`
+- Status select option icons: `dark:text-red-400`, `dark:text-amber-400`, `dark:text-blue-400`
+
+**Files modified (2):**
+- src/components/acreflow/PostPropertyWizard.tsx
+- src/components/acreflow/LeadCenter.tsx
+
+**Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully.
+
+
+---
+## Task ID: 2e-1 - Dark Mode: SearchResults.tsx (Final Pass)
+### Agent: Dark Mode - SearchResults Final
+### Work Task
+Add dark mode to `/home/z/my-project/src/components/acreflow/SearchResults.tsx` only. Apply `dark:` Tailwind classes using the AcreFlow dark color palette mapping. Do not change light mode.
+
+### Work Summary
+
+The file already had comprehensive dark mode support from prior passes. Conducted a full audit of all className strings using ripgrep for: `text-royal`, `text-navy`, `text-slate-accent`, `bg-white`, `bg-cream`, `bg-sky`, `bg-muted`, `border-border`, `text-gray-*`, `hover:bg-gray-*`, `border-gray-*`.
+
+Found **2 remaining gaps** where `dark:` classes were missing:
+
+1. **Line 953** — Empty state Search icon: `text-royal` → added `dark:text-[#60A5FA]`
+2. **Line 1149** — Load More button: `text-royal` → added `dark:text-[#60A5FA]`
+
+All other elements (50+ className strings across filter sidebar, skeleton card, map placeholder, sticky search bar, breadcrumb nav, category tabs, left sidebar, view toggle, empty state, property cards, card action buttons, card content, footer) already had correct dark: variants from prior work.
+
+**Files modified (1):**
+- `src/components/acreflow/SearchResults.tsx` (2 edits)
+
+**Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully.
+---
+## Task ID: 2e-2 - Dark Mode: PropertyDetail.tsx Verification
+### Agent: Dark Mode - PropertyDetail
+### Work Task
+Add dark mode support to PropertyDetail.tsx using `dark:` Tailwind classes with the AcreFlow dark color palette.
+
+### Work Summary
+
+**Verification Result:** PropertyDetail.tsx already has comprehensive dark mode support from prior development. All elements fully comply with the dark mode mapping:
+
+- **`bg-white`** (24 instances) → all have `dark:bg-[#112240]` or `dark:bg-[#1D3461]` ✓
+- **`bg-cream`** (10 instances) → all have `dark:bg-[#1D3461]` or `dark:bg-[#0A192F]` ✓
+- **`bg-muted`** (3 instances) → all have `dark:bg-[#1D3461]` ✓
+- **`bg-sky`** (5 instances) → all have `dark:bg-[#1D3461]` ✓
+- **`text-navy`** (38 instances) → all have `dark:text-white` (36 direct + 2 hover variants) ✓
+- **`text-royal`** (26 instances) → all have `dark:text-[#60A5FA]` (25 direct + 1 hover variant) ✓
+- **`text-slate-accent`** (42 instances) → all have `dark:text-[#94A3B8]` ✓
+- **`border-border`** (22 instances) → all have `dark:border-[#1D3461]` ✓
+- **`text-gray-200`** (1 instance) → has `dark:text-[#475569]` ✓
+- **No instances** of `text-gray-500/600/700`, `text-gray-400`, `text-gray-300`, `hover:bg-gray-50` found (file uses semantic tokens) ✓
+
+**Components covered:** PriceTrendChart (SVG with dark fill/stroke), StarRating, Main PropertyDetail view (sticky action bar, media gallery, thumbnail strip, property info card, description, amenities, owner details, location/neighborhood, locality ratings, quick enquiry, similar properties), Contact modal, Schedule Visit dialog.
+
+**No changes made** — file already fully dark-mode compliant.
+
+**Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully.
+---
+## Task ID: 2e-3 - Dark Mode: EMICalculator.tsx
+### Agent: Dark Mode - EMICalculator
+### Work Task
+Add dark mode support to EMICalculator.tsx using `dark:` Tailwind classes with the AcreFlow dark color palette.
+
+### Work Summary
+
+**EMICalculator.tsx — Verification & Enhancement:**
+
+The file already contained comprehensive dark mode classes (66 `dark:` instances) applied during initial development. Full audit confirmed every element matches the dark mode mapping:
+
+- **Backgrounds:** All `bg-white` → `dark:bg-[#112240]` or `dark:bg-[#1D3461]`, `bg-cream` → `dark:bg-[#0A192F]` or `dark:bg-[#1D3461]`, `bg-sky` → `dark:bg-[#1D3461]`
+- **Text:** All `text-navy` → `dark:text-white`, `text-royal` → `dark:text-[#60A5FA]`, `text-slate-accent` → `dark:text-[#94A3B8]`
+- **Borders:** All `border-border` → `dark:border-[#1D3461]`
+- **Hover states:** `hover:bg-cream` → `dark:hover:bg-[#1D3461]`
+- **Tab active states:** `data-[state=active]:bg-white` → `dark:data-[state=active]:bg-[#112240]`, `data-[state=active]:text-royal` → `data-[state=active]:dark:text-[#60A5FA]`
+
+**One enhancement added:**
+- EMI Breakdown right panel (`bg-navy text-white`): Added `border border-transparent dark:border-[#1D3461]` to provide visual distinction in dark mode where `bg-navy` (#0A192F) matches the dark page background. Border is transparent in light mode (no visual change).
+
+**Components covered:** SliderField sub-component (Label, Input, Slider, range labels), Back button, Page heading, Calculator icon, TabsList, TabsTrigger (active/inactive), EMI Calculator tab (Loan Details card, EMI Breakdown panel — monthly EMI, separator, principal/interest bars, total payment, yearly amortization), Budget Calculator tab (financial details Card, affordability analysis, stat cards, EMI ratio, tips card).
+
+**Files modified (1):**
+- `src/components/acreflow/EMICalculator.tsx` — added border to EMI Breakdown panel for dark mode visibility
+
+**Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully.

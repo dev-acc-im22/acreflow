@@ -44,17 +44,17 @@ const features = [
 
 export default function WhyAcreFlow() {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white dark:bg-[#0A192F]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-navy text-center mb-2">
+        <h2 className="text-2xl md:text-3xl font-bold text-navy dark:text-white text-center mb-2">
           Why Choose AcreFlow?
         </h2>
-        <p className="text-slate-accent text-center mb-4 text-sm md:text-base">
+        <p className="text-slate-accent dark:text-[#94A3B8] text-center mb-4 text-sm md:text-base">
           Experience real estate the way it should be — transparent, efficient, and completely broker-free.
         </p>
 
         {/* Intro paragraph */}
-        <p className="max-w-2xl mx-auto text-center text-slate-accent mb-10 text-sm leading-relaxed">
+        <p className="max-w-2xl mx-auto text-center text-slate-accent dark:text-[#94A3B8] mb-10 text-sm leading-relaxed">
           At AcreFlow, we believe finding your dream property should be simple and stress-free. That&apos;s why we&apos;ve built a platform that puts you first — no hidden fees, no middlemen, just direct connections between buyers and sellers.
         </p>
 
@@ -69,15 +69,15 @@ export default function WhyAcreFlow() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="bg-white rounded-xl border border-border p-6 hover:shadow-lg hover:border-royal/30 transition-all"
+                className="bg-white dark:bg-[#112240] rounded-xl border border-border dark:border-[#1D3461] p-6 hover:shadow-lg hover:border-royal/30 transition-all"
               >
-                <div className="w-12 h-12 rounded-lg bg-sky flex items-center justify-center text-royal mb-4">
+                <div className="w-12 h-12 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center text-royal dark:text-[#60A5FA] mb-4">
                   <Icon className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-semibold text-navy mb-2">
+                <h3 className="text-lg font-semibold text-navy dark:text-white mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-slate-accent leading-relaxed">
+                <p className="text-sm text-slate-accent dark:text-[#94A3B8] leading-relaxed">
                   {feature.description}
                 </p>
               </motion.div>

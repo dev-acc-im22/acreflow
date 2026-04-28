@@ -188,6 +188,11 @@ html {
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
+.dark .skeleton-shimmer {
+  background: linear-gradient(90deg, #1D3461 25%, #233554 50%, #1D3461 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
 
 /* Hero gradient */
 .hero-gradient {
@@ -238,7 +243,7 @@ html {
   @apply bg-navy text-white shadow-sm;
 }
 .filter-chip-inactive {
-  @apply bg-white text-slate-accent border border-border hover:border-royal hover:text-royal;
+  @apply bg-white dark:bg-[#112240] text-slate-accent dark:text-[#94A3B8] border border-border dark:border-[#1D3461] hover:border-royal hover:text-royal dark:hover:border-[#60A5FA] dark:hover:text-[#60A5FA];
 }
 
 /* Number counter animation */

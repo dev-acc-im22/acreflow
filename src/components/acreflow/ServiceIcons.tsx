@@ -130,12 +130,12 @@ export default function ServiceIcons() {
   const activeDetail = selectedService !== null ? serviceDetails[selectedService] : null;
 
   return (
-    <section className="py-12 bg-cream">
+    <section className="py-12 bg-cream dark:bg-[#0A192F]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-navy text-center mb-2">
+        <h2 className="text-2xl md:text-3xl font-bold text-navy dark:text-white text-center mb-2">
           Our Services
         </h2>
-        <p className="text-slate-accent text-center mb-8">
+        <p className="text-slate-accent dark:text-[#94A3B8] text-center mb-8">
           Everything you need for a seamless property experience
         </p>
 
@@ -146,15 +146,15 @@ export default function ServiceIcons() {
               <button
                 key={service.label}
                 onClick={() => handleServiceClick(index)}
-                className="bg-white rounded-xl border border-border p-5 flex flex-col items-center gap-3 text-center hover:shadow-md hover:border-royal/20 transition-all cursor-pointer"
+                className="bg-white dark:bg-[#112240] rounded-xl border border-border dark:border-[#1D3461] p-5 flex flex-col items-center gap-3 text-center hover:shadow-md hover:border-royal/20 transition-all cursor-pointer"
               >
-                <div className="w-12 h-12 rounded-full bg-sky flex items-center justify-center text-royal">
+                <div className="w-12 h-12 rounded-full bg-sky dark:bg-[#1D3461] flex items-center justify-center text-royal dark:text-[#60A5FA]">
                   <Icon className="w-6 h-6" />
                 </div>
-                <span className="text-sm font-semibold text-navy">
+                <span className="text-sm font-semibold text-navy dark:text-white">
                   {service.label}
                 </span>
-                <span className="text-xs text-slate-accent leading-relaxed">
+                <span className="text-xs text-slate-accent dark:text-[#94A3B8] leading-relaxed">
                   {service.description}
                 </span>
               </button>
@@ -170,24 +170,24 @@ export default function ServiceIcons() {
           }}
         >
           {activeService && activeDetail && (
-            <DialogContent className="max-w-lg mx-auto p-0 gap-0 overflow-hidden">
+            <DialogContent className="max-w-lg mx-auto p-0 gap-0 overflow-hidden bg-white dark:bg-[#112240]">
               {/* Top accent bar */}
               <div className="h-1.5 bg-gradient-to-r from-royal to-sky" />
 
               <div className="p-6">
                 <DialogHeader>
                   <div className="flex items-center gap-4 mb-2">
-                    <div className="w-14 h-14 bg-sky rounded-xl flex items-center justify-center shrink-0">
+                    <div className="w-14 h-14 bg-sky dark:bg-[#1D3461] rounded-xl flex items-center justify-center shrink-0">
                       {(() => {
                         const Icon = activeService.icon;
-                        return <Icon className="w-7 h-7 text-royal" />;
+                        return <Icon className="w-7 h-7 text-royal dark:text-[#60A5FA]" />;
                       })()}
                     </div>
                     <div>
-                      <DialogTitle className="text-lg font-bold text-navy">
+                      <DialogTitle className="text-lg font-bold text-navy dark:text-white">
                         {activeService.label}
                       </DialogTitle>
-                      <DialogDescription className="text-sm text-slate-accent mt-0.5">
+                      <DialogDescription className="text-sm text-slate-accent dark:text-[#94A3B8] mt-0.5">
                         Professional service by AcreFlow partners
                       </DialogDescription>
                     </div>
@@ -195,16 +195,16 @@ export default function ServiceIcons() {
                 </DialogHeader>
 
                 {/* Description */}
-                <p className="text-sm text-slate-accent leading-relaxed mt-4 mb-5">
+                <p className="text-sm text-slate-accent dark:text-[#94A3B8] leading-relaxed mt-4 mb-5">
                   {activeDetail.description}
                 </p>
 
                 {/* Features list */}
-                <div className="bg-cream/60 rounded-xl p-4 mb-5">
-                  <h4 className="text-sm font-semibold text-navy mb-3">What&apos;s included:</h4>
+                <div className="bg-cream/60 dark:bg-[#0A192F] rounded-xl p-4 mb-5">
+                  <h4 className="text-sm font-semibold text-navy dark:text-white mb-3">What&apos;s included:</h4>
                   <ul className="space-y-2.5">
                     {activeDetail.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5 text-sm text-slate-accent">
+                      <li key={idx} className="flex items-start gap-2.5 text-sm text-slate-accent dark:text-[#94A3B8]">
                         <CheckCircle2 className="w-4 h-4 text-success shrink-0 mt-0.5" />
                         <span>{feature}</span>
                       </li>
@@ -213,9 +213,9 @@ export default function ServiceIcons() {
                 </div>
 
                 {/* Price */}
-                <div className="bg-sky/50 rounded-xl p-4 mb-6 text-center">
-                  <p className="text-xs text-slate-accent mb-1">Starting at</p>
-                  <p className="text-lg font-bold text-royal">{activeDetail.price}</p>
+                <div className="bg-sky/50 dark:bg-[#1D3461]/50 rounded-xl p-4 mb-6 text-center">
+                  <p className="text-xs text-slate-accent dark:text-[#94A3B8] mb-1">Starting at</p>
+                  <p className="text-lg font-bold text-royal dark:text-[#60A5FA]">{activeDetail.price}</p>
                 </div>
 
                 {/* CTA Buttons */}
@@ -226,7 +226,7 @@ export default function ServiceIcons() {
                   </Button>
                   <Button
                     variant="outline"
-                    className="flex-1 h-11 rounded-xl font-semibold border-royal/30 text-navy hover:bg-sky"
+                    className="flex-1 h-11 rounded-xl font-semibold border-royal/30 text-navy dark:text-white hover:bg-sky dark:hover:bg-[#1D3461]"
                   >
                     Learn More
                   </Button>

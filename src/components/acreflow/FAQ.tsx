@@ -44,19 +44,19 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section className="py-16 bg-cream">
+    <section className="py-16 bg-cream dark:bg-[#0A192F]">
       <div className="max-w-3xl mx-auto px-4">
-        <h2 className="text-2xl font-bold text-navy text-center font-montserrat">
+        <h2 className="text-2xl font-bold text-navy dark:text-white text-center font-montserrat">
           Frequently Asked Questions
         </h2>
 
         <Accordion type="single" collapsible className="mt-10">
           {faqs.map((faq, i) => (
             <AccordionItem key={i} value={`faq-${i}`}>
-              <AccordionTrigger className="text-sm font-medium text-navy font-montserrat">
+              <AccordionTrigger className="text-sm font-medium text-navy dark:text-white font-montserrat">
                 {faq.q}
               </AccordionTrigger>
-              <AccordionContent className="text-sm text-slate-accent leading-relaxed font-montserrat">
+              <AccordionContent className="text-sm text-slate-accent dark:text-[#94A3B8] leading-relaxed font-montserrat">
                 {faq.a}
               </AccordionContent>
             </AccordionItem>

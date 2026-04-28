@@ -27,37 +27,37 @@ export default function MobileAppCTA() {
             {/* App Store Buttons */}
             <div className="mt-6 flex gap-4 justify-center md:justify-start">
               {/* Google Play Button */}
-              <button className="bg-white rounded-xl px-5 py-3 flex items-center gap-3 hover:bg-white/90 transition-colors">
+              <button className="bg-white dark:bg-[#112240] rounded-xl px-5 py-3 flex items-center gap-3 hover:bg-white/90 dark:hover:bg-[#1D3461] transition-colors">
                 <div className="flex flex-col leading-tight">
-                  <span className="text-xs text-slate-accent">Get it on</span>
-                  <span className="text-sm font-semibold text-navy">
+                  <span className="text-xs text-slate-accent dark:text-[#94A3B8]">Get it on</span>
+                  <span className="text-sm font-semibold text-navy dark:text-white">
                     Google Play
                   </span>
                 </div>
-                <Download className="w-6 h-6 text-navy" />
+                <Download className="w-6 h-6 text-navy dark:text-white" />
               </button>
 
               {/* App Store Button */}
-              <button className="bg-white rounded-xl px-5 py-3 flex items-center gap-3 hover:bg-white/90 transition-colors">
+              <button className="bg-white dark:bg-[#112240] rounded-xl px-5 py-3 flex items-center gap-3 hover:bg-white/90 dark:hover:bg-[#1D3461] transition-colors">
                 <div className="flex flex-col leading-tight">
-                  <span className="text-xs text-slate-accent">Download on the</span>
-                  <span className="text-sm font-semibold text-navy">
+                  <span className="text-xs text-slate-accent dark:text-[#94A3B8]">Download on the</span>
+                  <span className="text-sm font-semibold text-navy dark:text-white">
                     App Store
                   </span>
                 </div>
-                <Smartphone className="w-6 h-6 text-navy" />
+                <Smartphone className="w-6 h-6 text-navy dark:text-white" />
               </button>
             </div>
           </div>
 
           {/* Right Side - Phone Mockup */}
           <div className="w-64 h-96 md:w-72 md:h-[420px] relative shrink-0">
-            <div className="w-full h-full bg-white/10 rounded-[2rem] border border-white/20 p-3">
-              <div className="w-full h-full bg-sky rounded-[1.5rem] flex flex-col items-center justify-center gap-4">
-                <Building2 className="text-5xl text-royal" />
-                <span className="text-xl font-bold text-navy">AcreFlow</span>
-                <QrCode className="text-3xl text-royal" />
-                <span className="text-xs text-slate-accent">Scan to Download</span>
+            <div className="w-full h-full bg-white/10 dark:bg-white/5 rounded-[2rem] border border-white/20 dark:border-white/10 p-3">
+              <div className="w-full h-full bg-sky dark:bg-[#1D3461] rounded-[1.5rem] flex flex-col items-center justify-center gap-4">
+                <Building2 className="text-5xl text-royal dark:text-[#60A5FA]" />
+                <span className="text-xl font-bold text-navy dark:text-white">AcreFlow</span>
+                <QrCode className="text-3xl text-royal dark:text-[#60A5FA]" />
+                <span className="text-xs text-slate-accent dark:text-[#94A3B8]">Scan to Download</span>
               </div>
             </div>
           </div>

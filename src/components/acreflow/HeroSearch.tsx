@@ -49,16 +49,16 @@ export default function HeroSearch() {
   }
 
   return (
-    <section className="w-full bg-white border-b border-gray-100">
+    <section className="w-full bg-white dark:bg-[#0A192F] border-b border-gray-100 dark:border-[#1D3461]">
       <div className="max-w-7xl mx-auto px-4 lg:px-6 pt-20 pb-20">
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-12">
           {/* Left: Headline + Subheadline + Trust Stats */}
           <div className="flex-1 max-w-2xl">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-navy leading-[1.15] tracking-tight">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-navy dark:text-white leading-[1.15] tracking-tight">
               Find Your Dream Property{' '}
-              <span className="text-royal">Without Brokerage</span>
+              <span className="text-royal dark:text-[#60A5FA]">Without Brokerage</span>
             </h1>
-            <p className="text-base md:text-lg text-gray-500 mt-5 leading-relaxed max-w-lg">
+            <p className="text-base md:text-lg text-gray-500 dark:text-[#94A3B8] mt-5 leading-relaxed max-w-lg">
               Browse verified listings across top Indian cities. Zero brokerage, direct owner connect, and data-driven insights.
             </p>
 
@@ -68,9 +68,9 @@ export default function HeroSearch() {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:hidden">
                 {TRUST_STATS.map((stat) => (
                   <div key={stat.label} className="text-center px-3 py-4">
-                    <stat.icon className="size-5 text-royal mx-auto mb-2" />
-                    <p className="text-xl font-bold text-navy">{stat.value}</p>
-                    <p className="text-xs text-gray-400 font-medium mt-0.5">{stat.label}</p>
+                    <stat.icon className="size-5 text-royal dark:text-[#60A5FA] mx-auto mb-2" />
+                    <p className="text-xl font-bold text-navy dark:text-white">{stat.value}</p>
+                    <p className="text-xs text-gray-400 dark:text-[#64748B] font-medium mt-0.5">{stat.label}</p>
                   </div>
                 ))}
               </div>
@@ -80,16 +80,16 @@ export default function HeroSearch() {
                 {TRUST_STATS.map((stat, index) => (
                   <Fragment key={stat.label}>
                     <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-xl bg-sky/50 flex items-center justify-center shrink-0">
-                        <stat.icon className="size-5 text-royal" />
+                      <div className="w-11 h-11 rounded-xl bg-sky/50 dark:bg-[#1D3461]/50 flex items-center justify-center shrink-0">
+                        <stat.icon className="size-5 text-royal dark:text-[#60A5FA]" />
                       </div>
                       <div>
-                        <p className="text-xl font-bold text-navy">{stat.value}</p>
-                        <p className="text-xs text-gray-400 font-medium">{stat.label}</p>
+                        <p className="text-xl font-bold text-navy dark:text-white">{stat.value}</p>
+                        <p className="text-xs text-gray-400 dark:text-[#64748B] font-medium">{stat.label}</p>
                       </div>
                     </div>
                     {index < TRUST_STATS.length - 1 && (
-                      <div className="w-px h-12 bg-gray-200" />
+                      <div className="w-px h-12 bg-gray-200 dark:bg-[#1D3461]" />
                     )}
                   </Fragment>
                 ))}
@@ -99,7 +99,7 @@ export default function HeroSearch() {
 
           {/* Right: Quick Links */}
           <div className="shrink-0 w-full lg:w-64">
-            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-4">
+            <p className="text-[11px] font-semibold text-gray-400 dark:text-[#64748B] uppercase tracking-widest mb-4">
               Quick Explore
             </p>
             <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible">
@@ -107,15 +107,15 @@ export default function HeroSearch() {
                 <button
                   key={link.label}
                   onClick={() => handleQuickLinkClick(link.label)}
-                  className="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-gray-200 hover:border-royal/30 hover:shadow-sm transition-all group min-w-fit lg:min-w-0 bg-white"
+                  className="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-gray-200 dark:border-[#1D3461] hover:border-royal/30 hover:shadow-sm transition-all group min-w-fit lg:min-w-0 bg-white dark:bg-[#112240]"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-sky/40 flex items-center justify-center shrink-0 group-hover:bg-royal/10 transition-colors">
-                    <link.icon className="size-[18px] text-royal" />
+                  <div className="w-10 h-10 rounded-lg bg-sky/40 dark:bg-[#1D3461]/50 flex items-center justify-center shrink-0 group-hover:bg-royal/10 transition-colors">
+                    <link.icon className="size-[18px] text-royal dark:text-[#60A5FA]" />
                   </div>
-                  <span className="text-sm font-medium text-gray-700 group-hover:text-navy transition-colors whitespace-nowrap">
+                  <span className="text-sm font-medium text-gray-700 dark:text-[#94A3B8] group-hover:text-navy dark:group-hover:text-white transition-colors whitespace-nowrap">
                     {link.label}
                   </span>
-                  <ChevronRight className="size-4 text-gray-300 group-hover:text-royal transition-colors shrink-0" />
+                  <ChevronRight className="size-4 text-gray-300 dark:text-[#64748B] group-hover:text-royal dark:group-hover:text-[#60A5FA] transition-colors shrink-0" />
                 </button>
               ))}
             </div>
