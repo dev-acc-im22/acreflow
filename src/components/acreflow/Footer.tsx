@@ -16,15 +16,17 @@ import {
   Smartphone,
   Download,
 } from 'lucide-react';
+import { useAcreFlowStore } from '@/lib/store';
+import type { PropertyType } from '@/types';
 
-const PROPERTY_TYPES = [
-  'Apartments',
-  'Villas',
-  'Plots',
-  'Commercial',
-  'PG/Hostels',
-  'Office Space',
-] as const;
+const PROPERTY_TYPE_LINKS: { label: string; mappedType: PropertyType; category: 'buy' | 'rent' | 'commercial' }[] = [
+  { label: 'Apartments', mappedType: 'apartment', category: 'buy' },
+  { label: 'Villas', mappedType: 'villa', category: 'buy' },
+  { label: 'Plots', mappedType: 'plot', category: 'buy' },
+  { label: 'Commercial', mappedType: 'commercial-office', category: 'commercial' },
+  { label: 'PG/Hostels', mappedType: 'pg', category: 'rent' },
+  { label: 'Office Space', mappedType: 'commercial-office', category: 'commercial' },
+];
 
 const TOP_CITIES = [
   'Chennai',
@@ -51,14 +53,32 @@ const TRUST_BADGES = [
 ] as const;
 
 const SOCIAL_LINKS = [
-  { icon: Instagram, label: 'Instagram', href: '#' },
-  { icon: Twitter, label: 'Twitter', href: '#' },
-  { icon: Facebook, label: 'Facebook', href: '#' },
-  { icon: Linkedin, label: 'LinkedIn', href: '#' },
-  { icon: Youtube, label: 'YouTube', href: '#' },
+  { icon: Instagram, label: 'Instagram', href: 'https://instagram.com/acreflow' },
+  { icon: Twitter, label: 'Twitter', href: 'https://twitter.com/acreflow' },
+  { icon: Facebook, label: 'Facebook', href: 'https://facebook.com/acreflow' },
+  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/acreflow' },
+  { icon: Youtube, label: 'YouTube', href: 'https://youtube.com/@acreflow' },
 ] as const;
 
 export default function Footer() {
+  const { setFilters, setView, setSelectedCity } = useAcreFlowStore();
+
+  const handlePropertyTypeClick = (mappedType: PropertyType, category: 'buy' | 'rent' | 'commercial') => {
+    setFilters({ category, propertyTypes: [mappedType] });
+    setView('search');
+  };
+
+  const handleCityClick = (city: string) => {
+    setSelectedCity(city);
+    setView('search');
+  };
+
+  const handleCompanyClick = (link: string) => {
+    if (link === 'Contact') {
+      setView('lead-center');
+    }
+  };
+
   return (
     <footer className="font-montserrat">
       {/* Main Footer */}
@@ -114,6 +134,8 @@ export default function Footer() {
                   <a
                     key={label}
                     href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={label}
                     className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-royal"
                   >
@@ -157,15 +179,16 @@ export default function Footer() {
                 Property Types
               </h3>
               <ul className="mt-4 flex flex-col gap-2.5">
-                {PROPERTY_TYPES.map((type) => (
-                  <li key={type}>
-                    <a
-                      href="#"
+                {PROPERTY_TYPE_LINKS.map(({ label, mappedType, category }) => (
+                  <li key={label}>
+                    <button
+                      type="button"
+                      onClick={() => handlePropertyTypeClick(mappedType, category)}
                       className="flex items-center gap-1.5 text-sm text-slate-light transition-colors hover:text-white"
                     >
                       <ChevronRight className="size-3 shrink-0" />
-                      {type}
-                    </a>
+                      {label}
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -179,13 +202,14 @@ export default function Footer() {
               <ul className="mt-4 flex flex-col gap-2.5">
                 {TOP_CITIES.map((city) => (
                   <li key={city}>
-                    <a
-                      href="#"
+                    <button
+                      type="button"
+                      onClick={() => handleCityClick(city)}
                       className="flex items-center gap-1.5 text-sm text-slate-light transition-colors hover:text-white"
                     >
                       <MapPin className="size-3 shrink-0" />
                       {city}
-                    </a>
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -199,13 +223,14 @@ export default function Footer() {
               <ul className="mt-4 flex flex-col gap-2.5">
                 {COMPANY_LINKS.map((link) => (
                   <li key={link}>
-                    <a
-                      href="#"
+                    <button
+                      type="button"
+                      onClick={() => handleCompanyClick(link)}
                       className="flex items-center gap-1.5 text-sm text-slate-light transition-colors hover:text-white"
                     >
                       <ChevronRight className="size-3 shrink-0" />
                       {link}
-                    </a>
+                    </button>
                   </li>
                 ))}
               </ul>

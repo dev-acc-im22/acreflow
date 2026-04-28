@@ -18,6 +18,7 @@ import {
   Building2,
   Users,
   ChevronDown,
+  ChevronRight,
   Home,
   Store,
   Car,
@@ -41,7 +42,9 @@ import {
   Share2,
   ArrowLeft,
   Menu,
+  GitCompareArrows,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -141,6 +144,22 @@ function formatPrice(value: number, category: ListingCategory): string {
   if (value >= 100000) return `₹${(value / 100000).toFixed(0)}L`;
   return `₹${(value / 1000).toFixed(0)}K`;
 }
+
+// ─── Map placeholder positions (grid pattern) ────────────────────────
+const MAP_POSITIONS = [
+  { top: '12%', left: '15%' },
+  { top: '25%', left: '45%' },
+  { top: '18%', left: '72%' },
+  { top: '42%', left: '22%' },
+  { top: '55%', left: '60%' },
+  { top: '38%', left: '80%' },
+  { top: '68%', left: '35%' },
+  { top: '75%', left: '68%' },
+  { top: '58%', left: '10%' },
+  { top: '82%', left: '50%' },
+  { top: '48%', left: '42%' },
+  { top: '30%', left: '28%' },
+];
 
 // ─── Filter Sidebar Content (shared between desktop & mobile) ────────
 function FilterSidebarContent({
@@ -411,6 +430,69 @@ function CardSkeleton() {
   );
 }
 
+// ─── Map Placeholder View ────────────────────────────────────────────
+function MapPlaceholderView({
+  properties,
+}: {
+  properties: PropertyListing[];
+}) {
+  return (
+    <div className="relative bg-cream rounded-xl h-[600px] overflow-hidden border border-border">
+      {/* Grid pattern background */}
+      <div className="absolute inset-0 opacity-[0.03]">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="mapGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0A192F" strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#mapGrid)" />
+        </svg>
+      </div>
+
+      {/* Simulated road lines */}
+      <div className="absolute top-[30%] left-0 right-0 h-[2px] bg-navy/5" />
+      <div className="absolute top-[60%] left-0 right-0 h-[2px] bg-navy/5" />
+      <div className="absolute left-[35%] top-0 bottom-0 w-[2px] bg-navy/5" />
+      <div className="absolute left-[65%] top-0 bottom-0 w-[2px] bg-navy/5" />
+
+      {/* Map label */}
+      <div className="absolute top-4 left-4 z-10">
+        <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border border-border">
+          <MapPin className="w-4 h-4 text-royal" />
+          <span className="text-sm font-medium text-navy">
+            {properties.length} Properties
+          </span>
+        </div>
+      </div>
+
+      {/* Property markers */}
+      {properties.map((property, index) => {
+        const pos = MAP_POSITIONS[index % MAP_POSITIONS.length];
+        return (
+          <div
+            key={property.id}
+            className="absolute z-10 group/marker"
+            style={{ top: pos.top, left: pos.left }}
+          >
+            {/* Price tag on hover */}
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/marker:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+              <div className="bg-navy text-white text-xs font-semibold px-2.5 py-1 rounded-lg shadow-lg">
+                {property.priceLabel}
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-navy" />
+              </div>
+            </div>
+            {/* Marker pin */}
+            <div className="w-8 h-8 rounded-full bg-royal flex items-center justify-center shadow-md ring-2 ring-white cursor-pointer hover:scale-110 transition-transform">
+              <MapPin className="w-4 h-4 text-white" />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Main Component ──────────────────────────────────────────────────
 export default function SearchResults() {
   const {
@@ -421,10 +503,18 @@ export default function SearchResults() {
     goBack,
     setView,
     setSelectedProperty,
+    toggleComparison,
+    isInComparison,
+    comparisonList,
+    toggleWishlist,
+    isInWishlist,
+    addToRecentlyViewed,
   } = useAcreFlowStore();
 
   const [localQuery, setLocalQuery] = useState(filters.query || searchQuery);
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [visibleCount, setVisibleCount] = useState(6);
 
   // Simulate loading on mount
   useEffect(() => {
@@ -529,9 +619,14 @@ export default function SearchResults() {
     return results;
   }, [filters]);
 
+  // Visible listings for pagination
+  const visibleListings = filteredListings.slice(0, visibleCount);
+  const hasMore = filteredListings.length > visibleCount;
+
   // ─── Handlers ────────────────────────────────────────────────────
   const handleSearch = () => {
     setFilters({ query: localQuery });
+    setVisibleCount(6);
     setLoading(true);
     setTimeout(() => setLoading(false), 300);
   };
@@ -539,13 +634,45 @@ export default function SearchResults() {
   const handleCategoryChange = (value: string) => {
     const cat = value === 'all' ? 'buy' : (value as ListingCategory);
     setFilters({ category: cat });
+    setVisibleCount(6);
     setLoading(true);
     setTimeout(() => setLoading(false), 300);
   };
 
   const handleCardClick = (property: PropertyListing) => {
+    // T29: Track recently viewed before navigating
+    addToRecentlyViewed(property);
     setSelectedProperty(property);
     setView('property-detail');
+  };
+
+  const handleCompareToggle = (e: React.MouseEvent, property: PropertyListing) => {
+    e.stopPropagation();
+    toggleComparison(property);
+  };
+
+  const handleWishlistToggle = (e: React.MouseEvent, property: PropertyListing) => {
+    e.stopPropagation();
+    toggleWishlist(property.id);
+    if (isInWishlist(property.id)) {
+      toast.success('Removed from Shortlist');
+    } else {
+      toast.success('Saved to Shortlist!');
+    }
+  };
+
+  const handleShare = (e: React.MouseEvent, property: PropertyListing) => {
+    e.stopPropagation();
+    const url = window.location.origin + '?property=' + property.id;
+    navigator.clipboard.writeText(url).then(() => {
+      toast.success('Link copied to clipboard!');
+    }).catch(() => {
+      toast.error('Failed to copy link');
+    });
+  };
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 6);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -563,6 +690,10 @@ export default function SearchResults() {
     filters.readyToMoveOnly,
     filters.amenities.length > 0,
   ].filter(Boolean).length;
+
+  // ─── Breadcrumb segments ────────────────────────────────────────
+  const breadcrumbLabel = filters.query || 'All Properties';
+  const categoryLabel = filters.category === 'buy' ? 'Buy' : filters.category === 'rent' ? 'Rent' : 'Commercial';
 
   return (
     <section className="min-h-screen bg-cream">
@@ -633,6 +764,60 @@ export default function SearchResults() {
               </div>
             </SheetContent>
           </Sheet>
+        </div>
+      </div>
+
+      {/* ── T25: Breadcrumb Navigation ────────────────────────────── */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 py-2.5">
+          <nav className="flex items-center gap-1 text-sm overflow-x-auto">
+            <button
+              onClick={() => setView('home')}
+              className="text-slate-accent hover:text-royal transition-colors whitespace-nowrap flex items-center gap-1 min-h-10"
+            >
+              <Home className="w-3.5 h-3.5" />
+              Home
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-accent shrink-0" />
+            <button
+              onClick={() => setFilters({ category: 'buy' })}
+              className={`hover:text-royal transition-colors whitespace-nowrap min-h-10 ${
+                filters.category === 'buy'
+                  ? 'text-navy font-medium'
+                  : 'text-slate-accent'
+              }`}
+            >
+              Buy
+            </button>
+            <span className="text-slate-accent">/</span>
+            <button
+              onClick={() => setFilters({ category: 'rent' })}
+              className={`hover:text-royal transition-colors whitespace-nowrap min-h-10 ${
+                filters.category === 'rent'
+                  ? 'text-navy font-medium'
+                  : 'text-slate-accent'
+              }`}
+            >
+              Rent
+            </button>
+            <span className="text-slate-accent">/</span>
+            <button
+              onClick={() => setFilters({ category: 'commercial' })}
+              className={`hover:text-royal transition-colors whitespace-nowrap min-h-10 ${
+                filters.category === 'commercial'
+                  ? 'text-navy font-medium'
+                  : 'text-slate-accent'
+              }`}
+            >
+              Commercial
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-accent shrink-0" />
+            <span className="text-slate-accent whitespace-nowrap">Chennai</span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-accent shrink-0" />
+            <span className="text-navy font-medium whitespace-nowrap">
+              {breadcrumbLabel}
+            </span>
+          </nav>
         </div>
       </div>
 
@@ -716,22 +901,31 @@ export default function SearchResults() {
                 </SelectContent>
               </Select>
 
-              {/* View toggle (desktop) */}
+              {/* T17: View toggle (desktop) with viewMode state */}
               <div className="hidden md:flex items-center gap-1">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-royal bg-sky"
+                  className={viewMode === 'list' ? 'text-royal bg-sky' : 'text-slate-accent hover:text-royal'}
+                  onClick={() => setViewMode('list')}
                 >
                   <Grid3X3 className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-slate-accent hover:text-royal"
+                  className={viewMode === 'map' ? 'text-royal bg-sky' : 'text-slate-accent hover:text-royal'}
+                  onClick={() => setViewMode('map')}
                 >
                   <Map className="w-4 h-4" />
                 </Button>
+                {/* T1: Comparison badge count */}
+                {comparisonList.length > 0 && (
+                  <Badge className="bg-royal text-white border-0 text-xs ml-1 flex items-center gap-1">
+                    <GitCompareArrows className="w-3 h-3" />
+                    {comparisonList.length}
+                  </Badge>
+                )}
               </div>
             </div>
 
@@ -745,7 +939,7 @@ export default function SearchResults() {
               {loading ? '...' : filteredListings.length} Properties found
             </p>
 
-            {/* ── Cards Grid ───────────────────────────────────────── */}
+            {/* ── T17: Map View ─────────────────────────────────────── */}
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CardSkeleton />
@@ -784,117 +978,180 @@ export default function SearchResults() {
                   Clear All Filters
                 </Button>
               </div>
+            ) : viewMode === 'map' ? (
+              /* ── T17: Map Placeholder View ──────────────────────── */
+              <MapPlaceholderView properties={visibleListings} />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {filteredListings.map((property) => (
-                  <Card
-                    key={property.id}
-                    className="overflow-hidden rounded-xl border border-border property-card cursor-pointer"
-                    onClick={() => handleCardClick(property)}
+              /* ── T18: Cards Grid with pagination ────────────────── */
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {visibleListings.map((property) => {
+                    const inComparison = isInComparison(property.id);
+                    const inWishlist = isInWishlist(property.id);
+
+                    return (
+                      <Card
+                        key={property.id}
+                        className="overflow-hidden rounded-xl border border-border property-card cursor-pointer"
+                        onClick={() => handleCardClick(property)}
+                      >
+                        <CardContent className="p-0">
+                          <div className="flex flex-col sm:flex-row">
+                            {/* Image */}
+                            <div className="relative w-full sm:w-48 h-36 shrink-0 overflow-hidden bg-muted">
+                              <img
+                                src={property.images[0]}
+                                alt={property.title}
+                                className="w-full h-full object-cover"
+                              />
+
+                              {/* Category badge */}
+                              <div className="absolute top-2 left-2">
+                                <Badge className="bg-navy/80 text-white border-0 text-[10px] px-2 py-0.5">
+                                  {getCategoryLabel(property.category)}
+                                </Badge>
+                              </div>
+
+                              {/* Verified badge */}
+                              {property.verified && (
+                                <div className="absolute top-2 right-2">
+                                  <Badge className="bg-success text-white border-0 text-[10px] gap-0.5 px-2 py-0.5">
+                                    <CheckCircle2 className="w-3 h-3" />
+                                    Verified
+                                  </Badge>
+                                </div>
+                              )}
+
+                              {/* Action icons row (bottom of image) */}
+                              <div className="absolute bottom-2 right-2 flex items-center gap-1.5">
+                                {/* T5: Wishlist Heart button */}
+                                <button
+                                  className={`min-h-10 min-w-10 rounded-full p-1.5 shadow hover:scale-105 transition-all ${
+                                    inWishlist
+                                      ? 'bg-red-50 hover:bg-red-100'
+                                      : 'bg-white/90 hover:bg-white'
+                                  }`}
+                                  onClick={(e) => handleWishlistToggle(e, property)}
+                                  aria-label={inWishlist ? 'Remove from shortlist' : 'Add to shortlist'}
+                                >
+                                  <Heart
+                                    className={`w-4 h-4 transition-colors ${
+                                      inWishlist
+                                        ? 'fill-red-500 text-red-500'
+                                        : 'text-slate-accent'
+                                    }`}
+                                  />
+                                </button>
+
+                                {/* T6: Share button with clipboard copy */}
+                                <button
+                                  className="bg-white/90 rounded-full p-1.5 shadow hover:bg-white hover:scale-105 transition-all min-h-10 min-w-10"
+                                  onClick={(e) => handleShare(e, property)}
+                                  aria-label="Share property"
+                                >
+                                  <Share2 className="w-4 h-4 text-slate-accent hover:text-royal transition-colors" />
+                                </button>
+
+                                {/* T1: Add to Compare checkbox */}
+                                <button
+                                  className={`rounded-full p-1.5 shadow hover:scale-105 transition-all min-h-10 min-w-10 ${
+                                    inComparison
+                                      ? 'bg-royal hover:bg-royal-dark'
+                                      : 'bg-white/90 hover:bg-white'
+                                  }`}
+                                  onClick={(e) => handleCompareToggle(e, property)}
+                                  aria-label={inComparison ? 'Remove from comparison' : 'Add to comparison'}
+                                >
+                                  <GitCompareArrows
+                                    className={`w-4 h-4 transition-colors ${
+                                      inComparison
+                                        ? 'text-white'
+                                        : 'text-slate-accent'
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="p-4 flex flex-col justify-between flex-1">
+                              <div>
+                                {/* Price */}
+                                <p className="text-lg font-bold text-royal">
+                                  {property.priceLabel}
+                                </p>
+
+                                {/* Title */}
+                                <h3 className="text-sm font-semibold text-navy mt-0.5 line-clamp-1">
+                                  {property.title}
+                                </h3>
+
+                                {/* Location */}
+                                <div className="flex items-center gap-1 text-xs text-slate-accent mt-1">
+                                  <MapPin className="w-3 h-3 shrink-0" />
+                                  <span className="line-clamp-1">
+                                    {property.locality}, {property.city}
+                                  </span>
+                                </div>
+
+                                {/* Specs */}
+                                <div className="flex items-center gap-3 text-xs text-slate-accent mt-2">
+                                  {property.bhk > 0 && (
+                                    <span className="flex items-center gap-0.5">
+                                      <BedDouble className="w-3 h-3" />
+                                      {property.bhk} Bed
+                                    </span>
+                                  )}
+                                  {property.bathrooms > 0 && (
+                                    <span className="flex items-center gap-0.5">
+                                      <Bath className="w-3 h-3" />
+                                      {property.bathrooms} Bath
+                                    </span>
+                                  )}
+                                  <span className="flex items-center gap-0.5">
+                                    <Maximize className="w-3 h-3" />
+                                    {property.carpetArea || property.plotArea || 0}{' '}
+                                    sqft
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Footer */}
+                              <div className="flex items-center justify-between mt-3 pt-2 border-t border-border">
+                                <div className="flex items-center gap-1 text-xs text-slate-accent">
+                                  <Building2 className="w-3 h-3 shrink-0" />
+                                  <span className="line-clamp-1">
+                                    {property.ownerName}
+                                  </span>
+                                </div>
+                                <button
+                                  className="text-royal text-xs font-semibold hover:underline flex items-center gap-0.5 min-h-10"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleCardClick(property);
+                                  }}
+                                >
+                                  View Details
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+
+                {/* T18: Load More button */}
+                {hasMore && (
+                  <button
+                    onClick={handleLoadMore}
+                    className="w-full py-3 rounded-xl border-2 border-dashed border-royal/30 text-royal font-semibold hover:bg-royal/5 transition-colors mt-6 min-h-10"
                   >
-                    <CardContent className="p-0">
-                      <div className="flex flex-col sm:flex-row">
-                        {/* Image */}
-                        <div className="relative w-full sm:w-48 h-36 shrink-0 overflow-hidden bg-muted">
-                          <img
-                            src={property.images[0]}
-                            alt={property.title}
-                            className="w-full h-full object-cover"
-                          />
-
-                          {/* Category badge */}
-                          <div className="absolute top-2 left-2">
-                            <Badge className="bg-navy/80 text-white border-0 text-[10px] px-2 py-0.5">
-                              {getCategoryLabel(property.category)}
-                            </Badge>
-                          </div>
-
-                          {/* Verified badge */}
-                          {property.verified && (
-                            <div className="absolute top-2 right-2">
-                              <Badge className="bg-success text-white border-0 text-[10px] gap-0.5 px-2 py-0.5">
-                                <CheckCircle2 className="w-3 h-3" />
-                                Verified
-                              </Badge>
-                            </div>
-                          )}
-
-                          {/* Heart icon */}
-                          <button
-                            className="absolute bottom-2 right-2 bg-white/90 rounded-full p-1.5 shadow hover:bg-white transition-colors"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <Heart className="w-3.5 h-3.5 text-slate-accent" />
-                          </button>
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-4 flex flex-col justify-between flex-1">
-                          <div>
-                            {/* Price */}
-                            <p className="text-lg font-bold text-royal">
-                              {property.priceLabel}
-                            </p>
-
-                            {/* Title */}
-                            <h3 className="text-sm font-semibold text-navy mt-0.5 line-clamp-1">
-                              {property.title}
-                            </h3>
-
-                            {/* Location */}
-                            <div className="flex items-center gap-1 text-xs text-slate-accent mt-1">
-                              <MapPin className="w-3 h-3 shrink-0" />
-                              <span className="line-clamp-1">
-                                {property.locality}, {property.city}
-                              </span>
-                            </div>
-
-                            {/* Specs */}
-                            <div className="flex items-center gap-3 text-xs text-slate-accent mt-2">
-                              {property.bhk > 0 && (
-                                <span className="flex items-center gap-0.5">
-                                  <BedDouble className="w-3 h-3" />
-                                  {property.bhk} Bed
-                                </span>
-                              )}
-                              {property.bathrooms > 0 && (
-                                <span className="flex items-center gap-0.5">
-                                  <Bath className="w-3 h-3" />
-                                  {property.bathrooms} Bath
-                                </span>
-                              )}
-                              <span className="flex items-center gap-0.5">
-                                <Maximize className="w-3 h-3" />
-                                {property.carpetArea || property.plotArea || 0}{' '}
-                                sqft
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Footer */}
-                          <div className="flex items-center justify-between mt-3 pt-2 border-t border-border">
-                            <div className="flex items-center gap-1 text-xs text-slate-accent">
-                              <Building2 className="w-3 h-3 shrink-0" />
-                              <span className="line-clamp-1">
-                                {property.ownerName}
-                              </span>
-                            </div>
-                            <button
-                              className="text-royal text-xs font-semibold hover:underline flex items-center gap-0.5"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleCardClick(property);
-                              }}
-                            >
-                              View Details
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                    Load More Properties
+                  </button>
+                )}
+              </>
             )}
           </div>
         </div>

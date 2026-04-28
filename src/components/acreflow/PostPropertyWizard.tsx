@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { PropertyType, Furnishing, PossessionStatus, ListingCategory } from '@/types';
+import type { PropertyType, Furnishing, PossessionStatus, ListingCategory, PropertyListing } from '@/types';
 import { AMENITIES, CITIES } from '@/types';
 import { useAcreFlowStore } from '@/lib/store';
 import {
@@ -36,7 +36,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
@@ -51,6 +50,12 @@ const PROPERTY_TYPES: { type: PropertyType; label: string; icon: typeof Home; ca
   { type: 'commercial-shop', label: 'Commercial Shop', icon: Store, category: 'commercial' },
   { type: 'commercial-warehouse', label: 'Warehouse', icon: Warehouse, category: 'commercial' },
 ];
+
+function formatPriceLabel(price: number, category: string): string {
+  if (category === 'rent') return `₹${(price / 1000).toFixed(0)},000/mo`;
+  if (price >= 10000000) return `₹${(price / 10000000).toFixed(2)} Cr`;
+  return `₹${(price / 100000).toFixed(0)} Lakh`;
+}
 
 export default function PostPropertyWizard() {
   const { goBack } = useAcreFlowStore();
@@ -95,13 +100,78 @@ export default function PostPropertyWizard() {
     if (currentStep > 0) setCurrentStep(currentStep - 1);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!confirmed) {
       toast.error('Please confirm the details are accurate');
       return;
     }
-    toast.success('Property posted successfully!');
-    goBack();
+
+    if (!title || !propertyType || !ownerName || !ownerPhone) {
+      toast.error('Please fill all required fields (Title, Property Type, Owner Name, Phone)');
+      return;
+    }
+
+    const priceValue = category === 'rent'
+      ? parseFloat(monthlyRent) || 0
+      : parseFloat(expectedPrice) || 0;
+
+    const now = new Date().toISOString();
+
+    const newProperty: PropertyListing = {
+      id: `prop-${Date.now()}`,
+      title,
+      description: title,
+      category,
+      propertyType: propertyType as PropertyType,
+      price: priceValue,
+      priceLabel: formatPriceLabel(priceValue, category),
+      deposit: category === 'rent' ? parseFloat(deposit) || undefined : undefined,
+      bhk: bhk === 'studio' ? 0 : parseInt(bhk) || 0,
+      bathrooms: parseInt(bathrooms) || 0,
+      balconies: parseInt(balconies) || 0,
+      floor: '',
+      totalFloors: 0,
+      carpetArea: parseFloat(carpetArea) || 0,
+      superBuiltUpArea: parseFloat(superBuiltUpArea) || undefined,
+      furnishing: (furnishing || 'unfurnished') as Furnishing,
+      ageOfProperty: ageOfProperty || 'new',
+      possessionStatus: (possessionStatus || 'ready') as PossessionStatus,
+      locality: locality || 'Chennai',
+      city: city || 'Chennai',
+      state: 'Tamil Nadu',
+      address: address || locality || 'Chennai',
+      lat: 13.0827,
+      lng: 80.2707,
+      images: [],
+      amenities: selectedAmenities,
+      verified: false,
+      reraRegistered: !!reraId,
+      reraId: reraId || undefined,
+      directFromOwner: true,
+      ownerId: `owner-${Date.now()}`,
+      ownerName,
+      ownerPhone,
+      views: 0,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    try {
+      const response = await fetch('/api/listings?XTransformPort=3000', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newProperty),
+      });
+
+      if (response.ok) {
+        toast.success('Property posted successfully! It will be visible after verification.');
+        goBack();
+      } else {
+        toast.error('Failed to post property. Please try again.');
+      }
+    } catch {
+      toast.error('Network error. Please try again.');
+    }
   };
 
   const filteredPropertyTypes = PROPERTY_TYPES.filter(
@@ -174,34 +244,30 @@ export default function PostPropertyWizard() {
                 <FileText className="h-4 w-4" />
                 Property Category
               </Label>
-              <Tabs
-                value={category}
-                onValueChange={(val) => {
-                  setCategory(val as ListingCategory);
-                  setPropertyType('');
-                }}
-              >
-                <TabsList className="bg-cream w-full h-12">
-                  <TabsTrigger
-                    value="buy"
-                    className="flex-1 h-10 rounded-lg data-[state=active]:bg-royal data-[state=active]:text-white"
+              <div className="flex items-center gap-3">
+                {([
+                  { value: 'buy' as ListingCategory, label: 'For Sale' },
+                  { value: 'rent' as ListingCategory, label: 'For Rent' },
+                  { value: 'commercial' as ListingCategory, label: 'For Commercial' },
+                ]).map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => {
+                      setCategory(opt.value);
+                      setPropertyType('');
+                    }}
+                    className={`flex-1 h-12 rounded-lg text-base font-medium transition-all cursor-pointer ${
+                      category === opt.value
+                        ? 'bg-royal text-white shadow-sm'
+                        : 'bg-white text-gray-600 border border-gray-300 hover:border-royal/40 hover:text-navy'
+                    }`
+                    }
                   >
-                    Buy
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="rent"
-                    className="flex-1 h-10 rounded-lg data-[state=active]:bg-royal data-[state=active]:text-white"
-                  >
-                    Rent
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="commercial"
-                    className="flex-1 h-10 rounded-lg data-[state=active]:bg-royal data-[state=active]:text-white"
-                  >
-                    Commercial
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Property Type */}
@@ -707,7 +773,7 @@ export default function PostPropertyWizard() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-slate-accent">Category</p>
-                  <p className="text-sm font-medium text-navy capitalize">{category}</p>
+                  <p className="text-sm font-medium text-navy">{category === 'buy' ? 'For Sale' : category === 'rent' ? 'For Rent' : 'For Commercial'}</p>
                 </div>
                 <div>
                   <p className="text-sm text-slate-accent">Property Type</p>

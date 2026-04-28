@@ -3,13 +3,6 @@
 import { Shield, CheckCircle2, TrendingUp, Award, Clock, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const stats = [
-  { value: '10,000+', label: 'Verified Properties' },
-  { value: '50+', label: 'Cities Covered' },
-  { value: '5,000+', label: 'Happy Customers' },
-  { value: '₹0', label: 'Brokerage Fee' },
-];
-
 const features = [
   {
     icon: CheckCircle2,
@@ -56,29 +49,17 @@ export default function WhyAcreFlow() {
         <h2 className="text-2xl md:text-3xl font-bold text-navy text-center mb-2">
           Why Choose AcreFlow?
         </h2>
-        <p className="text-slate-accent text-center mb-12">
-          Experience real estate the way it should be
+        <p className="text-slate-accent text-center mb-4 text-sm md:text-base">
+          Experience real estate the way it should be — transparent, efficient, and completely broker-free.
         </p>
 
-        {/* Stats counter row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-12">
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="bg-sky/50 rounded-xl p-6 flex flex-col items-center justify-center"
-            >
-              <span className="text-3xl md:text-4xl font-bold text-royal">
-                {stat.value}
-              </span>
-              <span className="text-sm text-slate-accent mt-1">
-                {stat.label}
-              </span>
-            </div>
-          ))}
-        </div>
+        {/* Intro paragraph */}
+        <p className="max-w-2xl mx-auto text-center text-slate-accent mb-10 text-sm leading-relaxed">
+          At AcreFlow, we believe finding your dream property should be simple and stress-free. That&apos;s why we&apos;ve built a platform that puts you first — no hidden fees, no middlemen, just direct connections between buyers and sellers.
+        </p>
 
         {/* Feature grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (

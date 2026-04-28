@@ -26,6 +26,10 @@ import {
   Home,
   Star,
   AlertCircle,
+  Pencil,
+  Trash2,
+  Check,
+  X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -95,6 +99,39 @@ export default function LeadCenter() {
     listingTitle: '',
     status: 'warm',
   });
+
+  // ── Handlers ──────────────────────────────────────────────────────────
+
+  const handleStatusChange = (leadId: string, newStatus: LeadStatus) => {
+    setLeads((prev) =>
+      prev.map((l) => (l.id === leadId ? { ...l, status: newStatus } : l))
+    );
+    const statusLabel = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+    toast.success(`Lead status updated to ${statusLabel}`);
+  };
+
+  const handleDeleteLead = (leadId: string) => {
+    const lead = leads.find((l) => l.id === leadId);
+    if (window.confirm(`Are you sure you want to delete lead "${lead?.buyerName}"?`)) {
+      setLeads((prev) => prev.filter((l) => l.id !== leadId));
+      toast.success('Lead deleted');
+    }
+  };
+
+  const handleEditLead = (leadId: string, updatedFields: { buyerName?: string; buyerPhone?: string }) => {
+    setLeads((prev) =>
+      prev.map((l) =>
+        l.id === leadId ? { ...l, ...updatedFields } : l
+      )
+    );
+    toast.success('Lead updated successfully');
+  };
+
+  const handleStatCardClick = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  // ── Computed ──────────────────────────────────────────────────────────
 
   const filteredLeads = useMemo(() => {
     let result = [...leads];
@@ -192,9 +229,12 @@ export default function LeadCenter() {
         <h1 className="text-xl font-bold text-navy">Lead Center</h1>
       </div>
 
-      {/* Stats Cards Row */}
+      {/* Stats Cards Row — click to filter */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <Card className="bg-white rounded-xl border p-5 shadow-sm">
+        <Card
+          className={`bg-white rounded-xl border p-5 shadow-sm cursor-pointer transition-all hover:shadow-md ${activeTab === 'all' ? 'ring-2 ring-royal/30 border-royal/30' : ''}`}
+          onClick={() => handleStatCardClick('all')}
+        >
           <CardContent className="p-0 flex items-center gap-4">
             <div className="w-10 h-10 rounded-lg bg-royal/10 flex items-center justify-center">
               <Users className="w-5 h-5 text-royal" />
@@ -205,7 +245,10 @@ export default function LeadCenter() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white rounded-xl border p-5 shadow-sm">
+        <Card
+          className={`bg-white rounded-xl border p-5 shadow-sm cursor-pointer transition-all hover:shadow-md ${activeTab === 'hot' ? 'ring-2 ring-red-300 border-red-300' : ''}`}
+          onClick={() => handleStatCardClick('hot')}
+        >
           <CardContent className="p-0 flex items-center gap-4">
             <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
               <Flame className="w-5 h-5 text-red-600" />
@@ -216,7 +259,10 @@ export default function LeadCenter() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white rounded-xl border p-5 shadow-sm">
+        <Card
+          className={`bg-white rounded-xl border p-5 shadow-sm cursor-pointer transition-all hover:shadow-md ${activeTab === 'warm' ? 'ring-2 ring-amber-300 border-amber-300' : ''}`}
+          onClick={() => handleStatCardClick('warm')}
+        >
           <CardContent className="p-0 flex items-center gap-4">
             <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center">
               <Sun className="w-5 h-5 text-amber-600" />
@@ -227,7 +273,10 @@ export default function LeadCenter() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white rounded-xl border p-5 shadow-sm">
+        <Card
+          className={`bg-white rounded-xl border p-5 shadow-sm cursor-pointer transition-all hover:shadow-md ${activeTab === 'cold' ? 'ring-2 ring-blue-300 border-blue-300' : ''}`}
+          onClick={() => handleStatCardClick('cold')}
+        >
           <CardContent className="p-0 flex items-center gap-4">
             <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
               <Snowflake className="w-5 h-5 text-blue-600" />
@@ -448,23 +497,35 @@ export default function LeadCenter() {
         </TabsList>
 
         <TabsContent value="all">
-          <LeadList leads={filteredLeads} />
+          <LeadList leads={filteredLeads} onStatusChange={handleStatusChange} onDeleteLead={handleDeleteLead} onEditLead={handleEditLead} />
         </TabsContent>
         <TabsContent value="hot">
-          <LeadList leads={filteredLeads} />
+          <LeadList leads={filteredLeads} onStatusChange={handleStatusChange} onDeleteLead={handleDeleteLead} onEditLead={handleEditLead} />
         </TabsContent>
         <TabsContent value="warm">
-          <LeadList leads={filteredLeads} />
+          <LeadList leads={filteredLeads} onStatusChange={handleStatusChange} onDeleteLead={handleDeleteLead} onEditLead={handleEditLead} />
         </TabsContent>
         <TabsContent value="cold">
-          <LeadList leads={filteredLeads} />
+          <LeadList leads={filteredLeads} onStatusChange={handleStatusChange} onDeleteLead={handleDeleteLead} onEditLead={handleEditLead} />
         </TabsContent>
       </Tabs>
     </section>
   );
 }
 
-function LeadList({ leads }: { leads: Lead[] }) {
+// ── Lead List ─────────────────────────────────────────────────────────────
+
+function LeadList({
+  leads,
+  onStatusChange,
+  onDeleteLead,
+  onEditLead,
+}: {
+  leads: Lead[];
+  onStatusChange: (id: string, status: LeadStatus) => void;
+  onDeleteLead: (id: string) => void;
+  onEditLead: (id: string, fields: { buyerName?: string; buyerPhone?: string }) => void;
+}) {
   if (leads.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -482,15 +543,58 @@ function LeadList({ leads }: { leads: Lead[] }) {
   return (
     <div className="space-y-3">
       {leads.map((lead) => (
-        <LeadCard key={lead.id} lead={lead} />
+        <LeadCard
+          key={lead.id}
+          lead={lead}
+          onStatusChange={onStatusChange}
+          onDeleteLead={onDeleteLead}
+          onEditLead={onEditLead}
+        />
       ))}
     </div>
   );
 }
 
-function LeadCard({ lead }: { lead: Lead }) {
+// ── Lead Card ─────────────────────────────────────────────────────────────
+
+function LeadCard({
+  lead,
+  onStatusChange,
+  onDeleteLead,
+  onEditLead,
+}: {
+  lead: Lead;
+  onStatusChange: (id: string, status: LeadStatus) => void;
+  onDeleteLead: (id: string) => void;
+  onEditLead: (id: string, fields: { buyerName?: string; buyerPhone?: string }) => void;
+}) {
   const StatusIcon = statusIcons[lead.status];
   const initial = lead.buyerName.charAt(0).toUpperCase();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState(lead.buyerName);
+  const [editPhone, setEditPhone] = useState(lead.buyerPhone);
+
+  const handleStartEdit = () => {
+    setEditName(lead.buyerName);
+    setEditPhone(lead.buyerPhone);
+    setIsEditing(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editName.trim() || !editPhone.trim()) {
+      toast.error('Name and phone cannot be empty.');
+      return;
+    }
+    onEditLead(lead.id, { buyerName: editName.trim(), buyerPhone: editPhone.trim() });
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditName(lead.buyerName);
+    setEditPhone(lead.buyerPhone);
+    setIsEditing(false);
+  };
 
   return (
     <Card className="mb-0 hover:shadow-md transition-shadow duration-200">
@@ -505,9 +609,18 @@ function LeadCard({ lead }: { lead: Lead }) {
           <div className="flex-1 min-w-0">
             {/* Top row: Name + Status + Time */}
             <div className="flex flex-wrap items-center gap-2 mb-1">
-              <span className="text-sm font-semibold text-navy">
-                {lead.buyerName}
-              </span>
+              {isEditing ? (
+                <Input
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="h-7 w-40 text-sm rounded-lg px-2"
+                  autoFocus
+                />
+              ) : (
+                <span className="text-sm font-semibold text-navy">
+                  {lead.buyerName}
+                </span>
+              )}
               <Badge
                 variant="secondary"
                 className={`${statusBadgeClasses[lead.status]} text-xs font-medium px-2 py-0.5 rounded-full`}
@@ -521,16 +634,53 @@ function LeadCard({ lead }: { lead: Lead }) {
               </span>
             </div>
 
-            {/* Property */}
-            <p className="text-sm text-slate-accent flex items-center gap-1.5">
-              <Home className="w-3.5 h-3.5 flex-shrink-0" />
-              Interested in: {lead.listingTitle}
-            </p>
+            {/* Phone (editable in edit mode) */}
+            {isEditing ? (
+              <div className="flex items-center gap-2 mt-1">
+                <Phone className="w-3.5 h-3.5 text-slate-accent flex-shrink-0" />
+                <Input
+                  value={editPhone}
+                  onChange={(e) => setEditPhone(e.target.value)}
+                  className="h-7 w-48 text-sm rounded-lg px-2"
+                />
+              </div>
+            ) : (
+              <>
+                {/* Property */}
+                <p className="text-sm text-slate-accent flex items-center gap-1.5">
+                  <Home className="w-3.5 h-3.5 flex-shrink-0" />
+                  Interested in: {lead.listingTitle}
+                </p>
 
-            {/* Message preview */}
-            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-              {lead.message}
-            </p>
+                {/* Message preview */}
+                <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                  {lead.message}
+                </p>
+              </>
+            )}
+
+            {/* Edit mode action buttons */}
+            {isEditing && (
+              <div className="flex items-center gap-2 mt-3">
+                <Button
+                  size="sm"
+                  className="h-7 px-3 text-xs bg-royal hover:bg-royal-dark text-white rounded-lg"
+                  onClick={handleSaveEdit}
+                >
+                  <Check className="w-3 h-3 mr-1" />
+                  Save
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-7 px-3 text-xs rounded-lg border-border text-slate-accent hover:bg-cream"
+                  onClick={handleCancelEdit}
+                >
+                  <X className="w-3 h-3 mr-1" />
+                  Cancel
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Right actions */}
@@ -556,6 +706,55 @@ function LeadCard({ lead }: { lead: Lead }) {
               }
             >
               <Mail className="w-4 h-4" />
+            </button>
+            {/* Status change dropdown */}
+            <Select
+              value={lead.status}
+              onValueChange={(val) => onStatusChange(lead.id, val as LeadStatus)}
+            >
+              <SelectTrigger
+                className="w-9 h-9 p-0 rounded-lg bg-cream hover:bg-cream/80 transition-colors border-0 [&>span]:hidden"
+                title="Change status"
+              >
+                <Filter className="w-4 h-4 text-slate-accent" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="hot">
+                  <span className="flex items-center gap-2">
+                    <Flame className="w-3.5 h-3.5 text-red-600" /> Hot
+                  </span>
+                </SelectItem>
+                <SelectItem value="warm">
+                  <span className="flex items-center gap-2">
+                    <Sun className="w-3.5 h-3.5 text-amber-600" /> Warm
+                  </span>
+                </SelectItem>
+                <SelectItem value="cold">
+                  <span className="flex items-center gap-2">
+                    <Snowflake className="w-3.5 h-3.5 text-blue-600" /> Cold
+                  </span>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            {/* Edit button */}
+            <button
+              className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
+                isEditing
+                  ? 'bg-royal/10 text-royal'
+                  : 'bg-cream text-slate-accent hover:bg-cream/80'
+              }`}
+              title="Edit lead"
+              onClick={handleStartEdit}
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
+            {/* Delete button */}
+            <button
+              className="w-9 h-9 rounded-lg bg-cream flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+              title="Delete lead"
+              onClick={() => onDeleteLead(lead.id)}
+            >
+              <Trash2 className="w-4 h-4" />
             </button>
           </div>
         </div>

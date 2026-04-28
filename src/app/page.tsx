@@ -16,10 +16,24 @@ import EMICalculator from '@/components/acreflow/EMICalculator';
 import PostPropertyWizard from '@/components/acreflow/PostPropertyWizard';
 import LeadCenter from '@/components/acreflow/LeadCenter';
 import ComparisonTray from '@/components/acreflow/ComparisonTray';
+import Testimonials from '@/components/acreflow/Testimonials';
+import FAQ from '@/components/acreflow/FAQ';
+import BuilderProjects from '@/components/acreflow/BuilderProjects';
+import TopAgents from '@/components/acreflow/TopAgents';
+import UrgencyBanner from '@/components/acreflow/UrgencyBanner';
 import { useEffect } from 'react';
 
 export default function Home() {
-  const { currentView, showComparison, comparisonList, scrollPosition } = useAcreFlowStore();
+  const { currentView, showComparison, comparisonList, darkMode } = useAcreFlowStore();
+
+  // Dark mode class toggle
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   // Scroll to top when view changes to non-home
   useEffect(() => {
@@ -45,11 +59,16 @@ export default function Home() {
       default:
         return (
           <>
+            <UrgencyBanner />
             <HeroSearch />
             <ServiceIcons />
             <FeaturedProperties />
+            <BuilderProjects />
             <WhyAcreFlow />
             <MarketIntel />
+            <Testimonials />
+            <TopAgents />
+            <FAQ />
             <MobileAppCTA />
           </>
         );

@@ -1,6 +1,6 @@
 'use client';
 
-import { Search, Home, PlusCircle, Heart, User } from 'lucide-react';
+import { Search, PlusCircle, Heart, Bell, User } from 'lucide-react';
 import { useAcreFlowStore } from '@/lib/store';
 
 const NAV_ITEMS = [
@@ -8,42 +8,38 @@ const NAV_ITEMS = [
     icon: Search,
     label: 'Search',
     activeViews: ['search', 'home'],
-    view: 'search',
+    view: 'search' as const,
   },
   {
-    icon: Home,
-    label: 'Buy',
-    activeViews: ['property-detail'],
-    view: 'search',
-    category: 'buy' as const,
+    icon: Heart,
+    label: 'Shortlist',
+    activeViews: [],
+    view: 'home' as const,
   },
   {
     icon: PlusCircle,
     label: 'Post',
     activeViews: ['post-property'],
-    view: 'post-property',
+    view: 'post-property' as const,
   },
   {
-    icon: Heart,
-    label: 'Favorites',
+    icon: Bell,
+    label: 'Activity',
     activeViews: [],
-    view: 'home',
+    view: 'home' as const,
   },
   {
     icon: User,
     label: 'Profile',
     activeViews: ['lead-center'],
-    view: 'lead-center',
+    view: 'lead-center' as const,
   },
 ] as const;
 
 export default function MobileNav() {
-  const { currentView, setView, setFilters } = useAcreFlowStore();
+  const { currentView, setView, setFilters, unreadCount } = useAcreFlowStore();
 
   const handleNavClick = (item: (typeof NAV_ITEMS)[number]) => {
-    if ('category' in item && item.category) {
-      setFilters({ category: item.category });
-    }
     setView(item.view);
   };
 
@@ -51,8 +47,13 @@ export default function MobileNav() {
     return item.activeViews.includes(currentView as never);
   };
 
+  const notifications = unreadCount();
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-border shadow-lg">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-border shadow-lg"
+      style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
+    >
       <div className="flex items-center justify-around px-2 py-1">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item);
@@ -62,8 +63,13 @@ export default function MobileNav() {
             <button
               key={item.label}
               onClick={() => handleNavClick(item)}
-              className="flex flex-col items-center gap-0.5 py-1.5 px-3 min-h-10 min-w-[3.5rem] transition-colors"
+              className="flex flex-col items-center gap-0.5 py-1.5 px-3 min-h-10 min-w-[3.5rem] transition-colors relative"
             >
+              {item.label === 'Activity' && notifications > 0 && (
+                <span className="absolute -top-0.5 right-1.5 bg-danger text-white text-[9px] font-bold rounded-full min-w-[14px] h-[14px] flex items-center justify-center px-0.5">
+                  {notifications}
+                </span>
+              )}
               <Icon
                 className={`size-5 transition-colors ${active ? 'text-royal' : 'text-slate-accent'}`}
                 strokeWidth={active ? 2.5 : 1.8}
