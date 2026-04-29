@@ -45,28 +45,14 @@ import {
   Tag,
   Home,
   ArrowRight,
-  Copy,
   GitCompareArrows,
   BadgeCheck,
-  Send,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { useState, useMemo } from 'react';
 
 // ─── Amenity icon mapping ─────────────────────────────────────────────
@@ -90,13 +76,6 @@ const AMENITY_ICON_MAP: Record<string, React.ElementType> = {
   vaastu: Compass,
   'servant-room': UserRound,
 };
-
-// ─── Time slots for schedule visit ────────────────────────────────────
-const TIME_SLOTS = [
-  { id: 'morning', label: 'Morning', range: '9:00 AM – 12:00 PM' },
-  { id: 'afternoon', label: 'Afternoon', range: '2:00 PM – 5:00 PM' },
-  { id: 'evening', label: 'Evening', range: '5:00 PM – 7:00 PM' },
-];
 
 // ─── Helper: format price to EMI estimate ────────────────────────────
 function formatEMI(price: number, category: string): string {
@@ -201,7 +180,7 @@ function PriceTrendChart({ locality }: { locality: string }) {
   return (
     <Card className="bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+        <CardTitle className="text-base sm:text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
           <Tag className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
           Price Trend
         </CardTitle>
@@ -210,7 +189,7 @@ function PriceTrendChart({ locality }: { locality: string }) {
         </p>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col sm:flex-row sm:items-end gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4">
           {/* SVG Chart */}
           <div className="flex-1">
             <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full h-auto">
@@ -244,12 +223,12 @@ function PriceTrendChart({ locality }: { locality: string }) {
             </svg>
           </div>
           {/* Stats */}
-          <div className="flex flex-col gap-2 sm:min-w-[140px]">
-            <div className="bg-cream dark:bg-[#1D3461] rounded-xl p-3">
+          <div className="flex flex-row sm:flex-col gap-2 sm:min-w-[140px]">
+            <div className="bg-cream dark:bg-[#1D3461] rounded-xl p-3 flex-1 sm:flex-none">
               <p className="text-xs text-slate-accent dark:text-[#94A3B8]">Avg Price</p>
-              <p className="text-lg font-bold text-royal dark:text-[#60A5FA]">₹{avgPrice.toLocaleString('en-IN')}/sqft</p>
+              <p className="text-base sm:text-lg font-bold text-royal dark:text-[#60A5FA]">₹{avgPrice.toLocaleString('en-IN')}/sqft</p>
             </div>
-            <div className="bg-cream dark:bg-[#1D3461] rounded-xl p-3 flex items-center gap-2">
+            <div className="bg-cream dark:bg-[#1D3461] rounded-xl p-3 flex items-center gap-2 flex-1 sm:flex-none">
               {Number(yoyChange) >= 0 ? (
                 <ArrowRight className="h-4 w-4 text-green-600 rotate-[-45deg]" />
               ) : (
@@ -279,33 +258,17 @@ export default function PropertyDetail() {
     toggleWishlist,
     isInComparison,
     toggleComparison,
+    setView,
   } = useAcreFlowStore();
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
 
-  // Contact modal state
-  const [showContactModal, setShowContactModal] = useState(false);
-  const [contactName, setContactName] = useState('');
-  const [contactPhone, setContactPhone] = useState('');
-  const [contactMessage, setContactMessage] = useState('');
-
-  // Schedule visit dialog state
-  const [showScheduleDialog, setShowScheduleDialog] = useState(false);
-  const [visitDate, setVisitDate] = useState('');
-  const [visitTimeSlot, setVisitTimeSlot] = useState('');
-  const [visitName, setVisitName] = useState('');
-  const [visitPhone, setVisitPhone] = useState('');
-
-  // Quick enquiry state
-  const [eqName, setEqName] = useState('');
-  const [eqPhone, setEqPhone] = useState('');
-
   // No property selected — render skeleton
   if (!selectedProperty) {
     return (
       <div className="min-h-screen bg-cream dark:bg-[#0A192F]">
-        <div className="max-w-5xl mx-auto px-4 pt-4">
+        <div className="max-w-5xl mx-auto px-3 sm:px-4 md:px-6 pt-3 sm:pt-4">
           <Skeleton className="h-8 w-32 mb-4" />
           <Skeleton className="h-64 md:h-96 rounded-2xl mb-4" />
           <Skeleton className="h-48 rounded-2xl mb-4" />
@@ -351,22 +314,12 @@ export default function PropertyDetail() {
     : thumbnailImages[currentImageIndex];
 
   // ─── Action handlers ────────────────────────────────────────────────
-  // T13: Contact button opens modal
   const handleContactClick = () => {
-    setContactMessage(`Hi, I'm interested in ${property.title} at ${property.locality}. Please share more details.`);
-    setShowContactModal(true);
+    setView('contact-owner');
   };
 
-  // T13: Contact form submit
-  const handleContactSubmit = () => {
-    if (!contactName.trim() || !contactPhone.trim()) {
-      toast.error('Please fill in your name and phone number');
-      return;
-    }
-    setShowContactModal(false);
-    toast.success('Owner contact details sent to your phone!');
-    // Open tel: link
-    window.open(`tel:${property.ownerPhone}`, '_self');
+  const handleScheduleClick = () => {
+    setView('schedule-visit');
   };
 
   // T4: WhatsApp deep link
@@ -403,32 +356,6 @@ export default function PropertyDetail() {
     }
   };
 
-  // T12: Schedule Visit confirm
-  const handleScheduleSubmit = () => {
-    if (!visitDate || !visitTimeSlot || !visitName.trim() || !visitPhone.trim()) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-    setShowScheduleDialog(false);
-    toast.success('Visit scheduled!');
-    // Reset form
-    setVisitDate('');
-    setVisitTimeSlot('');
-    setVisitName('');
-    setVisitPhone('');
-  };
-
-  // T28: Quick Enquiry submit
-  const handleQuickEnquiry = () => {
-    if (!eqName.trim() || !eqPhone.trim()) {
-      toast.error('Please fill in your name and phone number');
-      return;
-    }
-    toast.success('Enquiry sent successfully!');
-    setEqName('');
-    setEqPhone('');
-  };
-
   const handleSimilarClick = (p: PropertyListing) => {
     setSelectedProperty(p);
     setCurrentImageIndex(0);
@@ -440,24 +367,24 @@ export default function PropertyDetail() {
   const priceDisplay = formatPrice(property.price, property.category);
 
   return (
-    <div className="min-h-screen bg-cream dark:bg-[#0A192F] pb-36 md:pb-24">
+    <div className="min-h-screen bg-cream dark:bg-[#0A192F] pb-40 md:pb-24">
       {/* ═══════ STICKY ACTION BAR (T3: above MobileNav on mobile) ═══════ */}
-      <div className="fixed bottom-16 z-40 bg-white dark:bg-[#112240] border-t dark:border-[#1D3461] shadow-2xl md:bottom-4 md:mx-auto md:max-w-lg md:rounded-2xl md:border md:border-border md:dark:border-[#1D3461]">
-        <div className="flex items-center gap-3 p-3 md:p-4">
+      <div className="fixed bottom-16 z-40 bg-white dark:bg-[#112240] border-t dark:border-[#1D3461] shadow-2xl md:bottom-4 md:mx-auto md:max-w-lg md:rounded-2xl md:border md:border-border md:dark:border-[#1D3461] pb-safe">
+        <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4">
           {/* Price + EMI */}
           <div className="flex flex-col min-w-0">
-            <span className="text-lg font-bold text-royal dark:text-[#60A5FA] whitespace-nowrap">
+            <span className="text-base sm:text-lg font-bold text-royal dark:text-[#60A5FA] whitespace-nowrap">
               {priceDisplay}
             </span>
             {emiText && (
-              <span className="text-xs text-slate-accent dark:text-[#94A3B8]">{emiText}</span>
+              <span className="text-[10px] sm:text-xs text-slate-accent dark:text-[#94A3B8]">{emiText}</span>
             )}
           </div>
           {/* T1: Add to Compare button */}
           <Button
             onClick={handleCompare}
             variant={inComparison ? 'default' : 'outline'}
-            className={`h-10 rounded-xl font-semibold px-3 hidden sm:flex ${
+            className={`h-11 rounded-xl font-semibold px-3 hidden sm:flex ${
               inComparison
                 ? 'bg-royal text-white hover:bg-royal-dark'
                 : 'border-royal/30 text-royal dark:text-[#60A5FA] hover:bg-royal/5'
@@ -467,10 +394,10 @@ export default function PropertyDetail() {
             <span className="hidden md:inline">{inComparison ? 'Comparing' : 'Compare'}</span>
           </Button>
           {/* Buttons */}
-          <div className="flex items-center gap-2 ml-auto">
+          <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
             <Button
               onClick={handleContactClick}
-              className="bg-royal hover:bg-royal-dark text-white flex-1 md:flex-none md:px-6 h-11 rounded-xl font-semibold"
+              className="bg-royal hover:bg-royal-dark text-white flex-1 md:flex-none md:px-6 h-11 rounded-xl font-semibold text-sm sm:text-base"
             >
               <Phone className="h-4 w-4 mr-1.5" />
               <span className="hidden sm:inline">Contact Seller</span>
@@ -478,9 +405,9 @@ export default function PropertyDetail() {
             </Button>
             <Button
               onClick={handleWhatsApp}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 h-11 rounded-xl font-semibold"
+              className="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 h-11 rounded-xl font-semibold"
             >
-              <MessageCircle className="h-4 w-4 mr-1.5" />
+              <MessageCircle className="h-4 w-4 mr-1 sm:mr-1.5" />
               <span className="hidden sm:inline">WhatsApp</span>
             </Button>
           </div>
@@ -488,21 +415,22 @@ export default function PropertyDetail() {
       </div>
 
       {/* ═══════ MAIN CONTENT ═══════ */}
-      <div className="max-w-5xl mx-auto px-4 pt-4">
+      <div className="max-w-5xl mx-auto px-3 sm:px-4 md:px-6 pt-3 sm:pt-4">
         {/* ─── Back button row ──────────────────────────────────────── */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
           <button
             onClick={goBack}
-            className="flex items-center gap-1.5 text-sm text-slate-accent dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors min-h-10"
+            className="flex items-center gap-1.5 text-sm text-slate-accent dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors min-h-11 min-w-11 px-2"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span>Back to Results</span>
+            <span className="hidden sm:inline">Back to Results</span>
+            <span className="sm:hidden">Back</span>
           </button>
           <div className="flex items-center gap-1">
             {/* T5: Working Wishlist Heart */}
             <button
               onClick={handleSave}
-              className="p-2 rounded-full hover:bg-white dark:hover:bg-[#112240] transition-colors min-h-10 min-w-10 flex items-center justify-center"
+              className="p-2 rounded-full hover:bg-white dark:hover:bg-[#112240] transition-colors min-h-11 min-w-11 flex items-center justify-center"
               aria-label="Save property"
             >
               <Heart
@@ -516,7 +444,7 @@ export default function PropertyDetail() {
             {/* T6: Actual Share */}
             <button
               onClick={handleShare}
-              className="p-2 rounded-full hover:bg-white dark:hover:bg-[#112240] transition-colors min-h-10 min-w-10 flex items-center justify-center"
+              className="p-2 rounded-full hover:bg-white dark:hover:bg-[#112240] transition-colors min-h-11 min-w-11 flex items-center justify-center"
               aria-label="Share property"
             >
               <Share2 className="h-5 w-5 text-slate-accent dark:text-[#94A3B8] hover:text-royal dark:hover:text-[#60A5FA] transition-colors" />
@@ -524,7 +452,7 @@ export default function PropertyDetail() {
             {/* T1: Add to Compare (mobile, shown in top bar) */}
             <button
               onClick={handleCompare}
-              className={`p-2 rounded-full transition-colors min-h-10 min-w-10 flex items-center justify-center ${
+              className={`p-2 rounded-full transition-colors min-h-11 min-w-11 flex items-center justify-center ${
                 inComparison ? 'bg-royal/10' : 'hover:bg-white dark:hover:bg-[#112240]'
               }`}
               aria-label="Compare"
@@ -539,7 +467,7 @@ export default function PropertyDetail() {
         </div>
 
         {/* ─── Media Gallery ───────────────────────────────────────── */}
-        <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden bg-muted dark:bg-[#1D3461] group">
+        <div className="relative h-56 sm:h-64 md:h-96 rounded-2xl overflow-hidden bg-muted dark:bg-[#1D3461] group">
           {/* Main Image */}
           <img
             src={currentImageSrc}
@@ -580,11 +508,11 @@ export default function PropertyDetail() {
 
           {/* 360° Tour & Video buttons - bottom left */}
           <div className="absolute bottom-3 left-3 flex gap-2">
-            <button className="bg-navy/80 text-white rounded-lg px-3 py-1.5 text-xs flex items-center gap-1 hover:bg-navy/90 transition-colors min-h-10">
+            <button className="bg-navy/80 text-white rounded-lg px-3 py-1.5 text-xs flex items-center gap-1 hover:bg-navy/90 transition-colors min-h-11">
               <RotateCcw className="h-3 w-3" />
               360° Tour
             </button>
-            <button className="bg-navy/80 text-white rounded-lg px-3 py-1.5 text-xs flex items-center gap-1 hover:bg-navy/90 transition-colors min-h-10">
+            <button className="bg-navy/80 text-white rounded-lg px-3 py-1.5 text-xs flex items-center gap-1 hover:bg-navy/90 transition-colors min-h-11">
               <Play className="h-3 w-3" />
               Video
             </button>
@@ -593,7 +521,7 @@ export default function PropertyDetail() {
           {/* T23: Left navigation arrow - always visible on mobile */}
           <button
             onClick={prevImage}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-[#112240]/90 hover:bg-white dark:hover:bg-[#112240] rounded-full p-2 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-[#112240]/90 hover:bg-white dark:hover:bg-[#112240] rounded-full p-2 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity min-h-11 min-w-11 flex items-center justify-center"
             aria-label="Previous image"
           >
             <ChevronLeft className="h-5 w-5 text-navy dark:text-white" />
@@ -602,7 +530,7 @@ export default function PropertyDetail() {
           {/* T23: Right navigation arrow - always visible on mobile */}
           <button
             onClick={nextImage}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-[#112240]/90 hover:bg-white dark:hover:bg-[#112240] rounded-full p-2 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-[#112240]/90 hover:bg-white dark:hover:bg-[#112240] rounded-full p-2 shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity min-h-11 min-w-11 flex items-center justify-center"
             aria-label="Next image"
           >
             <ChevronRight className="h-5 w-5 text-navy dark:text-white" />
@@ -633,7 +561,7 @@ export default function PropertyDetail() {
             <button
               key={idx}
               onClick={() => setCurrentImageIndex(idx)}
-              className={`flex-shrink-0 h-16 w-16 rounded-lg overflow-hidden transition-all ${
+              className={`flex-shrink-0 h-14 sm:h-16 w-14 sm:w-16 rounded-lg overflow-hidden transition-all ${
                 idx === currentImageIndex
                   ? 'border-2 border-royal dark:border-[#60A5FA] ring-2 ring-royal/20'
                   : 'border border-border dark:border-[#1D3461] hover:border-slate-accent/40'
@@ -655,15 +583,15 @@ export default function PropertyDetail() {
         </div>
 
         {/* ─── Property Info Card ──────────────────────────────────── */}
-        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
-          <CardContent className="p-6">
+        <Card className="mt-3 sm:mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
+          <CardContent className="p-3 sm:p-4 md:p-5">
             {/* Price */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-2xl md:text-3xl font-bold text-royal dark:text-[#60A5FA]">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              <span className="text-xl sm:text-2xl md:text-3xl font-bold text-royal dark:text-[#60A5FA]">
                 {priceDisplay}
               </span>
               {property.originalPrice && (
-                <span className="text-lg text-slate-accent dark:text-[#94A3B8] line-through">
+                <span className="text-base sm:text-lg text-slate-accent dark:text-[#94A3B8] line-through">
                   {formatPrice(property.originalPrice, property.category)}
                 </span>
               )}
@@ -675,18 +603,18 @@ export default function PropertyDetail() {
             </div>
 
             {/* Title */}
-            <h1 className="text-xl font-semibold text-navy dark:text-white mt-2 leading-tight">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-navy dark:text-white mt-2 leading-tight">
               {property.title}
             </h1>
 
             {/* Location */}
-            <div className="flex items-center gap-1 text-sm text-slate-accent dark:text-[#94A3B8] mt-1.5">
+            <div className="flex items-center gap-1 text-sm sm:text-base text-slate-accent dark:text-[#94A3B8] mt-1.5">
               <MapPin className="h-4 w-4 flex-shrink-0" />
               <span className="truncate">{property.address}</span>
             </div>
 
             {/* Views + Posted */}
-            <div className="flex items-center gap-4 mt-2 text-xs text-slate-accent dark:text-[#94A3B8]">
+            <div className="flex items-center gap-3 sm:gap-4 mt-2 text-xs text-slate-accent dark:text-[#94A3B8]">
               <span className="flex items-center gap-1">
                 <Eye className="h-3.5 w-3.5" />
                 {property.views.toLocaleString()} views
@@ -702,57 +630,57 @@ export default function PropertyDetail() {
             </div>
 
             {/* Quick Specs Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 p-4 bg-cream dark:bg-[#1D3461] rounded-xl">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-3 sm:mt-4 p-3 sm:p-4 bg-cream dark:bg-[#1D3461] rounded-xl">
               {property.bhk > 0 && (
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
+                <div className="flex items-center gap-2 sm:gap-2.5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
                     <BedDouble className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-navy dark:text-white">{property.bhk} Beds</p>
-                    <p className="text-xs text-slate-accent dark:text-[#94A3B8]">Bedrooms</p>
+                    <p className="text-xs sm:text-sm font-semibold text-navy dark:text-white">{property.bhk} Beds</p>
+                    <p className="text-[10px] sm:text-xs text-slate-accent dark:text-[#94A3B8]">Bedrooms</p>
                   </div>
                 </div>
               )}
               {property.bathrooms > 0 && (
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
+                <div className="flex items-center gap-2 sm:gap-2.5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
                     <Bath className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-navy dark:text-white">{property.bathrooms} Baths</p>
-                    <p className="text-xs text-slate-accent dark:text-[#94A3B8]">Bathrooms</p>
+                    <p className="text-xs sm:text-sm font-semibold text-navy dark:text-white">{property.bathrooms} Baths</p>
+                    <p className="text-[10px] sm:text-xs text-slate-accent dark:text-[#94A3B8]">Bathrooms</p>
                   </div>
                 </div>
               )}
               {property.carpetArea > 0 && (
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
+                <div className="flex items-center gap-2 sm:gap-2.5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
                     <Maximize className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-navy dark:text-white">
+                    <p className="text-xs sm:text-sm font-semibold text-navy dark:text-white">
                       {property.carpetArea.toLocaleString()} sqft
                     </p>
-                    <p className="text-xs text-slate-accent dark:text-[#94A3B8]">Carpet Area</p>
+                    <p className="text-[10px] sm:text-xs text-slate-accent dark:text-[#94A3B8]">Carpet Area</p>
                   </div>
                 </div>
               )}
               {property.ageOfProperty && property.ageOfProperty !== 'N/A' && (
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
+                <div className="flex items-center gap-2 sm:gap-2.5">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-sky dark:bg-[#1D3461] flex items-center justify-center">
                     <Calendar className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-navy dark:text-white">{property.ageOfProperty}</p>
-                    <p className="text-xs text-slate-accent dark:text-[#94A3B8]">Age</p>
+                    <p className="text-xs sm:text-sm font-semibold text-navy dark:text-white">{property.ageOfProperty}</p>
+                    <p className="text-[10px] sm:text-xs text-slate-accent dark:text-[#94A3B8]">Age</p>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Additional Specs */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4 text-sm">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3 sm:mt-4 text-sm">
               <div className="flex justify-between py-1.5">
                 <span className="text-slate-accent dark:text-[#94A3B8]">Furnishing</span>
                 <span className="font-medium text-navy dark:text-white capitalize">
@@ -794,15 +722,15 @@ export default function PropertyDetail() {
         </Card>
 
         {/* ─── Description ─────────────────────────────────────────── */}
-        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
+        <Card className="mt-3 sm:mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
-              <Copy className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
+            <CardTitle className="text-base sm:text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+              <Maximize className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
               Property Description
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-slate-accent dark:text-[#94A3B8] leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-accent dark:text-[#94A3B8] leading-relaxed">
               {descriptionExpanded
                 ? property.description
                 : property.description.length > 150
@@ -821,15 +749,15 @@ export default function PropertyDetail() {
         </Card>
 
         {/* ─── Amenities ───────────────────────────────────────────── */}
-        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
+        <Card className="mt-3 sm:mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+            <CardTitle className="text-base sm:text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
               <Star className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
               Amenities
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3">
               {property.amenities.map((amenityId) => {
                 const amenityDef = AMENITIES.find((a) => a.id === amenityId);
                 const IconComponent = AMENITY_ICON_MAP[amenityId];
@@ -838,14 +766,14 @@ export default function PropertyDetail() {
                     key={amenityId}
                     className="flex items-center gap-2 text-sm"
                   >
-                    <div className="bg-sky dark:bg-[#1D3461] rounded-lg w-8 h-8 flex items-center justify-center flex-shrink-0">
+                    <div className="bg-sky dark:bg-[#1D3461] rounded-lg w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center flex-shrink-0">
                       {IconComponent ? (
-                        <IconComponent className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
+                        <IconComponent className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-royal dark:text-[#60A5FA]" />
                       ) : (
-                        <CheckCircle2 className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
+                        <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-royal dark:text-[#60A5FA]" />
                       )}
                     </div>
-                    <span className="text-navy dark:text-white font-medium">
+                    <span className="text-navy dark:text-white font-medium text-xs sm:text-sm">
                       {amenityDef?.label || amenityId}
                     </span>
                   </div>
@@ -856,29 +784,29 @@ export default function PropertyDetail() {
         </Card>
 
         {/* ─── T14: Price Trend ────────────────────────────────────── */}
-        <div className="mt-4">
+        <div className="mt-3 sm:mt-4">
           <PriceTrendChart locality={property.locality} />
         </div>
 
         {/* ─── T15: Owner Details Card ─────────────────────────────── */}
-        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
+        <Card className="mt-3 sm:mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+            <CardTitle className="text-base sm:text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
               <UserRound className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
               About the Owner/Agent
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-3 sm:gap-4">
               {/* Owner avatar - first letter circle */}
-              <div className="w-14 h-14 rounded-full bg-royal/10 flex items-center justify-center flex-shrink-0">
-                <span className="text-xl font-bold text-royal dark:text-[#60A5FA]">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-royal/10 flex items-center justify-center flex-shrink-0">
+                <span className="text-lg sm:text-xl font-bold text-royal dark:text-[#60A5FA]">
                   {property.ownerName.charAt(0).toUpperCase()}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-base font-semibold text-navy dark:text-white">
+                  <h3 className="text-sm sm:text-base font-semibold text-navy dark:text-white">
                     {property.ownerName}
                   </h3>
                   {/* Verified badge */}
@@ -890,7 +818,7 @@ export default function PropertyDetail() {
                   )}
                 </div>
                 {/* Label: Owner or Agent */}
-                <p className="text-sm text-slate-accent dark:text-[#94A3B8] mt-0.5">
+                <p className="text-xs sm:text-sm text-slate-accent dark:text-[#94A3B8] mt-0.5">
                   {property.directFromOwner ? 'Property Owner' : 'Agent'}
                 </p>
                 {/* Response time */}
@@ -901,7 +829,7 @@ export default function PropertyDetail() {
                 {/* View All Listings button */}
                 <Button
                   variant="outline"
-                  className="mt-3 h-10 rounded-xl border-royal/30 text-royal dark:text-[#60A5FA] hover:bg-royal/5 font-semibold text-sm"
+                  className="mt-3 h-11 rounded-xl border-royal/30 text-royal dark:text-[#60A5FA] hover:bg-royal/5 font-semibold text-sm"
                 >
                   <Building2 className="h-4 w-4 mr-1.5" />
                   View All Listings
@@ -912,25 +840,25 @@ export default function PropertyDetail() {
         </Card>
 
         {/* ─── Location & Neighborhood ─────────────────────────────── */}
-        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
+        <Card className="mt-3 sm:mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+            <CardTitle className="text-base sm:text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
               <MapPin className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
               Location
             </CardTitle>
           </CardHeader>
           <CardContent>
             {/* Map placeholder */}
-            <div className="bg-cream dark:bg-[#1D3461] rounded-xl h-48 flex flex-col items-center justify-center border-2 border-dashed border-border dark:border-[#1D3461]">
+            <div className="bg-cream dark:bg-[#1D3461] rounded-xl h-40 sm:h-48 flex flex-col items-center justify-center border-2 border-dashed border-border dark:border-[#1D3461]">
               <MapPin className="h-8 w-8 text-slate-accent dark:text-[#94A3B8] mb-2" />
               <span className="text-sm font-medium text-slate-accent dark:text-[#94A3B8]">Map View</span>
               <span className="text-xs text-slate-accent dark:text-[#94A3B8] mt-0.5">{property.locality}, {property.city}</span>
             </div>
 
             {/* Nearby Places */}
-            <div className="mt-4">
+            <div className="mt-3 sm:mt-4">
               <h3 className="text-sm font-semibold text-navy dark:text-white mb-3">Nearby Places</h3>
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-2 sm:gap-2.5">
                 {NEARBY_PLACES.map((place, idx) => {
                   const PlaceIcon = place.icon;
                   return (
@@ -960,9 +888,9 @@ export default function PropertyDetail() {
         </Card>
 
         {/* ─── Locality Ratings ────────────────────────────────────── */}
-        <Card className="mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
+        <Card className="mt-3 sm:mt-4 bg-white dark:bg-[#112240] rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
+            <CardTitle className="text-base sm:text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
               <Shield className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
               Locality Insights
             </CardTitle>
@@ -971,13 +899,13 @@ export default function PropertyDetail() {
             </p>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3 sm:gap-4">
               {DEFAULT_RATINGS.map((rating) => (
                 <div
                   key={rating.label}
-                  className="flex flex-col items-center gap-1.5 min-w-[90px]"
+                  className="flex flex-col items-center gap-1.5 min-w-[80px] sm:min-w-[90px]"
                 >
-                  <span className="text-sm text-navy dark:text-white font-medium">{rating.label}</span>
+                  <span className="text-xs sm:text-sm text-navy dark:text-white font-medium">{rating.label}</span>
                   <StarRating score={rating.score} />
                   <span className="text-xs text-slate-accent dark:text-[#94A3B8]">{rating.score}/5</span>
                 </div>
@@ -986,46 +914,32 @@ export default function PropertyDetail() {
           </CardContent>
         </Card>
 
-        {/* ─── T28: Quick Enquiry Inline Form (desktop only) ───────── */}
-        <div className="mt-4 hidden lg:block">
-          <Card className="bg-cream dark:bg-[#1D3461] rounded-xl border border-border dark:border-[#1D3461]">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2">
-                <Send className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
-                Quick Enquiry
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4">
-              <p className="text-sm text-slate-accent dark:text-[#94A3B8] mb-4">
-                I&apos;m interested in <span className="font-semibold text-navy dark:text-white">{property.title}</span>
-              </p>
-              <div className="flex items-end gap-3">
-                <div className="flex-1">
-                  <Label htmlFor="eq-name" className="text-xs text-slate-accent dark:text-[#94A3B8] mb-1.5">Name</Label>
-                  <Input
-                    id="eq-name"
-                    placeholder="Your name"
-                    value={eqName}
-                    onChange={(e) => setEqName(e.target.value)}
-                    className="bg-white dark:bg-[#112240] h-10 rounded-lg"
-                  />
-                </div>
-                <div className="flex-1">
-                  <Label htmlFor="eq-phone" className="text-xs text-slate-accent dark:text-[#94A3B8] mb-1.5">Phone</Label>
-                  <Input
-                    id="eq-phone"
-                    placeholder="+91 98765 43210"
-                    value={eqPhone}
-                    onChange={(e) => setEqPhone(e.target.value)}
-                    className="bg-white dark:bg-[#112240] h-10 rounded-lg"
-                  />
-                </div>
+        {/* ─── Enquire Now CTA ──────────────────────────────────────── */}
+        <div className="mt-3 sm:mt-4">
+          <Card className="bg-gradient-to-r from-royal to-royal-dark rounded-2xl overflow-hidden">
+            <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg font-semibold text-white">
+                  Interested in this property?
+                </h3>
+                <p className="text-xs sm:text-sm text-white/80 mt-0.5">
+                  Contact the owner or schedule a visit
+                </p>
+              </div>
+              <div className="flex items-center gap-2 w-full sm:w-auto">
                 <Button
-                  onClick={handleQuickEnquiry}
-                  className="bg-royal hover:bg-royal-dark text-white h-10 rounded-xl font-semibold px-6 flex-shrink-0"
+                  onClick={handleContactClick}
+                  className="bg-white text-royal hover:bg-white/90 flex-1 sm:flex-none h-11 rounded-xl font-semibold text-sm"
                 >
-                  <Send className="h-4 w-4 mr-1.5" />
-                  Enquire Now
+                  <Phone className="h-4 w-4 mr-1.5" />
+                  Contact Seller
+                </Button>
+                <Button
+                  onClick={handleScheduleClick}
+                  className="bg-white/20 text-white hover:bg-white/30 border border-white/30 flex-1 sm:flex-none h-11 rounded-xl font-semibold text-sm"
+                >
+                  <Calendar className="h-4 w-4 mr-1.5" />
+                  Schedule Visit
                 </Button>
               </div>
             </CardContent>
@@ -1033,20 +947,20 @@ export default function PropertyDetail() {
         </div>
 
         {/* ─── Similar Properties ──────────────────────────────────── */}
-        <div className="mt-4 mb-8">
-          <h2 className="text-lg font-semibold text-navy dark:text-white flex items-center gap-2 mb-4">
+        <div className="mt-3 sm:mt-4 mb-8">
+          <h2 className="text-base sm:text-lg font-semibold text-navy dark:text-white flex items-center gap-2 mb-3 sm:mb-4">
             <Home className="h-4 w-4 text-royal dark:text-[#60A5FA]" />
             Similar Properties
           </h2>
-          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin">
+          <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-thin">
             {similarProperties.map((sp) => (
               <button
                 key={sp.id}
                 onClick={() => handleSimilarClick(sp)}
-                className="w-64 flex-shrink-0 bg-white dark:bg-[#112240] rounded-xl border border-border dark:border-[#1D3461] overflow-hidden hover:shadow-lg hover:border-royal/20 transition-all text-left"
+                className="w-56 sm:w-64 flex-shrink-0 bg-white dark:bg-[#112240] rounded-xl border border-border dark:border-[#1D3461] overflow-hidden hover:shadow-lg hover:border-royal/20 transition-all text-left"
               >
                 {/* Image */}
-                <div className="relative h-32 bg-muted dark:bg-[#1D3461]">
+                <div className="relative h-28 sm:h-32 bg-muted dark:bg-[#1D3461]">
                   <img
                     src={sp.images[0]}
                     alt={sp.title}
@@ -1064,7 +978,7 @@ export default function PropertyDetail() {
                   <p className="text-sm font-bold text-royal dark:text-[#60A5FA]">{formatPrice(sp.price, sp.category)}</p>
                   <p className="text-sm font-medium text-navy dark:text-white mt-0.5 truncate">{sp.title}</p>
                   <p className="text-xs text-slate-accent dark:text-[#94A3B8] flex items-center gap-1 mt-1 truncate">
-                    <MapPin className="h-3 h-3 flex-shrink-0" />
+                    <MapPin className="h-3 w-3 flex-shrink-0" />
                     {sp.locality}, {sp.city}
                   </p>
                   <div className="flex items-center gap-3 mt-2 text-xs text-slate-accent dark:text-[#94A3B8]">
@@ -1093,163 +1007,6 @@ export default function PropertyDetail() {
           </div>
         </div>
       </div>
-
-      {/* ═══════ T13: CONTACT / LEAD CAPTURE MODAL ═══════ */}
-      <Dialog open={showContactModal} onOpenChange={setShowContactModal}>
-        <DialogContent className="sm:max-w-md rounded-2xl bg-white dark:bg-[#112240] border-border dark:border-[#1D3461]">
-          <DialogHeader>
-            <DialogTitle className="text-navy dark:text-white text-xl">Get Owner Details</DialogTitle>
-            <DialogDescription className="text-slate-accent dark:text-[#94A3B8]">
-              Fill in your details to receive the owner&apos;s contact information
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            <div className="space-y-2">
-              <Label htmlFor="contact-name">Name</Label>
-              <Input
-                id="contact-name"
-                placeholder="Your full name"
-                value={contactName}
-                onChange={(e) => setContactName(e.target.value)}
-                className="h-10 rounded-lg bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="contact-phone">Phone</Label>
-              <Input
-                id="contact-phone"
-                placeholder="+91 98765 43210"
-                value={contactPhone}
-                onChange={(e) => setContactPhone(e.target.value)}
-                className="h-10 rounded-lg bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="contact-message">I&apos;m interested in</Label>
-              <Textarea
-                id="contact-message"
-                placeholder="Your message..."
-                value={contactMessage}
-                onChange={(e) => setContactMessage(e.target.value)}
-                className="rounded-lg min-h-[80px] bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
-              />
-            </div>
-          </div>
-          <DialogFooter className="flex-col gap-2 sm:flex-col">
-            {/* Schedule Visit button inside contact modal */}
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full h-10 rounded-xl border-royal/30 text-royal dark:text-[#60A5FA] hover:bg-royal/5 font-semibold"
-              onClick={() => {
-                setShowContactModal(false);
-                // Pre-fill visit name/phone from contact form if available
-                if (contactName.trim()) setVisitName(contactName);
-                if (contactPhone.trim()) setVisitPhone(contactPhone);
-                setTimeout(() => setShowScheduleDialog(true), 200);
-              }}
-            >
-              <Calendar className="h-4 w-4 mr-1.5" />
-              Schedule Visit
-            </Button>
-            <Button
-              type="button"
-              className="w-full h-10 rounded-xl bg-royal hover:bg-royal-dark text-white font-semibold"
-              onClick={handleContactSubmit}
-            >
-              <Phone className="h-4 w-4 mr-1.5" />
-              Get Contact Details
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* ═══════ T12: SCHEDULE VISIT DIALOG ═══════ */}
-      <Dialog open={showScheduleDialog} onOpenChange={setShowScheduleDialog}>
-        <DialogContent className="sm:max-w-md rounded-2xl bg-white dark:bg-[#112240] border-border dark:border-[#1D3461]">
-          <DialogHeader>
-            <DialogTitle className="text-navy dark:text-white text-xl">Schedule a Visit</DialogTitle>
-            <DialogDescription className="text-slate-accent dark:text-[#94A3B8]">
-              Pick a date and time slot to visit {property.title}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            {/* Date picker */}
-            <div className="space-y-2">
-              <Label htmlFor="visit-date">Preferred Date</Label>
-              <Input
-                id="visit-date"
-                type="date"
-                value={visitDate}
-                onChange={(e) => setVisitDate(e.target.value)}
-                min={new Date().toISOString().split('T')[0]}
-                className="h-10 rounded-lg bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
-              />
-            </div>
-            {/* Time slot selection */}
-            <div className="space-y-2">
-              <Label>Preferred Time Slot</Label>
-              <div className="grid grid-cols-3 gap-2">
-                {TIME_SLOTS.map((slot) => (
-                  <button
-                    key={slot.id}
-                    type="button"
-                    onClick={() => setVisitTimeSlot(slot.id)}
-                    className={`min-h-10 rounded-xl border border-border dark:border-[#1D3461] px-3 py-2 text-center transition-all ${
-                      visitTimeSlot === slot.id
-                        ? 'border-royal dark:border-[#60A5FA] bg-royal/10 text-royal dark:text-[#60A5FA] font-semibold'
-                        : 'border-border dark:border-[#1D3461] hover:border-royal/30 text-slate-accent dark:text-[#94A3B8] hover:text-navy dark:hover:text-white'
-                    }`}
-                  >
-                    <p className="text-sm font-medium">{slot.label}</p>
-                    <p className="text-[10px] mt-0.5">{slot.range}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-            {/* Name */}
-            <div className="space-y-2">
-              <Label htmlFor="visit-name">Your Name</Label>
-              <Input
-                id="visit-name"
-                placeholder="Your full name"
-                value={visitName}
-                onChange={(e) => setVisitName(e.target.value)}
-                className="h-10 rounded-lg bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
-              />
-            </div>
-            {/* Phone */}
-            <div className="space-y-2">
-              <Label htmlFor="visit-phone">Phone Number</Label>
-              <Input
-                id="visit-phone"
-                placeholder="+91 98765 43210"
-                value={visitPhone}
-                onChange={(e) => setVisitPhone(e.target.value)}
-                className="h-10 rounded-lg bg-white dark:bg-[#1D3461] border-border dark:border-[#1D3461] text-navy dark:text-white"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              className="h-10 rounded-xl font-semibold"
-              onClick={() => setShowScheduleDialog(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="button"
-              className="h-10 rounded-xl bg-royal hover:bg-royal-dark text-white font-semibold"
-              onClick={handleScheduleSubmit}
-            >
-              <Calendar className="h-4 w-4 mr-1.5" />
-              Confirm Visit
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

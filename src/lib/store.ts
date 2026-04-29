@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { AppView, SearchFilters, PropertyListing, SavedSearch, PropertyNote } from '@/types';
+import type { AppView, SearchFilters, PropertyListing, SavedSearch, PropertyNote, BlogArticle } from '@/types';
 
 const defaultFilters: SearchFilters = {
   category: 'buy',
@@ -105,6 +105,14 @@ interface AcreFlowState {
   setShowChat: (show: boolean) => void;
   chatMessages: Array<{ id: string; message: string; sender: 'user' | 'bot'; time: string }>;
   addChatMessage: (message: string, sender: 'user' | 'bot') => void;
+
+  // Selected blog article
+  selectedBlogArticle: BlogArticle | null;
+  setSelectedBlogArticle: (article: BlogArticle | null) => void;
+
+  // Selected service id
+  selectedServiceId: string | null;
+  setSelectedServiceId: (id: string | null) => void;
 }
 
 export const useAcreFlowStore = create<AcreFlowState>()(
@@ -278,6 +286,14 @@ export const useAcreFlowStore = create<AcreFlowState>()(
             { id: `c${Date.now()}`, message, sender, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
           ],
         })),
+
+      // Selected blog article
+      selectedBlogArticle: null,
+      setSelectedBlogArticle: (article) => set({ selectedBlogArticle: article }),
+
+      // Selected service id
+      selectedServiceId: null,
+      setSelectedServiceId: (id) => set({ selectedServiceId: id }),
     }),
     {
       name: 'acreflow-storage',

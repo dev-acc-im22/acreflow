@@ -1,41 +1,25 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useAcreFlowStore } from '@/lib/store';
 import type { BlogArticle } from '@/types';
 import {
   ArrowLeft,
-  BookOpen,
   Clock,
+  User,
+  ArrowRight,
+  Calendar,
+  Tag,
+  BookOpen,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 
-// ── Data ─────────────────────────────────────────────────────────────────
+// ── Articles data (copied from BlogNews to avoid circular deps) ──────
 
-export const categories = [
-  'All',
-  'Buying Guide',
-  'Selling Tips',
-  'Investment',
-  'Market Trends',
-  'Home Loans',
-  'Interior Design',
-];
-
-const articleGradients = [
-  'from-blue-600 to-blue-800',
-  'from-emerald-600 to-emerald-800',
-  'from-amber-600 to-amber-800',
-  'from-purple-600 to-purple-800',
-  'from-red-600 to-red-800',
-  'from-teal-600 to-teal-800',
-  'from-indigo-600 to-indigo-800',
-  'from-pink-600 to-pink-800',
-  'from-cyan-600 to-cyan-800',
-];
-
-export const articles: BlogArticle[] = [
+const articles: BlogArticle[] = [
   {
     id: 'a1',
     title: '5 Tips for First-Time Home Buyers in Chennai',
@@ -128,7 +112,7 @@ export const articles: BlogArticle[] = [
   },
 ];
 
-export const fullContent: Record<string, string[]> = {
+const fullContent: Record<string, string[]> = {
   a1: [
     'Buying your first home is one of the most significant financial decisions you will ever make. The Chennai real estate market offers diverse options from luxury apartments in OMR to affordable homes in Tambaram. However, navigating the process requires careful planning and research.',
     'First, determine your budget realistically. Factor in not just the property price but also registration charges (typically 7-8% of property value), stamp duty, and moving costs. Most banks finance up to 80-85% of the property value, so you will need 15-20% as down payment. Use AcreFlow\'s EMI calculator to plan your finances.',
@@ -185,152 +169,178 @@ export const fullContent: Record<string, string[]> = {
   ],
 };
 
-// ── Main Component ───────────────────────────────────────────────────────
+const categoryGradients: Record<string, string> = {
+  'Buying Guide': 'from-blue-600 to-blue-800',
+  'Investment': 'from-emerald-600 to-emerald-800',
+  'Market Trends': 'from-purple-600 to-purple-800',
+  'Home Loans': 'from-amber-600 to-amber-800',
+  'Interior Design': 'from-pink-600 to-pink-800',
+};
 
-export default function BlogNews() {
-  const { goBack, setSelectedBlogArticle, setView } = useAcreFlowStore();
-  const [activeCategory, setActiveCategory] = useState('All');
+export default function BlogArticlePage() {
+  const { selectedBlogArticle, goBack, setSelectedBlogArticle } = useAcreFlowStore();
 
-  const filteredArticles = useMemo(() => {
-    if (activeCategory === 'All') return articles;
-    return articles.filter((a) => a.category === activeCategory);
-  }, [activeCategory]);
+  const content = useMemo(() => {
+    if (!selectedBlogArticle) return [];
+    return fullContent[selectedBlogArticle.id] || [];
+  }, [selectedBlogArticle]);
 
-  const handleArticleClick = (article: BlogArticle) => {
+  const relatedArticles = useMemo(() => {
+    if (!selectedBlogArticle) return [];
+    return articles
+      .filter((a) => a.id !== selectedBlogArticle.id && a.category === selectedBlogArticle.category)
+      .slice(0, 3);
+  }, [selectedBlogArticle]);
+
+  const gradientClass = selectedBlogArticle
+    ? categoryGradients[selectedBlogArticle.category] || 'from-navy to-royal'
+    : 'from-navy to-royal';
+
+  const handleRelatedClick = (article: BlogArticle) => {
     setSelectedBlogArticle(article);
-    setView('blog-article');
+    window.scrollTo({ top: 0 });
   };
 
+  // Skeleton / Empty state
+  if (!selectedBlogArticle) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-[#0A192F] flex flex-col">
+        <div className="sticky top-0 z-30 bg-white dark:bg-[#112240] border-b dark:border-[#1D3461] shadow-sm">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="shrink-0 text-slate-accent dark:text-[#94A3B8] hover:text-navy dark:hover:text-white"
+              onClick={goBack}
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <h1 className="text-base sm:text-lg font-bold text-navy dark:text-white">
+              Article
+            </h1>
+          </div>
+        </div>
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-4">
+          <Skeleton className="h-48 sm:h-56 w-full rounded-2xl" />
+          <Skeleton className="h-6 w-3/4 rounded-lg" />
+          <Skeleton className="h-4 w-1/2 rounded-lg" />
+          <div className="space-y-3 pt-4">
+            <Skeleton className="h-4 w-full rounded" />
+            <Skeleton className="h-4 w-full rounded" />
+            <Skeleton className="h-4 w-5/6 rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A192F]">
-      {/* Back Button Bar */}
-      <div className="max-w-7xl mx-auto px-4 pt-4 md:pt-6">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl hover:bg-cream dark:hover:bg-[#1D3461]"
-          onClick={goBack}
-        >
-          <ArrowLeft className="w-5 h-5 text-navy dark:text-white" />
-        </Button>
+    <div className="min-h-screen bg-white dark:bg-[#0A192F] flex flex-col">
+      {/* Sticky Top Bar */}
+      <div className="sticky top-0 z-30 bg-white/80 dark:bg-[#112240]/80 backdrop-blur-md border-b dark:border-[#1D3461] shadow-sm">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="shrink-0 text-slate-accent dark:text-[#94A3B8] hover:text-navy dark:hover:text-white"
+            onClick={goBack}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-base sm:text-lg font-bold text-navy dark:text-white truncate">
+              Article
+            </h1>
+          </div>
+        </div>
       </div>
 
-      {/* Hero */}
-      <section className="py-6 sm:py-8 md:py-12">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 bg-sky dark:bg-[#1D3461]/50 px-3 sm:px-4 py-1.5 rounded-full mb-4">
-            <BookOpen className="w-4 h-4 text-royal dark:text-[#60A5FA]" />
-            <span className="text-xs sm:text-sm font-medium text-royal dark:text-[#60A5FA]">
-              Knowledge Hub
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {/* Header Image Area with Gradient */}
+        <div className={`relative h-44 sm:h-56 md:h-64 bg-gradient-to-br ${gradientClass} -mx-4 sm:-mx-6 lg:-mx-8 mt-4 sm:mt-0`}>
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <BookOpen className="w-10 h-10 sm:w-12 sm:h-12 text-white/20" />
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8 bg-gradient-to-t from-black/60 to-transparent">
+            <Badge className="bg-white/20 text-white text-xs sm:text-sm font-medium backdrop-blur-sm mb-2 border-0">
+              <Tag className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" />
+              {selectedBlogArticle.category}
+            </Badge>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight">
+              {selectedBlogArticle.title}
+            </h1>
+          </div>
+        </div>
+
+        <div className="py-4 sm:py-6">
+          {/* Meta */}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-slate-accent dark:text-[#94A3B8] mb-4 sm:mb-6">
+            <span className="flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="text-sm sm:text-base">{selectedBlogArticle.author}</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="text-sm sm:text-base">{selectedBlogArticle.date}</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="text-sm sm:text-base">{selectedBlogArticle.readTime}</span>
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-navy dark:text-white mb-3">
-            AcreFlow Insights
-          </h1>
-          <p className="text-sm sm:text-base md:text-lg text-slate-accent dark:text-[#94A3B8] max-w-2xl mx-auto">
-            Stay updated with the latest real estate trends, tips, and expert advice
-          </p>
-        </div>
-      </section>
 
-      {/* Category Filter */}
-      <section className="pb-4 sm:pb-6 md:pb-8">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-wrap gap-2 justify-center">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer ${
-                  activeCategory === cat
-                    ? 'bg-navy dark:bg-[#1D3461] text-white shadow-sm'
-                    : 'bg-cream dark:bg-[#112240] text-slate-accent dark:text-[#94A3B8] border border-border dark:border-[#1D3461] hover:border-royal/30 hover:text-royal dark:hover:border-[#60A5FA]/30 dark:hover:text-[#60A5FA]'
-                }`}
+          <Separator className="mb-4 sm:mb-6 dark:bg-[#1D3461]" />
+
+          {/* Full Content */}
+          <div className="space-y-4 sm:space-y-5">
+            {content.map((paragraph, idx) => (
+              <p
+                key={idx}
+                className="text-sm sm:text-base text-slate-accent dark:text-[#94A3B8] leading-relaxed"
               >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Articles Grid */}
-      <section className="pb-6 sm:pb-8 md:pb-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredArticles.map((article, idx) => (
-              <button
-                key={article.id}
-                onClick={() => handleArticleClick(article)}
-                className="bg-white dark:bg-[#112240] rounded-xl sm:rounded-2xl border border-border dark:border-[#1D3461] overflow-hidden text-left hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
-              >
-                {/* Gradient Image Placeholder */}
-                <div
-                  className={`h-40 sm:h-44 bg-gradient-to-br ${
-                    articleGradients[idx % articleGradients.length]
-                  } relative`}
-                >
-                  <div className="absolute inset-0 bg-black/10" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-white/30" />
-                  </div>
-                  {/* Category Badge */}
-                  <div className="absolute top-3 left-3">
-                    <Badge className="bg-white/20 text-white text-[10px] font-semibold backdrop-blur-sm px-2.5 py-0.5 rounded-full border-0">
-                      {article.category}
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-4 sm:p-5">
-                  <h3 className="text-sm sm:text-base font-bold text-navy dark:text-white mb-2 line-clamp-2 group-hover:text-royal dark:group-hover:text-[#60A5FA] transition-colors">
-                    {article.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-accent dark:text-[#94A3B8] line-clamp-2 leading-relaxed mb-3 sm:mb-4">
-                    {article.excerpt}
-                  </p>
-
-                  {/* Author + Meta */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 sm:gap-2.5">
-                      <div className="w-7 h-7 rounded-full bg-sky dark:bg-[#1D3461] flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-navy dark:text-white">
-                          {article.author.charAt(0)}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="text-[10px] sm:text-xs font-medium text-navy dark:text-white">
-                          {article.author}
-                        </p>
-                        <p className="text-[10px] text-slate-accent dark:text-[#94A3B8]">
-                          {article.date}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="flex items-center gap-1 text-[10px] text-slate-accent dark:text-[#94A3B8]">
-                      <Clock className="w-3 h-3" />
-                      {article.readTime}
-                    </span>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {filteredArticles.length === 0 && (
-            <div className="text-center py-12 sm:py-16">
-              <BookOpen className="w-10 h-10 sm:w-12 sm:h-12 text-slate-300 dark:text-[#334155] mx-auto mb-3" />
-              <h3 className="text-base sm:text-lg font-semibold text-navy dark:text-white mb-1">
-                No articles found
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-accent dark:text-[#94A3B8]">
-                No articles in this category yet. Check back soon!
+                {paragraph}
               </p>
-            </div>
+            ))}
+          </div>
+
+          {/* Related Articles */}
+          {relatedArticles.length > 0 && (
+            <>
+              <Separator className="my-6 sm:my-8 dark:bg-[#1D3461]" />
+              <h3 className="text-lg sm:text-xl font-bold text-navy dark:text-white mb-3 sm:mb-4">
+                Related Articles
+              </h3>
+              <div className="space-y-3">
+                {relatedArticles.map((related) => (
+                  <button
+                    key={related.id}
+                    onClick={() => handleRelatedClick(related)}
+                    className="w-full text-left p-3 sm:p-4 bg-cream dark:bg-[#112240] rounded-xl border border-border dark:border-[#1D3461] hover:shadow-sm transition-all cursor-pointer group min-h-[44px]"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <Badge
+                          className="bg-sky dark:bg-[#1D3461] text-royal dark:text-[#60A5FA] text-[10px] sm:text-xs font-medium px-2 py-0.5 rounded-full mb-2 border-0"
+                        >
+                          {related.category}
+                        </Badge>
+                        <p className="text-sm sm:text-base font-semibold text-navy dark:text-white line-clamp-1 group-hover:text-royal dark:group-hover:text-[#60A5FA] transition-colors">
+                          {related.title}
+                        </p>
+                        <p className="text-xs text-slate-accent dark:text-[#94A3B8] mt-1">
+                          {related.readTime}
+                        </p>
+                      </div>
+                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-accent dark:text-[#94A3B8] group-hover:text-royal dark:group-hover:text-[#60A5FA] shrink-0 transition-colors" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </>
           )}
         </div>
-      </section>
+      </div>
     </div>
   );
 }

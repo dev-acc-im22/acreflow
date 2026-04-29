@@ -51,7 +51,7 @@ export default function MobileNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white dark:bg-[#112240] border-t border-border dark:border-[#1D3461] shadow-lg dark:shadow-none"
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white dark:bg-[#112240] border-t border-border dark:border-[#1D3461] shadow-lg dark:shadow-none pb-safe"
       style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
     >
       <div className="flex items-center justify-around px-2 py-1">
@@ -63,20 +63,20 @@ export default function MobileNav() {
             <button
               key={item.label}
               onClick={() => handleNavClick(item)}
-              className="flex flex-col items-center gap-0.5 py-1.5 px-3 min-h-10 min-w-[3.5rem] transition-colors relative"
+              className="flex flex-col items-center justify-center gap-0.5 px-3 h-12 min-w-[3.5rem] transition-colors relative"
             >
               {item.label === 'Activity' && notifications > 0 && (
-                <span className="absolute -top-0.5 right-1.5 bg-danger text-white text-[9px] font-bold rounded-full min-w-[14px] h-[14px] flex items-center justify-center px-0.5">
+                <span className="absolute -top-0.5 right-1 bg-danger text-white text-[9px] font-bold rounded-full min-w-[14px] h-[14px] flex items-center justify-center px-0.5">
                   {notifications}
                 </span>
               )}
               <Icon
-                className={`size-5 transition-colors ${active ? 'text-royal' : 'text-slate-accent dark:text-[#64748B]'}`}
+                className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${active ? 'text-royal dark:text-[#60A5FA]' : 'text-slate-accent dark:text-[#64748B]'}`}
                 strokeWidth={active ? 2.5 : 1.8}
               />
               <span
-                className={`text-[10px] leading-tight font-medium transition-colors ${
-                  active ? 'text-royal' : 'text-slate-accent dark:text-[#64748B]'
+                className={`text-[10px] sm:text-xs leading-tight font-medium transition-colors ${
+                  active ? 'text-royal dark:text-[#60A5FA]' : 'text-slate-accent dark:text-[#64748B]'
                 }`}
               >
                 {item.label}

@@ -12,7 +12,6 @@ import {
   Bell,
   Sun,
   Moon,
-  Check,
   Building2,
   Home,
   Store,
@@ -23,6 +22,7 @@ import {
   Gift,
   Info,
   BookOpen,
+  Check,
 } from 'lucide-react';
 import { useAcreFlowStore } from '@/lib/store';
 import {
@@ -78,16 +78,11 @@ export default function Header() {
     darkMode,
     toggleDarkMode,
     unreadCount,
-    showNotificationPanel,
-    setShowNotificationPanel,
-    notifications,
-    markNotificationRead,
   } = useAcreFlowStore();
 
   const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
   const [localQuery, setLocalQuery] = useState(filters.query || '');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const notifPanelRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const cityRef = useRef<HTMLDivElement>(null);
 
@@ -109,9 +104,6 @@ export default function Header() {
   // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (notifPanelRef.current && !notifPanelRef.current.contains(event.target as Node)) {
-        setShowNotificationPanel(false);
-      }
       if (cityRef.current && !cityRef.current.contains(event.target as Node)) {
         setCityDropdownOpen(false);
       }
@@ -121,7 +113,7 @@ export default function Header() {
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [setShowNotificationPanel]);
+  }, []);
 
   const handleSearch = (value?: string) => {
     const query = value || localQuery;
@@ -169,7 +161,7 @@ export default function Header() {
   return (
     <header className="font-montserrat">
       {/* ========== MAIN WHITE HEADER BAR ========== */}
-      <div className="sticky top-0 z-50 bg-white dark:bg-[#112240] border-b border-gray-200 dark:border-[#1D3461] shadow-[0_1px_3px_rgba(0,0,0,0.08)] dark:shadow-none">
+      <div className="sticky top-0 z-50 bg-white dark:bg-[#112240] border-b border-border dark:border-[#1D3461] shadow-[0_1px_3px_rgba(0,0,0,0.08)] dark:shadow-none">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 lg:px-6 h-16">
           {/* Left: Logo */}
           <button
@@ -179,7 +171,7 @@ export default function Header() {
             <div className="w-9 h-9 bg-navy rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">A</span>
             </div>
-            <span className="text-xl font-bold text-navy dark:text-white tracking-tight hidden sm:block">
+            <span className="text-lg sm:text-xl font-bold text-navy dark:text-white tracking-tight hidden sm:block">
               AcreFlow
             </span>
           </button>
@@ -188,28 +180,28 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-0.5">
             <button
               onClick={() => setView('services')}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
             >
               <Briefcase className="size-4" />
               <span>Services</span>
             </button>
             <button
               onClick={() => setView('plans')}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
             >
               <CreditCard className="size-4" />
               <span>Plans</span>
             </button>
             <button
               onClick={() => setView('emi-calculator')}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
             >
               <IndianRupee className="size-4" />
               <span>EMI Calculator</span>
             </button>
             <button
               onClick={() => setView('refer-earn')}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
             >
               <Gift className="size-4" />
               <span>Refer & Earn</span>
@@ -218,10 +210,10 @@ export default function Header() {
 
           {/* Right: Action buttons */}
           <div className="flex items-center gap-1 sm:gap-2">
-            {/* Notification bell - desktop */}
-            <div className="relative hidden md:flex items-center" ref={notifPanelRef}>
+            {/* Notification bell - navigates to notifications page */}
+            <div className="hidden md:flex items-center">
               <button
-                onClick={() => setShowNotificationPanel(!showNotificationPanel)}
+                onClick={() => setView('notifications')}
                 className="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-[#1D3461] transition-colors text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white"
                 aria-label="Notifications"
               >
@@ -232,54 +224,6 @@ export default function Header() {
                   </span>
                 )}
               </button>
-
-              {/* Notification dropdown panel */}
-              {showNotificationPanel && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white dark:bg-[#112240] rounded-xl border border-gray-200 dark:border-[#1D3461] shadow-xl z-50 overflow-hidden">
-                  <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-[#1D3461]">
-                    <h3 className="text-sm font-bold text-navy dark:text-white">Notifications</h3>
-                    {currentUnreadCount > 0 && (
-                      <button
-                        onClick={() => {
-                          notifications.forEach((n) => {
-                            if (!n.read) markNotificationRead(n.id);
-                          });
-                        }}
-                        className="text-xs font-medium text-royal hover:text-royal-dark transition-colors flex items-center gap-1"
-                      >
-                        <Check className="size-3" />
-                        Mark all as read
-                      </button>
-                    )}
-                  </div>
-                  <div className="max-h-72 overflow-y-auto acreflow-scrollbar">
-                    {notifications.length === 0 ? (
-                      <div className="flex items-center justify-center py-10">
-                        <p className="text-sm text-gray-400 dark:text-[#64748B]">No new notifications</p>
-                      </div>
-                    ) : (
-                      notifications.map((notif) => (
-                        <button
-                          key={notif.id}
-                          onClick={() => markNotificationRead(notif.id)}
-                          className="w-full flex gap-3 p-3 hover:bg-gray-50 dark:hover:bg-[#1D3461] transition-colors cursor-pointer text-left"
-                        >
-                          <div className="flex flex-col items-center pt-1.5 shrink-0">
-                            {!notif.read && (
-                              <span className="w-2 h-2 rounded-full bg-royal shrink-0" />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-navy dark:text-white truncate">{notif.title}</p>
-                            <p className="text-xs text-gray-500 dark:text-[#94A3B8] line-clamp-2 mt-0.5">{notif.message}</p>
-                            <p className="text-xs text-gray-400 dark:text-[#64748B] mt-1">{notif.time}</p>
-                          </div>
-                        </button>
-                      ))
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Dark mode toggle - desktop */}
@@ -358,12 +302,12 @@ export default function Header() {
                     </button>
 
                     {cityDropdownOpen && (
-                      <div className="mt-2 grid grid-cols-2 gap-1">
+                      <div className="mt-2 grid grid-cols-2 gap-1.5">
                         {CITIES.map((city) => (
                           <button
                             key={city}
                             onClick={() => handleCitySelect(city)}
-                            className={`text-left px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                            className={`text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-md transition-colors ${
                               city === selectedCity
                                 ? 'bg-royal text-white font-semibold'
                                 : 'bg-navy-lighter text-sky-deep hover:bg-navy-lighter/80'
@@ -397,7 +341,7 @@ export default function Header() {
                       <span>{tab.label}</span>
                     </button>
                   ))}
-                  <div className="h-px bg-gray-100 dark:bg-[#1D3461] my-2" />
+                  <div className="h-px bg-border dark:bg-[#1D3461] my-2" />
                   {[
                     { label: 'Services', icon: Briefcase, view: 'services' as const },
                     { label: 'Plans & Pricing', icon: CreditCard, view: 'plans' as const },
@@ -423,17 +367,17 @@ export default function Header() {
                 </nav>
 
                 {/* Mobile CTA buttons */}
-                <div className="mt-auto border-t border-gray-100 dark:border-[#1D3461] p-4 flex flex-col gap-2">
+                <div className="mt-auto border-t border-border dark:border-[#1D3461] p-4 flex flex-col gap-2">
                   <Button
                     onClick={handlePostProperty}
-                    className="w-full bg-navy text-white hover:bg-navy-light font-semibold"
+                    className="w-full bg-navy text-white hover:bg-navy-light font-semibold py-3"
                   >
                     <Plus className="size-4" />
                     Post Free Property
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full text-gray-600 dark:text-[#94A3B8] border-gray-200 dark:border-[#1D3461] hover:bg-gray-50 dark:hover:bg-[#1D3461] hover:text-navy dark:hover:text-white"
+                    className="w-full text-gray-600 dark:text-[#94A3B8] border-border dark:border-[#1D3461] hover:bg-gray-50 dark:hover:bg-[#1D3461] hover:text-navy dark:hover:text-white py-3"
                   >
                     <User className="size-4" />
                     Sign In / Register
@@ -457,7 +401,7 @@ export default function Header() {
 
       {/* ========== CATEGORY TABS + SEARCH BAR ========== */}
       {currentView === 'home' && (
-        <div className="bg-white dark:bg-[#112240] border-b border-gray-100 dark:border-[#1D3461]">
+        <div className="bg-white dark:bg-[#112240] border-b border-border dark:border-[#1D3461]">
           <div className="mx-auto max-w-7xl px-4 lg:px-6">
             {/* Category Tabs */}
             <div className="flex items-center gap-0 -mb-px overflow-x-auto">
@@ -465,7 +409,7 @@ export default function Header() {
                 <button
                   key={tab.label}
                   onClick={() => handleTabChange(tab)}
-                  className={`flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
+                  className={`flex items-center gap-2 px-4 py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
                     filters.category === tab.category
                       ? 'text-royal border-royal'
                       : 'text-gray-500 dark:text-[#94A3B8] border-transparent hover:text-navy dark:hover:text-white hover:border-gray-300 dark:hover:border-[#64748B]'
@@ -478,15 +422,15 @@ export default function Header() {
             </div>
 
             {/* Integrated Search Bar */}
-            <div ref={searchRef} className="pb-5 pt-4 relative">
+            <div ref={searchRef} className="pb-4 sm:pb-5 pt-4 relative">
               <form onSubmit={handleFormSubmit}>
-                <div className="flex items-center gap-0 rounded-lg border border-gray-300 dark:border-[#1D3461] bg-white dark:bg-[#112240] shadow-[0_1px_2px_rgba(0,0,0,0.05)] dark:shadow-none hover:border-gray-400 dark:hover:border-[#64748B] focus-within:border-royal dark:focus-within:border-[#60A5FA] focus-within:shadow-[0_0_0_3px_rgba(30,64,175,0.1)] dark:focus-within:shadow-[0_0_0_3px_rgba(96,165,250,0.1)] transition-all">
+                <div className="flex items-center gap-0 rounded-lg border border-border dark:border-[#1D3461] bg-white dark:bg-[#112240] shadow-[0_1px_2px_rgba(0,0,0,0.05)] dark:shadow-none hover:border-gray-400 dark:hover:border-[#64748B] focus-within:border-royal dark:focus-within:border-[#60A5FA] focus-within:shadow-[0_0_0_3px_rgba(30,64,175,0.1)] dark:focus-within:shadow-[0_0_0_3px_rgba(96,165,250,0.1)] transition-all">
                   {/* City Selector */}
                   <div className="relative shrink-0" ref={cityRef}>
                     <button
                       type="button"
                       onClick={() => setCityDropdownOpen(!cityDropdownOpen)}
-                      className="flex items-center gap-1.5 h-12 pl-4 pr-3 text-sm font-medium text-gray-700 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white border-r border-gray-200 dark:border-[#1D3461] rounded-l-lg hover:bg-gray-50 dark:hover:bg-[#1D3461] transition-colors"
+                      className="flex items-center gap-1.5 h-12 pl-4 pr-3 text-sm font-medium text-gray-700 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white border-r border-border dark:border-[#1D3461] rounded-l-lg hover:bg-gray-50 dark:hover:bg-[#1D3461] transition-colors"
                     >
                       <MapPin className="size-4 text-royal shrink-0" />
                       <span>{selectedCity}</span>
@@ -499,8 +443,8 @@ export default function Header() {
 
                     {/* City dropdown */}
                     {cityDropdownOpen && (
-                      <div className="absolute left-0 top-full mt-1 w-52 bg-white dark:bg-[#112240] rounded-lg border border-gray-200 dark:border-[#1D3461] shadow-xl py-1 z-50">
-                        <div className="px-3 py-2 border-b border-gray-100 dark:border-[#1D3461]">
+                      <div className="absolute left-0 top-full mt-1 w-52 bg-white dark:bg-[#112240] rounded-lg border border-border dark:border-[#1D3461] shadow-xl py-1 z-50">
+                        <div className="px-3 py-2 border-b border-border dark:border-[#1D3461]">
                           <p className="text-xs font-semibold text-gray-400 dark:text-[#64748B] uppercase tracking-wide">Select City</p>
                         </div>
                         {CITIES.map((city) => (
@@ -508,7 +452,7 @@ export default function Header() {
                             key={city}
                             type="button"
                             onClick={() => handleCitySelect(city)}
-                            className={`w-full text-left px-3 py-2.5 text-sm transition-colors flex items-center gap-2.5 ${
+                            className={`w-full text-left px-3 py-2.5 text-xs sm:text-sm transition-colors flex items-center gap-2.5 ${
                               city === selectedCity
                                 ? 'text-royal dark:text-white font-semibold bg-sky/40 dark:bg-[#1D3461]'
                                 : 'text-gray-700 dark:text-[#94A3B8] hover:bg-gray-50 dark:hover:bg-[#1D3461] hover:text-navy dark:hover:text-white'
@@ -551,7 +495,7 @@ export default function Header() {
 
               {/* Auto-suggest Dropdown */}
               {showSuggestions && suggestions.length > 0 && (
-                <div className="absolute left-0 right-0 mt-1 z-40 bg-white dark:bg-[#112240] rounded-lg border border-gray-200 dark:border-[#1D3461] shadow-xl overflow-hidden">
+                <div className="absolute left-0 right-0 mt-1 z-40 bg-white dark:bg-[#112240] rounded-lg border border-border dark:border-[#1D3461] shadow-xl overflow-hidden">
                   <div className="max-h-64 overflow-y-auto acreflow-scrollbar py-1">
                     {suggestions.map((suggestion, index) => (
                       <button

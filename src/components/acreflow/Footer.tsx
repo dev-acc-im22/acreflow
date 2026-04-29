@@ -78,11 +78,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="font-montserrat">
+    <footer className="font-montserrat mt-auto">
       {/* Main Footer — bg-navy is already dark; add top border for dark mode separation */}
-      <div className="bg-navy text-white border-t border-gray-200 dark:border-[#1D3461]">
-        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 lg:gap-8">
+      <div className="bg-navy text-white border-t border-border dark:border-[#1D3461]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
             {/* Column 1 - Branding */}
             <div>
               <div className="flex items-center gap-2">
@@ -91,21 +91,21 @@ export default function Footer() {
                   alt="AcreFlow"
                   className="size-7 object-contain rounded brightness-0 invert"
                 />
-                <span className="text-xl font-bold tracking-tight">
+                <span className="text-lg sm:text-xl font-bold tracking-tight">
                   AcreFlow
                 </span>
               </div>
-              <p className="mt-1 text-sm text-slate-light">
+              <p className="mt-1 text-xs sm:text-sm text-slate-light">
                 India&apos;s Premium Real Estate Marketplace
               </p>
-              <p className="mt-3 text-sm leading-relaxed text-slate-light">
+              <p className="mt-3 text-xs sm:text-sm leading-relaxed text-slate-light">
                 Discover your dream property with AcreFlow. We offer verified
                 listings across India&apos;s top cities with zero brokerage
                 charges and transparent pricing.
               </p>
 
               {/* Contact info */}
-              <div className="mt-5 flex flex-col gap-2 text-sm text-slate-light">
+              <div className="mt-5 flex flex-col gap-2 text-xs sm:text-sm text-slate-light">
                 <a
                   href="tel:+911800123456"
                   className="flex items-center gap-2 hover:text-white transition-colors"
@@ -173,7 +173,7 @@ export default function Footer() {
 
             {/* Column 2 - Property Types */}
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider">
+              <h3 className="text-sm sm:text-base font-semibold uppercase tracking-wider">
                 Property Types
               </h3>
               <ul className="mt-4 flex flex-col gap-2.5">
@@ -182,7 +182,7 @@ export default function Footer() {
                     <button
                       type="button"
                       onClick={() => handlePropertyTypeClick(mappedType, category)}
-                      className="flex items-center gap-1.5 text-sm text-slate-light transition-colors hover:text-white"
+                      className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-light transition-colors hover:text-white"
                     >
                       <ChevronRight className="size-3 shrink-0" />
                       {label}
@@ -194,7 +194,7 @@ export default function Footer() {
 
             {/* Column 3 - Top Cities */}
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider">
+              <h3 className="text-sm sm:text-base font-semibold uppercase tracking-wider">
                 Top Cities
               </h3>
               <ul className="mt-4 flex flex-col gap-2.5">
@@ -203,7 +203,7 @@ export default function Footer() {
                     <button
                       type="button"
                       onClick={() => handleCityClick(city)}
-                      className="flex items-center gap-1.5 text-sm text-slate-light transition-colors hover:text-white"
+                      className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-light transition-colors hover:text-white"
                     >
                       <MapPin className="size-3 shrink-0" />
                       {city}
@@ -215,7 +215,7 @@ export default function Footer() {
 
             {/* Column 4 - Company */}
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider">
+              <h3 className="text-sm sm:text-base font-semibold uppercase tracking-wider">
                 Company
               </h3>
               <ul className="mt-4 flex flex-col gap-2.5">
@@ -224,7 +224,7 @@ export default function Footer() {
                     <button
                       type="button"
                       onClick={() => handleCompanyClick(link)}
-                      className="flex items-center gap-1.5 text-sm text-slate-light transition-colors hover:text-white"
+                      className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-light transition-colors hover:text-white"
                     >
                       <ChevronRight className="size-3 shrink-0" />
                       {link.label}
@@ -233,14 +233,14 @@ export default function Footer() {
                 ))}
               </ul>
 
-              <h3 className='text-sm font-semibold uppercase tracking-wider mt-8'>Services</h3>
+              <h3 className='text-sm sm:text-base font-semibold uppercase tracking-wider mt-8'>Services</h3>
               <ul className="mt-4 flex flex-col gap-2.5">
                 {['Packers & Movers', 'Rental Agreement', 'Home Loans', 'Interior Design', 'Legal Assistance', 'Home Maintenance'].map((s) => (
                   <li key={s}>
                     <button
                       type="button"
                       onClick={() => setView('services')}
-                      className="flex items-center gap-1.5 text-sm text-slate-light transition-colors hover:text-white"
+                      className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-light transition-colors hover:text-white"
                     >
                       <ChevronRight className="size-3 shrink-0" />
                       {s}
@@ -267,8 +267,8 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-white/10 bg-navy-light">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-4 sm:px-6 md:flex-row lg:px-8">
+      <div className="border-t border-border dark:border-[#1D3461] bg-navy-light">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 sm:px-6 md:flex-row lg:px-8 py-3 sm:py-4">
           <p className="text-xs text-slate-light">
             &copy; 2025 AcreFlow. All rights reserved.
           </p>

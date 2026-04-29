@@ -111,7 +111,15 @@ export type AppView =
   | 'valuation'
   | 'bank-rates'
   | 'scratch-rewards'
-  | 'corporate';
+  | 'corporate'
+  | 'contact-owner'
+  | 'schedule-visit'
+  | 'chat'
+  | 'saved-searches'
+  | 'blog-article'
+  | 'notifications'
+  | 'compare'
+  | 'property-alerts';
 
 export const defaultFilters: SearchFilters = {
   category: 'buy',

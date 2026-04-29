@@ -15,7 +15,6 @@ import PropertyDetail from '@/components/acreflow/PropertyDetail';
 import EMICalculator from '@/components/acreflow/EMICalculator';
 import PostPropertyWizard from '@/components/acreflow/PostPropertyWizard';
 import LeadCenter from '@/components/acreflow/LeadCenter';
-import ComparisonTray from '@/components/acreflow/ComparisonTray';
 import Testimonials from '@/components/acreflow/Testimonials';
 import FAQ from '@/components/acreflow/FAQ';
 import BuilderProjects from '@/components/acreflow/BuilderProjects';
@@ -38,12 +37,20 @@ import ReferEarn from '@/components/acreflow/ReferEarn';
 import AboutPage from '@/components/acreflow/AboutPage';
 import BlogNews from '@/components/acreflow/BlogNews';
 import PGFlatmatesSection from '@/components/acreflow/PGFlatmatesSection';
-import FloatingChat from '@/components/acreflow/FloatingChat';
 import WhatsAppButton from '@/components/acreflow/WhatsAppButton';
+import ContactOwnerPage from '@/components/acreflow/ContactOwnerPage';
+import ScheduleVisitPage from '@/components/acreflow/ScheduleVisitPage';
+import ChatPage from '@/components/acreflow/ChatPage';
+import SavedSearchesPage from '@/components/acreflow/SavedSearchesPage';
+import BlogArticlePage from '@/components/acreflow/BlogArticlePage';
+import NotificationsPage from '@/components/acreflow/NotificationsPage';
+import ComparePage from '@/components/acreflow/ComparePage';
+import PropertyAlertsPage from '@/components/acreflow/PropertyAlertsPage';
 import { useEffect } from 'react';
+import { GitCompareArrows } from 'lucide-react';
 
 export default function Home() {
-  const { currentView, showComparison, comparisonList, darkMode } = useAcreFlowStore();
+  const { currentView, comparisonList, darkMode, setView } = useAcreFlowStore();
 
   // Dark mode class toggle
   useEffect(() => {
@@ -96,6 +103,22 @@ export default function Home() {
         return <AboutPage />;
       case 'blog':
         return <BlogNews />;
+      case 'contact-owner':
+        return <ContactOwnerPage />;
+      case 'schedule-visit':
+        return <ScheduleVisitPage />;
+      case 'chat':
+        return <ChatPage />;
+      case 'saved-searches':
+        return <SavedSearchesPage />;
+      case 'blog-article':
+        return <BlogArticlePage />;
+      case 'notifications':
+        return <NotificationsPage />;
+      case 'compare':
+        return <ComparePage />;
+      case 'property-alerts':
+        return <PropertyAlertsPage />;
       case 'home':
       default:
         return (
@@ -122,7 +145,14 @@ export default function Home() {
     }
   };
 
-  const isFullPageView = ['search', 'property-detail', 'emi-calculator', 'budget-calculator', 'post-property', 'lead-center', 'rent-calculator', 'interior-calc', 'valuation', 'bank-rates', 'scratch-rewards', 'corporate', 'services', 'plans', 'refer-earn', 'about', 'blog'].includes(currentView);
+  const isFullPageView = [
+    'search', 'property-detail', 'emi-calculator', 'budget-calculator',
+    'post-property', 'lead-center', 'rent-calculator', 'interior-calc',
+    'valuation', 'bank-rates', 'scratch-rewards', 'corporate',
+    'services', 'plans', 'refer-earn', 'about', 'blog',
+    'contact-owner', 'schedule-visit', 'chat', 'saved-searches',
+    'blog-article', 'notifications', 'compare', 'property-alerts',
+  ].includes(currentView);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -139,23 +169,18 @@ export default function Home() {
       {/* Mobile Bottom Navigation */}
       <MobileNav />
 
-      {/* Comparison Tray */}
-      {showComparison && <ComparisonTray />}
-
-      {/* Floating Chat */}
-      <FloatingChat />
-
       {/* WhatsApp Button */}
       <WhatsAppButton />
 
-      {/* Comparison floating button */}
-      {comparisonList.length > 0 && !showComparison && (
+      {/* Comparison floating button - navigates to compare view */}
+      {comparisonList.length > 0 && currentView !== 'compare' && (
         <button
-          onClick={() => useAcreFlowStore.getState().setShowComparison(true)}
-          className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-30 bg-navy text-white px-5 py-3 rounded-full shadow-2xl flex items-center gap-3 hover:bg-royal transition-colors cursor-pointer"
+          onClick={() => setView('compare')}
+          className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-30 bg-navy dark:bg-[#1D3461] text-white px-5 py-3 rounded-full shadow-2xl flex items-center gap-3 hover:bg-royal dark:hover:bg-[#60A5FA] transition-colors cursor-pointer"
         >
+          <GitCompareArrows className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="text-sm font-semibold">Compare ({comparisonList.length})</span>
-          <span className="w-5 h-5 bg-royal rounded-full flex items-center justify-center text-xs font-bold">
+          <span className="w-5 h-5 bg-royal dark:bg-[#60A5FA] rounded-full flex items-center justify-center text-xs font-bold">
             {comparisonList.length}
           </span>
         </button>
