@@ -45,7 +45,7 @@ export default function PropertyNotes({ propertyId }: PropertyNotesProps) {
     addPropertyNote({
       propertyId,
       note: trimmed,
-      createdAt: existingNote.createdAt,
+      createdAt: existingNote?.createdAt || new Date().toISOString(),
     });
     setIsEditing(false);
     setEditText('');

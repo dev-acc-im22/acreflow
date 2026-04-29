@@ -144,20 +144,24 @@ export default function InteriorCostCalculator() {
       let max = 0;
 
       if ('costByBHK' in item) {
-        const range = (item as (typeof COST_ITEMS)[number]).costByBHK[bhkKey] as [number, number];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const range = (item as any).costByBHK[bhkKey] as [number, number];
         min = Math.round(range[0] * multiplier);
         max = Math.round(range[1] * multiplier);
       }
 
       if ('costPerSqFt' in item) {
-        const rateRange = (item as (typeof COST_ITEMS)[number]).costPerSqFt[bhkKey] as [number, number];
-        const area = (item as (typeof COST_ITEMS)[number]).areaByBHK[bhkKey] as number;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const rateRange = (item as any).costPerSqFt[bhkKey] as [number, number];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const area = (item as any).areaByBHK[bhkKey] as number;
         min = Math.round(rateRange[0] * area * multiplier);
         max = Math.round(rateRange[1] * area * multiplier);
       }
 
       if ('perRoom' in item && (item as { perRoom?: boolean }).perRoom) {
-        const rooms = ((item as (typeof COST_ITEMS)[number]).roomsByBHK as Record<number, number>)[bhkKey] || 1;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const rooms = ((item as any).roomsByBHK as Record<number, number>)[bhkKey] || 1;
         min *= rooms;
         max *= rooms;
       }

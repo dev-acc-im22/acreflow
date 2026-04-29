@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import type { PropertyListing } from '@/types';
 import { useAcreFlowStore } from '@/lib/store';
 import {
@@ -43,15 +44,15 @@ function formatPrice(price: number): string {
 
 interface ComparisonRowProps {
   label: string;
-  values: (string | number | boolean | undefined)[];
+  values: (string | number | boolean | React.ReactNode | undefined)[];
   highlightBest?: 'min' | 'max';
   rowIdx: number;
 }
 
 function ComparisonRow({ label, values, highlightBest, rowIdx }: ComparisonRowProps) {
   const isEven = rowIdx % 2 === 0;
-  const bestIdx = highlightBest
-    ? values.reduce((bestIdx, val, idx) => {
+  const bestIdx: number = highlightBest
+    ? values.reduce<number>((bestIdx, val, idx) => {
         if (typeof val !== 'number') return bestIdx;
         if (bestIdx === -1) return idx;
         const bestVal = values[bestIdx];

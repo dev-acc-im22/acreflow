@@ -175,7 +175,7 @@ export default function ScratchRewards() {
                 <div
                   key={i}
                   className={`flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-200 ${
-                    day.today
+                    ('today' in day && day.today)
                       ? 'ring-2 ring-royal dark:ring-[#60A5FA] bg-royal/10 dark:bg-[#60A5FA]/10'
                       : day.done
                         ? 'bg-green-50 dark:bg-green-900/20'
@@ -189,7 +189,7 @@ export default function ScratchRewards() {
                     <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
                       <Check className="h-4 w-4 text-white" />
                     </div>
-                  ) : day.today ? (
+                  ) : ('today' in day && day.today) ? (
                     <button
                       onClick={handleCheckIn}
                       disabled={checkedIn}
@@ -212,7 +212,7 @@ export default function ScratchRewards() {
                   )}
                   <span
                     className={`text-[10px] font-medium ${
-                      day.mega
+                      ('mega' in day && day.mega)
                         ? 'text-amber-600 dark:text-amber-400'
                         : 'text-slate-accent dark:text-[#94A3B8]'
                     }`}
