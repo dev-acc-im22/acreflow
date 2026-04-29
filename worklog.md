@@ -745,3 +745,449 @@ The file already contained comprehensive dark mode classes (66 `dark:` instances
 - `src/components/acreflow/EMICalculator.tsx` — added border to EMI Breakdown panel for dark mode visibility
 
 **Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully.
+---
+## Task ID: 2d - UX Enhancement Components Agent
+### Agent: UX Enhancement Components
+### Work Task
+Create 5 new UX enhancement components for AcreFlow: FloatingChat.tsx, FullscreenGallery.tsx, PropertyNotes.tsx, CorporateEnquiry.tsx, WhatsAppButton.tsx. Integrate into page.tsx.
+
+### Work Summary
+
+**FloatingChat.tsx (NEW FILE):**
+- Floating AI chat assistant widget with FAB toggle (fixed bottom-right, above mobile nav on mobile)
+- FAB: 56x56 circular button with gradient bg (royal→navy), MessageCircle icon, pulse animation via `animate-ping`, unread dot indicator
+- Chat panel: 380px wide, 480px tall max, framer-motion slide-up animation (AnimatePresence)
+- Header: gradient from-royal to-navy with "AcreFlow Assistant" title and close button
+- Messages area: scrollable with auto-scroll to bottom on new messages, bot messages (left, gray bg) and user messages (right, royal-blue bg, white text), time below each
+- Quick reply chips: "Find Property", "EMI Calculator", "Contact Support", "Post Property" — each wired to store actions
+- "Find Property" → adds user message + bot reply asking about city/budget
+- "EMI Calculator" → closes chat + setView('emi-calculator')
+- "Contact Support" → bot reply with phone and email
+- "Post Property" → closes chat + setView('post-property')
+- User sends any message → auto bot reply after 1 second delay
+- Full dark mode support with dark palette colors
+- Refactored `hasUnread` from useState+useEffect to useMemo to avoid cascading render lint errors
+
+**FullscreenGallery.tsx (NEW FILE):**
+- Full viewport overlay (z-50, bg-black/90) for property image gallery
+- Props: images, currentIndex, onClose, onNavigate
+- Top bar: close (X), image counter "3 / 8", share button (copies URL to clipboard)
+- Main image: centered, max-width/max-height maintaining aspect ratio, framer-motion fade+scale transition on navigation
+- Left/right navigation arrows: semi-transparent chevron buttons on sides
+- Bottom thumbnail strip: horizontal row of small thumbnails with active highlighted (ring-2 ring-white)
+- Keyboard navigation: Escape → close, Left/Right arrows → navigate
+- Touch/swipe support: touchstart/touchmove/touchend handlers with 50px min swipe distance
+- Body overflow hidden while open, restored on unmount
+- All interactive elements have cursor-pointer and proper aria-labels
+
+**PropertyNotes.tsx (NEW FILE):**
+- Property notes panel/section for PropertyDetail page
+- Uses useAcreFlowStore for propertyNotes, getPropertyNote, addPropertyNote, removePropertyNote
+- Props: propertyId
+- Three states: Add Note button, Note display card, Edit mode
+- Add Note: dashed border button with Plus icon → opens textarea form (max 500 chars, character count, Save/Cancel)
+- Note display: amber accent card (border-l-4 border-amber-400, bg-amber-50 dark:bg-amber-900/10) with StickyNote icon, "My Notes" heading, note text, formatted timestamp, Edit/Delete buttons
+- Edit mode: inline textarea with character count, Save (Check) and Cancel (X) buttons
+- Delete: window.confirm dialog before removing
+- Uses shadcn Textarea and Button components
+- Full dark mode support
+
+**CorporateEnquiry.tsx (NEW FILE):**
+- Full-page corporate property enquiry form (accessible via 'corporate' view in store)
+- Back bar with ArrowLeft and goBack()
+- Hero section: gradient from-navy to-royal with Briefcase icon, "Corporate Property Solutions" heading
+- Form section (Card wrapper, 2/3 width on desktop):
+  - Company Name, Contact Person (grid row)
+  - Email, Phone with +91 prefix (grid row)
+  - Company Size dropdown (1-10, 11-50, 51-200, 201-500, 500+)
+  - Industry dropdown (IT/Software, BFSI, Healthcare, Manufacturing, Retail, Consulting, Other)
+  - Property Requirements: checkboxes (Office Space, Retail Space, Warehouse, Co-working, Multiple Cities)
+  - City Preferences: multi-select chips for all 10 cities (toggle active/inactive)
+  - Budget Range dropdown, Timeline dropdown
+  - Additional Requirements textarea
+  - "Submit Enquiry" gradient button
+  - Success state: green CheckCircle2 icon, confirmation message, "Back to Home" button
+- Right sidebar (1/3 width):
+  - "Why Corporate Choose AcreFlow" with 4 feature cards (Dedicated Account Manager, Customized Shortlisting, Negotiation Support, Zero Brokerage)
+  - "Trusted by 500+ Companies" with 6 placeholder company logo boxes
+  - CTA card: "Call Us: +91 1800-123-4567" with Phone icon
+- Uses shadcn Input, Textarea, Button, Checkbox, Select components
+- Full dark mode support with dark palette colors
+
+**WhatsAppButton.tsx (NEW FILE):**
+- Floating WhatsApp contact button (fixed bottom-36 right, above chat widget)
+- Green circular button (50x50) with Phone icon
+- Pulse animation: green ring expanding outward every 2 seconds via state toggle + CSS transition
+- On click: opens WhatsApp link `https://wa.me/9118001234567?text=Hi! I'm interested in AcreFlow properties.`
+- Tooltip "Chat on WhatsApp" on hover (desktop only, hidden on mobile)
+- Only shown when currentView !== 'home' (early return)
+- useEffect for pulse animation placed before early return to comply with Rules of Hooks
+
+**page.tsx Integration:**
+- Added imports for CorporateEnquiry, FloatingChat, WhatsAppButton
+- Added 'corporate' case to renderCurrentView switch
+- Added 'corporate' to isFullPageView array (footer hidden on corporate page)
+- Added <FloatingChat /> and <WhatsAppButton /> as global floating elements in the main layout
+
+**Files created (5):**
+- `src/components/acreflow/FloatingChat.tsx`
+- `src/components/acreflow/FullscreenGallery.tsx`
+- `src/components/acreflow/PropertyNotes.tsx`
+- `src/components/acreflow/CorporateEnquiry.tsx`
+- `src/components/acreflow/WhatsAppButton.tsx`
+
+**Files modified (1):**
+- `src/app/page.tsx`
+
+**Lint:** All new/modified files pass lint with 0 errors. Pre-existing errors in AboutPage.tsx, InteriorCostCalculator.tsx, and SearchResults.tsx are unrelated.
+
+---
+## Task ID: 2a - New Homepage Sections
+### Agent: Homepage Sections Builder
+### Work Task
+Create 5 new homepage section components for the AcreFlow real estate marketplace: PropertyOwnerCTA.tsx, HomeLoanBanner.tsx, StoriesCarousel.tsx, RecentlyAdded.tsx, CityShowcase.tsx. All components use Blue Monochrome design system, Tailwind CSS dark mode, shadcn/ui components, Lucide React icons, and Framer Motion animations.
+
+### Work Summary
+
+**PropertyOwnerCTA.tsx:**
+- Full-width section with navy-to-royal gradient background (`from-navy via-[#0F2744] to-royal`)
+- Left side: "Are you a Property Owner?" heading with sky-blue highlighted text, descriptive paragraph with FREE in white bold
+- Right side: "Post Free Property Ad" CTA button (white bg, navy text, Plus icon) navigating to `post-property` view via `useAcreFlowStore().setView('post-property')`
+- Stats row below: "10,000+ Properties Listed" | "5,000+ Owners Trust Us" | "50+ Cities Covered" with Building2/Users/MapPin icons
+- Subtle building/house SVG pattern overlay at 4% opacity
+- Mobile: vertically stacked with centered text, responsive button sizing
+
+**HomeLoanBanner.tsx:**
+- Light sky-blue background (`bg-sky-light dark:bg-[#0A192F]`)
+- Clean card container with white/dark background, rounded-2xl, subtle border
+- Left: Home icon in rounded-2xl bg-royal/10 circle, "Get Home Loan at Lowest Interest Rates" heading, descriptive text
+- Feature row with Shield (20+ Banks), Clock (Instant Approval), Home (Doorstep Service)
+- "Starting from 8.5% interest rate" badge (emerald color scheme)
+- Right: "Check Eligibility" CTA button (royal bg, white text, ArrowRight icon) navigating to `emi-calculator`
+- Subtle gradient accent decoration (top-right corner)
+- Mobile: vertically stacked with full-width CTA button
+
+**StoriesCarousel.tsx:**
+- Instagram Stories-like horizontal scrollable carousel with snap scrolling on mobile
+- 8 city story circles with gradient ring borders: Mumbai (blue-cyan), Bangalore (emerald-teal), Delhi (amber-orange), Chennai (navy-royal), Hyderabad (violet-purple), Pune (rose-pink), Kolkata (indigo-blue), Jaipur (orange-amber)
+- Each circle: gradient background with city initials, gradient ring (Instagram-style), city name label below
+- Click opens animated modal (Framer Motion): full-screen gradient background, building pattern overlay, city name large heading, MapPin subtitle, stats (Properties + Localities counts), "Explore Properties in {city}" CTA button
+- Auto-dismiss with 3-second progress bar at top, Escape key closes
+- Horizontal scroll with `scrollbar-hide` and `snap-x snap-mandatory` on mobile
+- Dark mode: city gradient circles use `dark:` variants, modal retains city-specific gradient
+
+**RecentlyAdded.tsx:**
+- Section title: "Recently Added Properties" + subtitle + "View All →" link (navigates to search view)
+- 6 hardcoded property cards from different cities: Mumbai (Andheri West), Bangalore (Whitefield), Delhi (Dwarka), Chennai (Thoraipakkam), Hyderabad (HITEC City), Pune (Hinjewadi)
+- Cards identical to FeaturedProperties style: gradient image placeholder, price, title, location, BHK/Area/Bath specs, verified badge, heart (toggleable via `toggleWishlist`), share icon
+- "New" badge (amber with Sparkles icon) on each card
+- Mobile: horizontal scrollable row with snap scrolling, Desktop: 3-column grid
+- Full dark mode support matching existing card patterns
+
+**CityShowcase.tsx:**
+- Section title: "Explore Properties in Top Cities" with subtitle
+- Grid of 6 city cards: Chennai (navy), Mumbai (indigo-blue), Delhi (slate), Bangalore (teal), Hyderabad (emerald), Pune (cyan)
+- Each card: gradient background with city emoji, property count badge, city name (2xl-3xl font), average price range, top 3 localities as small chips, explore arrow button
+- Hover effect: `hover:scale-[1.02] hover:shadow-xl` with 300ms transition
+- Click navigates to search view with city pre-selected via `setSelectedCity()` + `setView('search')`
+- Subtle building pattern overlay on each card
+- Mobile: 1 column, Desktop: 2x2 (md) → 3-column (lg) grid
+
+**page.tsx Updated:**
+- Added imports for all 5 new components
+- Inserted into home view in logical order: RecentlyAdded (after FeaturedProperties), StoriesCarousel, HomeLoanBanner (after BuilderProjects), CityShowcase (before Testimonials), PropertyOwnerCTA (before Testimonials)
+
+**Stub files created (3) for missing pre-existing imports:**
+- `ScratchRewards.tsx`, `BankRateComparison.tsx`, `PropertyValuation.tsx` — minimal placeholder components with back button
+
+**Files created (5):**
+- `src/components/acreflow/PropertyOwnerCTA.tsx`
+- `src/components/acreflow/HomeLoanBanner.tsx`
+- `src/components/acreflow/StoriesCarousel.tsx`
+- `src/components/acreflow/RecentlyAdded.tsx`
+- `src/components/acreflow/CityShowcase.tsx`
+
+**Files created (stubs, 3):**
+- `src/components/acreflow/ScratchRewards.tsx`
+- `src/components/acreflow/BankRateComparison.tsx`
+- `src/components/acreflow/PropertyValuation.tsx`
+
+**Files modified (1):**
+- `src/app/page.tsx`
+
+**Lint:** All new/modified files pass lint (0 errors, 0 warnings). Pre-existing errors in AboutPage.tsx, InteriorCostCalculator.tsx, WhatsAppButton.tsx are unrelated.
+
+---
+## Task ID: 2e - Enhanced Search Features Agent
+### Work Task
+Create 3 new component files (SaveSearchPanel.tsx, PropertyAlerts.tsx, PGFlatmatesSection.tsx) and modify SearchResults.tsx with enhanced search features for the AcreFlow real estate marketplace.
+
+### Work Summary
+
+**SaveSearchPanel.tsx (NEW FILE):**
+- Saved searches management component using shadcn/ui Sheet (side panel)
+- Props: `open: boolean`, `onOpenChange: (open: boolean) => void`
+- Reads `savedSearches` from `useAcreFlowStore()` and displays them as cards
+- Each saved search card shows: auto-generated search name, filter summary chips (category, city, BHK, price range, furnishing), created date (relative formatting), alert toggle switch with Bell/BellOff icons and green dot indicator, "Apply Search" button, and Delete button
+- Auto-generated search name format: "{City} {Category} {PropertyType} {BHKRange} {PriceRange} {Furnishing} {Query}"
+- "Save Current Search" button at top with Bookmark icon
+- Save dialog: uses shadcn/ui Dialog with editable search name input (pre-filled with auto-generated name), Cancel and Save Search buttons
+- Empty state: Bookmark icon circle, "No saved searches yet" message, descriptive subtitle
+- Full dark mode support with AcreFlow dark palette (#112240, #1D3461, #60A5FA, #94A3B8)
+- Uses: Sheet, Dialog, Input, Switch, Badge, Button from shadcn/ui; Bookmark, Bell, BellOff, Trash2, Search, MapPin, Home, IndianRupee, X, Check from lucide-react; toast from sonner
+
+**PropertyAlerts.tsx (NEW FILE):**
+- Full page view component for property alerts management
+- Back button calling `goBack()`, heading "Property Alerts" with subtitle
+- Stats section: 3-column grid showing Active Alerts count, Properties Found This Week count, Alerts Triggered Today count — each with themed icon circles (Bell=royal, Home=emerald, BellRing=amber)
+- Empty state with Bell icon: "No alerts set up yet" + "Create your first alert" CTA opening SaveSearchPanel
+- Alert cards list from `savedSearches` where `alertEnabled === true`: alert name, Active badge with green dot, filter criteria summary, budget range, last triggered date (mock), properties found count (mock), alert toggle switch, Edit Filters button, Delete button
+- "Tips for Better Alerts" section: 3 tip cards with icons (SlidersHorizontal, TrendingUp, Zap), titles, descriptions
+- "New Alert" button in top bar opens SaveSearchPanel
+- Full dark mode and responsive support
+- Uses SaveSearchPanel component for creating new alerts
+
+**PGFlatmatesSection.tsx (NEW FILE):**
+- Homepage section component (no back button)
+- Section title "PG & Co-living Spaces" with "View All →" link
+- Subsection 1 "Popular PG Accommodations": 4 PG cards in horizontal scroll (mobile) / 4-column grid (desktop)
+  - Each PG card: gradient placeholder image (4 unique gradients), sharing type badge (Single/Double/Triple), gender badge (Male/Female/Co-ed with colored icons), monthly rent overlay (₹X/bed/month), PG name, location with MapPin, amenity chips (WiFi, Meals, AC, Laundry) with icons, star rating component, "Contact" button
+  - Mock data: Zolo Pearl PG, Stanza Living, CoLive Emerald, YourSpace Comforts
+- Subsection 2 "Find Flatmates": 3 flatmate listing cards in responsive grid
+  - Each flatmate card: gradient avatar (initials, gender-colored), name, age/gender, profession with Briefcase icon, preferred location with MapPin, budget range with IndianRupee, move-in date with CalendarDays, "Connect" button
+  - Mock data: Arjun Mehta (26M Software Engineer), Priya Sharma (24F Data Analyst), Karthik Raman (28M Product Manager)
+- CTA banner: "Looking for PG?" with navy gradient background, "Browse PG Listings" button (navigates to search with PG filter)
+- Custom GenderIcon, RatingStars helper components
+- Full dark mode and responsive support
+
+**SearchResults.tsx (MODIFIED):**
+- Added new imports: PossessionStatus type, Bookmark, Bell, HardHat, UserCog, Building as BuildingIcon, Layers, Clock icons; Input, Label, RadioGroup, RadioGroupItem from shadcn/ui; SaveSearchPanel component
+- Added `savePanelOpen` state for controlling SaveSearchPanel visibility
+- Added "Save Search" button (Bookmark icon + text) next to sort dropdown — opens SaveSearchPanel
+- Added "Alerts" button (Bell icon + text) next to Save Search — also opens SaveSearchPanel
+- Top bar changed from `flex justify-between` to `flex flex-wrap` for responsive layout with new buttons
+- Added 4 new sidebar filters in FilterSidebarContent:
+  - **Construction Status**: RadioGroup with All, Ready to Move, Under Construction, New Launch options; wired to `filters.possessionStatus`
+  - **Posted By**: Checkbox group with Owner (UserCog icon), Dealer (Store icon), Builder (HardHat icon); Owner wired to `directOwnerOnly`
+  - **Floor Range**: Two number inputs (Min/Max) with Labels; stored in `areaRange`
+  - **Property Age**: Select dropdown with All Ages, 0-5 years, 5-10 years, 10-20 years, 20+ years options
+- Added possession status filtering in `filteredListings` useMemo
+- Added `possessionStatus !== 'all'` to active filter count
+- Updated Clear All Filters to include `possessionStatus: 'all'` and `areaRange: [0, 10000]`
+- Wrapped return JSX in Fragment (`<>...</>`) to accommodate SaveSearchPanel at sibling level
+- All new features fully responsive and dark mode compatible
+
+**Files created (3):**
+- `src/components/acreflow/SaveSearchPanel.tsx`
+- `src/components/acreflow/PropertyAlerts.tsx`
+- `src/components/acreflow/PGFlatmatesSection.tsx`
+
+**Files modified (1):**
+- `src/components/acreflow/SearchResults.tsx`
+
+**Lint:** No errors in new/modified files (2 pre-existing errors in AboutPage.tsx and InteriorCostCalculator.tsx are unrelated). Dev server compiles successfully, returns HTTP 200.
+---
+## Task ID: 2b - New Page Views (Services, Plans, Refer, About, Blog)
+### Agent: Page Views Builder
+### Work Task
+Create 5 new component files in src/components/acreflow/: ServicesPage.tsx, PlansPricing.tsx, ReferEarn.tsx, AboutPage.tsx, BlogNews.tsx. Wire them into page.tsx with full dark mode support.
+
+### Work Summary
+
+**ServicesPage.tsx:**
+- Hero banner with "Our Services" heading, "Value-Added Services" badge pill, subtitle
+- 6 service cards in responsive grid (1 col mobile, 2 md, 3 lg)
+- Each card: gradient icon circle, title, price badge (bg-sky), description, 4 features with CheckCircle2 checkmarks, "Get Started" CTA button
+- Services: Packers & Movers (₹2,999), Rental Agreement (₹599), Home Loans (8.5%), Interior Design (₹3 Lakh), Legal Assistance (₹999), Home Maintenance (₹499)
+- "Need a Custom Service?" CTA with gradient navy-to-royal card, "Contact Us" button navigating to 'corporate' view
+- Full dark mode with dark:bg-[#112240], dark:border-[#1D3461], dark:text-white
+
+**PlansPricing.tsx:**
+- Hero with "Choose Your Plan" heading + "Pricing Plans" badge pill
+- Monthly/Yearly toggle with "Save 20%" badge on yearly
+- 4 plan cards (1 col mobile, 2 sm, 4 lg): Free (₹0), Basic (₹499), Plus (₹999 POPULAR), Premium (₹1,999)
+- Each card: gradient icon (Zap/Star/Crown/Gem), plan name, price with duration, yearly savings, feature list with Check/X alignment, CTA button
+- Plus plan has border-2 border-royal highlight with absolute "POPULAR" badge
+- FAQ accordion section with 6 plan-related questions using shadcn Accordion
+- Uses SubscriptionPlan type from @/types
+
+**ReferEarn.tsx:**
+- Hero with "Refer Friends, Earn Rewards" heading + ₹500 callout
+- 4 stat cards (2x2 mobile, 4 lg): Total Referrals (12), Successful (8), Total Earned (₹4,000), Pending (₹2,000)
+- "How It Works" 3-step section with gradient icon cards and connector lines (desktop)
+- Referral code display card with Copy button (ACREFLOW-RK2024)
+- Referral link card with Copy + Share buttons (navigator.share with fallback)
+- Rewards history table with Friend Name, Date, Status badge (Completed/Pending), Reward Amount
+- Terms & Conditions collapsible accordion with 6 numbered items
+- Uses ReferralStats type from @/types
+
+**AboutPage.tsx:**
+- Hero with "India's Largest No-Brokerage Property Platform" heading
+- Mission/Vision cards (2 column) with Target/Eye icons
+- Stats counter section on navy gradient background with animated count-up effect using IntersectionObserver
+- Custom StatCounter component (extracted from hook to fix rules-of-hooks) — 4 stats: 10,000+ Properties, 50+ Cities, 100,000+ Users, ₹50 Cr+ Saved
+- Team section with 4 leadership cards: gradient avatar circles with initials, name, role, bio, LinkedIn/Twitter social links
+- Values section (4 cards): Transparency, Trust, Innovation, Customer First with icons
+- "Our Journey" timeline section: vertical line with alternating left/right cards (desktop), 6 milestones (2019-2024)
+- "Join Our Team" CTA with gradient card and careers button
+
+**BlogNews.tsx:**
+- Hero with "AcreFlow Insights" heading + "Knowledge Hub" badge pill
+- 7 category filter pills: All, Buying Guide, Selling Tips, Investment, Market Trends, Home Loans, Interior Design
+- 9 article cards in responsive grid (1 col mobile, 2 md, 3 lg) with gradient image placeholders
+- Each card: gradient header, category badge, title (2-line clamp), excerpt, author avatar (initial), author name, date, read time
+- ArticleSheet component: Sheet side panel with gradient header, title, author/date/readTime meta, full content (3-4 paragraphs), Related Articles section at bottom
+- 9 articles with full content: First-Time Home Buyers, Investment Localities, RERA Check, Home Loan EMI, Interior Design Trends, Rent vs Buy, Property Valuation, GST Impact, Smart Home Features
+- Empty state for filtered categories with icon + message
+
+**page.tsx updates:**
+- Added imports for ServicesPage, PlansPricing, ReferEarn, AboutPage, BlogNews
+- Added switch cases: 'services' → ServicesPage, 'plans' → PlansPricing, 'refer-earn' → ReferEarn, 'about' → AboutPage, 'blog' → BlogNews
+- Added all 5 views to isFullPageView array
+
+**Bug fixes (pre-existing):**
+- InteriorCostCalculator.tsx: Fixed lint error by changing useMemo to useEffect for animation timer (react-hooks/immutability), added missing useEffect import
+
+**Files created (5):**
+- src/components/acreflow/ServicesPage.tsx
+- src/components/acreflow/PlansPricing.tsx
+- src/components/acreflow/ReferEarn.tsx
+- src/components/acreflow/AboutPage.tsx
+- src/components/acreflow/BlogNews.tsx
+
+**Files modified (2):**
+- src/app/page.tsx (wired up 5 new views)
+- src/components/acreflow/InteriorCostCalculator.tsx (fixed pre-existing lint error)
+
+**Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully, returns HTTP 200.
+
+---
+Task ID: 2c
+Agent: Financial Tools & Widgets
+Task: Create 5 new financial tool components for AcreFlow marketplace
+
+Work Log:
+- Added 'bank-rates' to AppView type in src/types/index.ts
+- Updated src/app/page.tsx to import and route all 5 new components
+- Updated isFullPageView array in page.tsx to hide footer on new views
+
+### Components Created:
+
+**1. RentCalculator.tsx** (src/components/acreflow/RentCalculator.tsx)
+- Back button + heading "Rent Calculator" + subtitle
+- Two-column layout (stacks on mobile): inputs left, results right
+- Inputs: Property Type dropdown, BHK selector buttons (1-4), City dropdown (all 10 CITIES), Locality text input, Furnishing Status dropdown (with premiums), Floor Preference dropdown, Amenities multi-select checkboxes (6 options)
+- Results (shown after calculate): Estimated monthly rent (large), rent range min-max bar, city average comparison, price per sq ft, factors affecting rent list (+/- indicators), "Similar Properties for Rent" link
+- Calculation logic: base rent by city + BHK multiplier + furnishing premium + amenities premium + floor adjustment
+- Hardcoded base rents: Chennai 15K, Mumbai 25K, Delhi 20K, Bangalore 22K, Hyderabad 18K, Kolkata 12K, Pune 16K, Ahmedabad 13K, Jaipur 11K, Lucknow 10K
+
+**2. InteriorCostCalculator.tsx** (src/components/acreflow/InteriorCostCalculator.tsx)
+- Back button + heading "Interior Design Cost Calculator" + subtitle
+- BHK selector (1-4 BHK large buttons with active state)
+- Budget type selector (Budget/Standard/Premium) with multiplier
+- 3-column layout: cost breakdown table (left 2 cols), totals + charts + CTA (right col)
+- Cost breakdown: Modular Kitchen, Wardrobe (per room), TV Unit, Crockery Unit, Shoe Rack, False Ceiling (per room), Painting (per sq ft), Lighting, Flooring (per sq ft)
+- Animated total cost display using setInterval counter
+- BHK comparison bar chart (CSS bars)
+- "Get Free Design Consultation" CTA button
+- 5 money-saving interior tips section
+
+**3. PropertyValuation.tsx** (src/components/acreflow/PropertyValuation.tsx)
+- Back button + heading "Property Valuation" + subtitle
+- Two-column layout: input form left, results right
+- Inputs: Property Type, City + Locality, Carpet Area, BHK config, Age of Property dropdown (5 ranges with depreciation), Floor/Total Floors, Furnishing, Amenities checkboxes (7 options)
+- Results: Estimated Market Value (large), Value Range bar, Price per sq ft, YoY Appreciation, Valuation Breakdown (age depreciation, furnishing factor, amenities premium), Comparable Properties (3 sample), "List Your Property" CTA
+- Valuation logic: base rate per sq ft by city × area × age depreciation × furnishing × amenities × property type factor
+
+**4. BankRateComparison.tsx** (src/components/acreflow/BankRateComparison.tsx)
+- Back button + heading "Compare Home Loan Interest Rates" + subtitle
+- Sort controls (Interest Rate / Processing Fee / Rating)
+- Responsive comparison table (desktop table + mobile cards): 12 banks with Name, Rate, Fee, Tenure, Max Amount, Rating (star component)
+- All 12 banks with realistic data: SBI (8.5-9.15%), HDFC (8.7-9.4%), ICICI (8.75-9.5%), Axis (8.8-9.55%), Kotak (8.85-9.6%), PNB (8.5-9.3%), BOB (8.5-9.35%), Union Bank (8.6-9.4%), Canara (8.65-9.45%), BOI (8.6-9.4%), Indian Bank (8.55-9.3%), LIC Housing (8.5-9.3%)
+- EMI comparison section: top 3 banks for ₹50L at 20yr showing monthly EMI, total interest, total payment
+- "Calculate EMI" button per bank navigates to emi-calculator
+- "Factors Affecting Your Home Loan Rate" tips (5 bullet points)
+
+**5. ScratchRewards.tsx** (src/components/acreflow/ScratchRewards.tsx)
+- Back button + heading "Rewards & Offers" + subtitle
+- 3-column layout (2+1): left (wallet + check-in + scratch cards), right (referral + offers + leaderboard)
+- Wallet balance card: ₹2,500 gradient card with Coins icon, Redeem/History buttons
+- Daily Check-in: 7-day streak calendar with checkmarks, today highlighted with Zap button, streak progress bar
+- Scratch Cards (3 in a row): gradient backgrounds, "Scratch to Win!" overlay, tap to reveal (CSS transition), rewards: ₹100 Off, Free Premium Week, ₹500 Cashback, "Claimed" badge state
+- Referral Earnings: This month (₹500/1 referral), All time (₹4,000/8 referrals), Pending (₹2,000), Invite Friends CTA
+- Active Offers: 3 offer cards with badges and validity
+- Leaderboard: Top 5 referrers with rank colors (gold/silver/bronze), user's rank displayed
+
+All components feature:
+- Full dark mode support with Navy palette dark variants
+- Responsive design (mobile-first)
+- Consistent styling: py-8 md:py-12, max-w-7xl mx-auto px-4
+- Back button using goBack() from useAcreFlowStore
+- Blue Monochrome design system colors
+- shadcn/ui components (Button, Input, Label, Select, Badge, Separator, Progress)
+- Lucide React icons
+
+Files created (5):
+- src/components/acreflow/RentCalculator.tsx
+- src/components/acreflow/InteriorCostCalculator.tsx
+- src/components/acreflow/PropertyValuation.tsx
+- src/components/acreflow/BankRateComparison.tsx
+- src/components/acreflow/ScratchRewards.tsx
+
+Files modified (2):
+- src/types/index.ts (added 'bank-rates' to AppView)
+- src/app/page.tsx (added 5 new component imports and view routes)
+
+Lint: All checks pass (0 errors, 0 warnings). Dev server compiles successfully, returns HTTP 200.
+---
+## Task ID: 2f-retry - Mock Data Expansion Agent
+### Work Task
+Expand mock-data.ts with 6 new sections: 32 new properties across 10 cities, CITY_DATA (10 cities), BLOG_ARTICLES (9 articles), SUBSCRIPTION_PLANS (4 tiers), expanded price trends (30 localities), expanded locality insights (30 localities). All existing exports preserved untouched.
+
+### Work Summary
+
+**Section A — 32 New Properties (`mockListingsExtended`):**
+- Created separate `mockListingsExtended: PropertyListing[]` export to avoid modifying `mockListings`
+- 5 Mumbai buy properties (Bandra ₹1.2Cr, Andheri ₹1.8Cr, Powai villa ₹3.5Cr, Worli ₹4.2Cr, Juhu ₹95L)
+- 5 Delhi buy properties (Dwarka ₹85L, Rohini ₹65L, Vasant Kunj ₹2.5Cr, Saket ₹1.5Cr, Rajouri Garden ₹72L)
+- 4 Bangalore buy properties (Whitefield ₹85L, Koramangala ₹1.2Cr, HSR Layout ₹1.5Cr, Electronic City ₹52L)
+- 3 Hyderabad buy properties (Gachibowli ₹1.2Cr, Madhapur ₹72L, Jubilee Hills villa ₹2.5Cr)
+- 3 Pune rent properties (Hinjewadi ₹25K/mo, Wakad ₹15K/mo, Baner ₹38K/mo)
+- 3 Kolkata rent properties (Salt Lake ₹18K/mo, Park Street ₹30K/mo, New Alipore ₹22K/mo)
+- 2 Ahmedabad buy properties (SG Highway ₹65L, Vastrapur ₹42L)
+- 2 Jaipur buy properties (Vaishali Nagar ₹45L, Malviya Nagar ₹28L)
+- 2 Lucknow rent properties (Gomti Nagar ₹18K/mo, Hazratganj ₹12K/mo)
+- 1 Chennai commercial warehouse (Guindy, ₹45L, commercial-warehouse type)
+- 2 bonus properties (Whitefield villa ₹1.8Cr, Gachibowli budget ₹55L)
+- 8 properties with `originalPrice` (price drops): list-019, 021, 023, 026, 028, 031, 035, 042
+- All 32 properties have every required field from PropertyListing type
+- Realistic Indian pricing, coordinates, addresses, RERA IDs
+
+**Section B — CITY_DATA (10 cities):**
+- Export matches `CityData` interface (name, image, propertyCount, avgPrice, growth, topLocalities)
+- Uses `img()` function for city images
+- Covers: Chennai, Mumbai, Delhi, Bangalore, Hyderabad, Kolkata, Pune, Ahmedabad, Jaipur, Lucknow
+
+**Section C — BLOG_ARTICLES (9 articles):**
+- Export matches `BlogArticle` interface
+- Categories: Buying Guide, Legal, Investment, Finance, Interior, Lifestyle
+- Indian author names, realistic dates and read times
+
+**Section D — SUBSCRIPTION_PLANS (4 tiers):**
+- Free (₹0), Basic (₹499), Plus (₹999, popular), Premium (₹1999)
+- Matches `SubscriptionPlan` interface with badges and feature lists
+
+**Section E — `mockPriceTrendsExtended` (30 localities):**
+- Spreads existing 3 Chennai localities via `...mockPriceTrends`
+- Added 27 new localities: 3 per city for Mumbai, Delhi, Bangalore, Hyderabad, Pune, Kolkata, Ahmedabad, Jaipur, Lucknow
+- 12-month monthly price-per-sqft data with realistic city-specific ranges
+
+**Section F — `mockLocalityInsightsExtended` (30 localities):**
+- Spreads existing 3 Chennai localities via `...mockLocalityInsights`
+- Added 27 new localities with 6 dimensions (safety, connectivity, infrastructure, airQuality, nightlife, restaurants)
+- Ratings scaled 2.5-5.0 reflecting city characteristics
+
+**Files modified (1):**
+- `src/lib/mock-data.ts` — expanded from 843 lines to 2379 lines
+
+**Lint:** All checks pass (0 errors, 0 warnings). Dev server compiles successfully.

@@ -21,6 +21,25 @@ import FAQ from '@/components/acreflow/FAQ';
 import BuilderProjects from '@/components/acreflow/BuilderProjects';
 import TopAgents from '@/components/acreflow/TopAgents';
 import UrgencyBanner from '@/components/acreflow/UrgencyBanner';
+import PropertyOwnerCTA from '@/components/acreflow/PropertyOwnerCTA';
+import HomeLoanBanner from '@/components/acreflow/HomeLoanBanner';
+import StoriesCarousel from '@/components/acreflow/StoriesCarousel';
+import RecentlyAdded from '@/components/acreflow/RecentlyAdded';
+import CityShowcase from '@/components/acreflow/CityShowcase';
+import RentCalculator from '@/components/acreflow/RentCalculator';
+import InteriorCostCalculator from '@/components/acreflow/InteriorCostCalculator';
+import PropertyValuation from '@/components/acreflow/PropertyValuation';
+import BankRateComparison from '@/components/acreflow/BankRateComparison';
+import ScratchRewards from '@/components/acreflow/ScratchRewards';
+import CorporateEnquiry from '@/components/acreflow/CorporateEnquiry';
+import ServicesPage from '@/components/acreflow/ServicesPage';
+import PlansPricing from '@/components/acreflow/PlansPricing';
+import ReferEarn from '@/components/acreflow/ReferEarn';
+import AboutPage from '@/components/acreflow/AboutPage';
+import BlogNews from '@/components/acreflow/BlogNews';
+import PGFlatmatesSection from '@/components/acreflow/PGFlatmatesSection';
+import FloatingChat from '@/components/acreflow/FloatingChat';
+import WhatsAppButton from '@/components/acreflow/WhatsAppButton';
 import { useEffect } from 'react';
 
 export default function Home() {
@@ -55,6 +74,28 @@ export default function Home() {
         return <PostPropertyWizard />;
       case 'lead-center':
         return <LeadCenter />;
+      case 'rent-calculator':
+        return <RentCalculator />;
+      case 'interior-calc':
+        return <InteriorCostCalculator />;
+      case 'valuation':
+        return <PropertyValuation />;
+      case 'bank-rates':
+        return <BankRateComparison />;
+      case 'scratch-rewards':
+        return <ScratchRewards />;
+      case 'corporate':
+        return <CorporateEnquiry />;
+      case 'services':
+        return <ServicesPage />;
+      case 'plans':
+        return <PlansPricing />;
+      case 'refer-earn':
+        return <ReferEarn />;
+      case 'about':
+        return <AboutPage />;
+      case 'blog':
+        return <BlogNews />;
       case 'home':
       default:
         return (
@@ -63,9 +104,15 @@ export default function Home() {
             <HeroSearch />
             <ServiceIcons />
             <FeaturedProperties />
+            <RecentlyAdded />
+            <StoriesCarousel />
             <BuilderProjects />
+            <HomeLoanBanner />
             <WhyAcreFlow />
             <MarketIntel />
+            <CityShowcase />
+            <PGFlatmatesSection />
+            <PropertyOwnerCTA />
             <Testimonials />
             <TopAgents />
             <FAQ />
@@ -75,7 +122,7 @@ export default function Home() {
     }
   };
 
-  const isFullPageView = ['search', 'property-detail', 'emi-calculator', 'budget-calculator', 'post-property', 'lead-center'].includes(currentView);
+  const isFullPageView = ['search', 'property-detail', 'emi-calculator', 'budget-calculator', 'post-property', 'lead-center', 'rent-calculator', 'interior-calc', 'valuation', 'bank-rates', 'scratch-rewards', 'corporate', 'services', 'plans', 'refer-earn', 'about', 'blog'].includes(currentView);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -94,6 +141,12 @@ export default function Home() {
 
       {/* Comparison Tray */}
       {showComparison && <ComparisonTray />}
+
+      {/* Floating Chat */}
+      <FloatingChat />
+
+      {/* WhatsApp Button */}
+      <WhatsAppButton />
 
       {/* Comparison floating button */}
       {comparisonList.length > 0 && !showComparison && (

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { AppView, SearchFilters, PropertyListing } from '@/types';
+import type { AppView, SearchFilters, PropertyListing, SavedSearch, PropertyNote } from '@/types';
 
 const defaultFilters: SearchFilters = {
   category: 'buy',
@@ -45,7 +45,7 @@ interface AcreFlowState {
   setShowComparison: (show: boolean) => void;
 
   // Wishlist / Shortlist
-  wishlist: string[]; // property IDs
+  wishlist: string[];
   toggleWishlist: (id: string) => void;
   isInWishlist: (id: string) => boolean;
 
@@ -87,6 +87,24 @@ interface AcreFlowState {
   // Scroll position for restoring
   scrollPosition: number;
   setScrollPosition: (pos: number) => void;
+
+  // Saved Searches
+  savedSearches: SavedSearch[];
+  addSavedSearch: (search: SavedSearch) => void;
+  removeSavedSearch: (id: string) => void;
+  toggleSearchAlert: (id: string) => void;
+
+  // Property Notes
+  propertyNotes: PropertyNote[];
+  addPropertyNote: (note: PropertyNote) => void;
+  removePropertyNote: (propertyId: string) => void;
+  getPropertyNote: (propertyId: string) => PropertyNote | undefined;
+
+  // Chat
+  showChat: boolean;
+  setShowChat: (show: boolean) => void;
+  chatMessages: Array<{ id: string; message: string; sender: 'user' | 'bot'; time: string }>;
+  addChatMessage: (message: string, sender: 'user' | 'bot') => void;
 }
 
 export const useAcreFlowStore = create<AcreFlowState>()(
@@ -212,6 +230,54 @@ export const useAcreFlowStore = create<AcreFlowState>()(
       // Scroll
       scrollPosition: 0,
       setScrollPosition: (pos) => set({ scrollPosition: pos }),
+
+      // Saved Searches
+      savedSearches: [],
+      addSavedSearch: (search) =>
+        set((state) => ({
+          savedSearches: [search, ...state.savedSearches].slice(0, 20),
+        })),
+      removeSavedSearch: (id) =>
+        set((state) => ({
+          savedSearches: state.savedSearches.filter((s) => s.id !== id),
+        })),
+      toggleSearchAlert: (id) =>
+        set((state) => ({
+          savedSearches: state.savedSearches.map((s) =>
+            s.id === id ? { ...s, alertEnabled: !s.alertEnabled } : s
+          ),
+        })),
+
+      // Property Notes
+      propertyNotes: [],
+      addPropertyNote: (note) =>
+        set((state) => ({
+          propertyNotes: [
+            ...state.propertyNotes.filter((n) => n.propertyId !== note.propertyId),
+            note,
+          ],
+        })),
+      removePropertyNote: (propertyId) =>
+        set((state) => ({
+          propertyNotes: state.propertyNotes.filter((n) => n.propertyId !== propertyId),
+        })),
+      getPropertyNote: (propertyId) => {
+        return get().propertyNotes.find((n) => n.propertyId === propertyId);
+      },
+
+      // Chat
+      showChat: false,
+      setShowChat: (show) => set({ showChat: show }),
+      chatMessages: [
+        { id: 'c1', message: 'Hi! I\'m AcreFlow Assistant. How can I help you find your perfect property today?', sender: 'bot', time: 'Now' },
+      ],
+      addChatMessage: (message, sender) =>
+        set((state) => ({
+          chatMessages: [
+            ...state.chatMessages,
+            { id: `c${Date.now()}`, message, sender, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+          ],
+        })),
     }),
     {
       name: 'acreflow-storage',
@@ -220,6 +286,8 @@ export const useAcreFlowStore = create<AcreFlowState>()(
         recentlyViewed: state.recentlyViewed,
         darkMode: state.darkMode,
         selectedCity: state.selectedCity,
+        savedSearches: state.savedSearches,
+        propertyNotes: state.propertyNotes,
       }),
     }
   )

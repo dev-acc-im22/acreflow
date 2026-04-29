@@ -38,12 +38,12 @@ const TOP_CITIES = [
 ] as const;
 
 const COMPANY_LINKS = [
-  'About Us',
-  'Careers',
-  'Blog',
-  'Contact',
-  'Terms of Service',
-  'Privacy Policy',
+  { label: 'About Us', view: 'about' as const },
+  { label: 'Blog & News', view: 'blog' as const },
+  { label: 'Contact', view: 'lead-center' as const },
+  { label: 'Careers', view: 'home' as const },
+  { label: 'Terms of Service', view: 'home' as const },
+  { label: 'Privacy Policy', view: 'home' as const },
 ] as const;
 
 const TRUST_BADGES = [
@@ -73,10 +73,8 @@ export default function Footer() {
     setView('search');
   };
 
-  const handleCompanyClick = (link: string) => {
-    if (link === 'Contact') {
-      setView('lead-center');
-    }
+  const handleCompanyClick = (link: { label: string; view: string }) => {
+    setView(link.view as any);
   };
 
   return (
@@ -84,7 +82,7 @@ export default function Footer() {
       {/* Main Footer — bg-navy is already dark; add top border for dark mode separation */}
       <div className="bg-navy text-white border-t border-gray-200 dark:border-[#1D3461]">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 lg:gap-8">
             {/* Column 1 - Branding */}
             <div>
               <div className="flex items-center gap-2">
@@ -222,14 +220,30 @@ export default function Footer() {
               </h3>
               <ul className="mt-4 flex flex-col gap-2.5">
                 {COMPANY_LINKS.map((link) => (
-                  <li key={link}>
+                  <li key={link.label}>
                     <button
                       type="button"
                       onClick={() => handleCompanyClick(link)}
                       className="flex items-center gap-1.5 text-sm text-slate-light transition-colors hover:text-white"
                     >
                       <ChevronRight className="size-3 shrink-0" />
-                      {link}
+                      {link.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+
+              <h3 className='text-sm font-semibold uppercase tracking-wider mt-8'>Services</h3>
+              <ul className="mt-4 flex flex-col gap-2.5">
+                {['Packers & Movers', 'Rental Agreement', 'Home Loans', 'Interior Design', 'Legal Assistance', 'Home Maintenance'].map((s) => (
+                  <li key={s}>
+                    <button
+                      type="button"
+                      onClick={() => setView('services')}
+                      className="flex items-center gap-1.5 text-sm text-slate-light transition-colors hover:text-white"
+                    >
+                      <ChevronRight className="size-3 shrink-0" />
+                      {s}
                     </button>
                   </li>
                 ))}

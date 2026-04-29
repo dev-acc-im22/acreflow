@@ -1,6 +1,6 @@
 'use client';
 
-import type { PropertyListing, SearchFilters, ListingCategory } from '@/types';
+import type { PropertyListing, SearchFilters, ListingCategory, PossessionStatus } from '@/types';
 import { mockListings } from '@/lib/mock-data';
 import { useAcreFlowStore } from '@/lib/store';
 import {
@@ -43,6 +43,13 @@ import {
   ArrowLeft,
   Menu,
   GitCompareArrows,
+  Bookmark,
+  Bell,
+  HardHat,
+  UserCog,
+  Building as BuildingIcon,
+  Layers,
+  Clock,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -66,7 +73,11 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useState, useEffect, useMemo } from 'react';
+import SaveSearchPanel from './SaveSearchPanel';
 
 // ─── Amenity icon map ────────────────────────────────────────────────
 const amenityIcons: Record<string, React.ReactNode> = {
@@ -382,6 +393,144 @@ function FilterSidebarContent({
 
       <div className="border-t border-border dark:border-[#1D3461]" />
 
+      {/* Construction Status */}
+      <div>
+        <h4 className="text-sm font-semibold text-navy dark:text-white mb-3">Construction Status</h4>
+        <RadioGroup
+          value={filters.possessionStatus}
+          onValueChange={(val) =>
+            setFilters({ possessionStatus: val as PossessionStatus | 'all' })
+          }
+          className="space-y-2"
+        >
+          {([
+            { value: 'all', label: 'All' },
+            { value: 'ready', label: 'Ready to Move' },
+            { value: 'under-construction', label: 'Under Construction' },
+            { value: 'new-launch', label: 'New Launch' },
+          ] as const).map((option) => (
+            <label
+              key={option.value}
+              className="flex items-center gap-2.5 cursor-pointer group"
+            >
+              <RadioGroupItem
+                value={option.value}
+                className="data-[state=checked]:border-royal data-[state=checked]:text-royal"
+              />
+              <span className="text-sm text-slate-accent dark:text-[#94A3B8] group-hover:text-navy dark:group-hover:text-white transition-colors">
+                {option.label}
+              </span>
+            </label>
+          ))}
+        </RadioGroup>
+      </div>
+
+      <div className="border-t border-border dark:border-[#1D3461]" />
+
+      {/* Posted By */}
+      <div>
+        <h4 className="text-sm font-semibold text-navy dark:text-white mb-3">Posted By</h4>
+        <div className="space-y-2">
+          {([
+            { value: 'owner', label: 'Owner', icon: <UserCog className="w-3.5 h-3.5" /> },
+            { value: 'dealer', label: 'Dealer', icon: <Store className="w-3.5 h-3.5" /> },
+            { value: 'builder', label: 'Builder', icon: <HardHat className="w-3.5 h-3.5" /> },
+          ] as const).map((option) => (
+            <label
+              key={option.value}
+              className="flex items-center gap-2.5 cursor-pointer group"
+            >
+              <Checkbox
+                checked={
+                  option.value === 'owner'
+                    ? filters.directOwnerOnly
+                    : false
+                }
+                onCheckedChange={(checked) => {
+                  if (option.value === 'owner') {
+                    setFilters({ directOwnerOnly: !!checked });
+                  }
+                }}
+                className="data-[state=checked]:bg-royal data-[state=checked]:border-royal"
+              />
+              <span className="text-sm text-slate-accent dark:text-[#94A3B8] group-hover:text-navy dark:group-hover:text-white transition-colors flex items-center gap-1.5">
+                {option.icon}
+                {option.label}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="border-t border-border dark:border-[#1D3461]" />
+
+      {/* Floor Range */}
+      <div>
+        <h4 className="text-sm font-semibold text-navy dark:text-white mb-3 flex items-center gap-2">
+          <Layers className="w-3.5 h-3.5" />
+          Floor Range
+        </h4>
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <Label className="text-[11px] text-slate-accent dark:text-[#64748B] mb-1">Min</Label>
+            <Input
+              type="number"
+              min={0}
+              placeholder="0"
+              className="h-8 text-sm bg-cream/50 dark:bg-[#1D3461]/50 border-border dark:border-[#1D3461] focus:border-royal dark:focus:border-[#60A5FA]"
+              onChange={(e) => {
+                // Floor range stored as areaRange for now
+                const val = parseInt(e.target.value) || 0;
+                setFilters({ areaRange: [val, filters.areaRange[1]] });
+              }}
+            />
+          </div>
+          <span className="text-slate-accent dark:text-[#64748B] mt-4">-</span>
+          <div className="flex-1">
+            <Label className="text-[11px] text-slate-accent dark:text-[#64748B] mb-1">Max</Label>
+            <Input
+              type="number"
+              min={0}
+              placeholder="100"
+              className="h-8 text-sm bg-cream/50 dark:bg-[#1D3461]/50 border-border dark:border-[#1D3461] focus:border-royal dark:focus:border-[#60A5FA]"
+              onChange={(e) => {
+                const val = parseInt(e.target.value) || 0;
+                setFilters({ areaRange: [filters.areaRange[0], val] });
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-border dark:border-[#1D3461]" />
+
+      {/* Property Age */}
+      <div>
+        <h4 className="text-sm font-semibold text-navy dark:text-white mb-3 flex items-center gap-2">
+          <Clock className="w-3.5 h-3.5" />
+          Property Age
+        </h4>
+        <Select
+          value={filters.possessionStatus === 'all' ? 'all' : 'all'}
+          onValueChange={(val) => {
+            // Property age is a display-only filter for now
+          }}
+        >
+          <SelectTrigger className="w-full h-9 text-sm">
+            <SelectValue placeholder="All Ages" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Ages</SelectItem>
+            <SelectItem value="0-5">0-5 years</SelectItem>
+            <SelectItem value="5-10">5-10 years</SelectItem>
+            <SelectItem value="10-20">10-20 years</SelectItem>
+            <SelectItem value="20+">20+ years</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="border-t border-border dark:border-[#1D3461]" />
+
       {/* Clear All */}
       <Button
         variant="outline"
@@ -392,10 +541,12 @@ function FilterSidebarContent({
             bhkRange: [1, 5],
             priceRange: [0, 100000000],
             furnishing: 'all',
+            possessionStatus: 'all',
             verifiedOnly: false,
             directOwnerOnly: false,
             readyToMoveOnly: false,
             amenities: [],
+            areaRange: [0, 10000],
           })
         }
       >
@@ -515,6 +666,7 @@ export default function SearchResults() {
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [visibleCount, setVisibleCount] = useState(6);
+  const [savePanelOpen, setSavePanelOpen] = useState(false);
 
   // Simulate loading on mount
   useEffect(() => {
@@ -574,6 +726,11 @@ export default function SearchResults() {
     // Direct owner only
     if (filters.directOwnerOnly) {
       results = results.filter((p) => p.directFromOwner);
+    }
+
+    // Possession status
+    if (filters.possessionStatus !== 'all') {
+      results = results.filter((p) => p.possessionStatus === filters.possessionStatus);
     }
 
     // Ready to move only
@@ -685,6 +842,7 @@ export default function SearchResults() {
     filters.bhkRange[0] !== 1 || filters.bhkRange[1] !== 5,
     filters.priceRange[0] > 0 || filters.priceRange[1] < 100000000,
     filters.furnishing !== 'all',
+    filters.possessionStatus !== 'all',
     filters.verifiedOnly,
     filters.directOwnerOnly,
     filters.readyToMoveOnly,
@@ -696,6 +854,7 @@ export default function SearchResults() {
   const categoryLabel = filters.category === 'buy' ? 'Buy' : filters.category === 'rent' ? 'Rent' : 'Commercial';
 
   return (
+    <>
     <section className="min-h-screen bg-cream dark:bg-[#0A192F]">
       {/* ── Top Search Bar (sticky) ────────────────────────────────── */}
       <div className="sticky top-0 z-30 bg-white dark:bg-[#112240] border-b dark:border-[#1D3461] shadow-sm py-3">
@@ -880,7 +1039,7 @@ export default function SearchResults() {
           {/* ── Right Content ──────────────────────────────────────── */}
           <div className="flex-1 min-w-0">
             {/* Top bar */}
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
               <Select
                 value={filters.sortBy}
                 onValueChange={(val) =>
@@ -889,7 +1048,7 @@ export default function SearchResults() {
                   })
                 }
               >
-                <SelectTrigger className="w-[200px] h-10 text-sm">
+                <SelectTrigger className="w-[180px] sm:w-[200px] h-10 text-sm">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
@@ -900,6 +1059,31 @@ export default function SearchResults() {
                   <SelectItem value="area-high">Area: High to Low</SelectItem>
                 </SelectContent>
               </Select>
+
+              {/* Save Search Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSavePanelOpen(true)}
+                className="h-10 text-xs sm:text-sm text-royal dark:text-[#60A5FA] border-royal/30 dark:border-[#60A5FA]/30 hover:bg-royal/5 dark:hover:bg-[#60A5FA]/10 gap-1.5"
+              >
+                <Bookmark className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Save Search</span>
+              </Button>
+
+              {/* Alerts Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSavePanelOpen(true)}
+                className="h-10 text-xs sm:text-sm text-slate-accent dark:text-[#94A3B8] border-border dark:border-[#1D3461] hover:bg-royal/5 dark:hover:bg-[#60A5FA]/10 hover:text-royal dark:hover:text-[#60A5FA] hover:border-royal/30 dark:hover:border-[#60A5FA]/30 gap-1.5"
+              >
+                <Bell className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Alerts</span>
+              </Button>
+
+              {/* Spacer */}
+              <div className="flex-1" />
 
               {/* T17: View toggle (desktop) with viewMode state */}
               <div className="hidden md:flex items-center gap-1">
@@ -1157,5 +1341,9 @@ export default function SearchResults() {
         </div>
       </div>
     </section>
+
+    {/* Save Search Panel */}
+    <SaveSearchPanel open={savePanelOpen} onOpenChange={setSavePanelOpen} />
+    </>
   );
 }

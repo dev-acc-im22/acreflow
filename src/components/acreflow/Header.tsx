@@ -17,6 +17,12 @@ import {
   Home,
   Store,
   IndianRupee,
+  Briefcase,
+  CreditCard,
+  Users,
+  Gift,
+  Info,
+  BookOpen,
 } from 'lucide-react';
 import { useAcreFlowStore } from '@/lib/store';
 import {
@@ -178,14 +184,35 @@ export default function Header() {
             </span>
           </button>
 
-          {/* Center: EMI Calculator link (desktop) */}
-          <div className="hidden lg:flex items-center gap-1">
+          {/* Center: Nav links (desktop) */}
+          <div className="hidden lg:flex items-center gap-0.5">
+            <button
+              onClick={() => setView('services')}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
+            >
+              <Briefcase className="size-4" />
+              <span>Services</span>
+            </button>
+            <button
+              onClick={() => setView('plans')}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
+            >
+              <CreditCard className="size-4" />
+              <span>Plans</span>
+            </button>
             <button
               onClick={() => setView('emi-calculator')}
               className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
             >
               <IndianRupee className="size-4" />
               <span>EMI Calculator</span>
+            </button>
+            <button
+              onClick={() => setView('refer-earn')}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 dark:text-[#94A3B8] hover:text-navy dark:hover:text-white transition-colors rounded-md hover:bg-gray-50 dark:hover:bg-[#1D3461]"
+            >
+              <Gift className="size-4" />
+              <span>Refer & Earn</span>
             </button>
           </div>
 
@@ -371,16 +398,28 @@ export default function Header() {
                     </button>
                   ))}
                   <div className="h-px bg-gray-100 dark:bg-[#1D3461] my-2" />
-                  <button
-                    onClick={() => {
-                      setView('emi-calculator');
-                      setMobileMenuOpen(false);
-                    }}
-                    className="flex items-center gap-3 px-3 py-3 text-sm font-medium rounded-lg transition-colors text-gray-600 dark:text-[#94A3B8] hover:bg-gray-50 dark:hover:bg-[#1D3461] hover:text-navy dark:hover:text-white"
-                  >
-                    <IndianRupee className="size-4" />
-                    <span>EMI Calculator</span>
-                  </button>
+                  {[
+                    { label: 'Services', icon: Briefcase, view: 'services' as const },
+                    { label: 'Plans & Pricing', icon: CreditCard, view: 'plans' as const },
+                    { label: 'EMI Calculator', icon: IndianRupee, view: 'emi-calculator' as const },
+                    { label: 'Rent Calculator', icon: Home, view: 'rent-calculator' as const },
+                    { label: 'Refer & Earn', icon: Gift, view: 'refer-earn' as const },
+                    { label: 'About Us', icon: Info, view: 'about' as const },
+                    { label: 'Blog', icon: BookOpen, view: 'blog' as const },
+                    { label: 'Corporate', icon: Users, view: 'corporate' as const },
+                  ].map((item) => (
+                    <button
+                      key={item.label}
+                      onClick={() => {
+                        setView(item.view);
+                        setMobileMenuOpen(false);
+                      }}
+                      className="flex items-center gap-3 px-3 py-3 text-sm font-medium rounded-lg transition-colors text-gray-600 dark:text-[#94A3B8] hover:bg-gray-50 dark:hover:bg-[#1D3461] hover:text-navy dark:hover:text-white"
+                    >
+                      <item.icon className="size-4" />
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
                 </nav>
 
                 {/* Mobile CTA buttons */}

@@ -93,7 +93,25 @@ export interface PriceTrend {
   price: number;
 }
 
-export type AppView = 'home' | 'search' | 'property-detail' | 'post-property' | 'lead-center' | 'emi-calculator' | 'budget-calculator';
+export type AppView =
+  | 'home'
+  | 'search'
+  | 'property-detail'
+  | 'post-property'
+  | 'lead-center'
+  | 'emi-calculator'
+  | 'budget-calculator'
+  | 'services'
+  | 'plans'
+  | 'refer-earn'
+  | 'about'
+  | 'blog'
+  | 'rent-calculator'
+  | 'interior-calc'
+  | 'valuation'
+  | 'bank-rates'
+  | 'scratch-rewards'
+  | 'corporate';
 
 export const defaultFilters: SearchFilters = {
   category: 'buy',
@@ -138,3 +156,71 @@ export const CITIES = [
 ] as const;
 
 export const BHK_OPTIONS = [1, 2, 3, 4, 5] as const;
+
+export interface SavedSearch {
+  id: string;
+  name: string;
+  filters: SearchFilters;
+  createdAt: string;
+  alertEnabled: boolean;
+}
+
+export interface PropertyNote {
+  propertyId: string;
+  note: string;
+  createdAt: string;
+}
+
+export interface BlogArticle {
+  id: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  image: string;
+  author: string;
+  date: string;
+  readTime: string;
+}
+
+export interface SubscriptionPlan {
+  id: string;
+  name: string;
+  price: number;
+  duration: string;
+  features: string[];
+  popular?: boolean;
+  badge?: string;
+}
+
+export interface ServiceDetail {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  features: string[];
+  pricing: { label: string; price: string }[];
+  steps: { step: string; description: string }[];
+}
+
+export interface CityData {
+  name: string;
+  image: string;
+  propertyCount: number;
+  avgPrice: string;
+  growth: string;
+  topLocalities: string[];
+}
+
+export interface ReferralStats {
+  totalReferrals: number;
+  successfulReferrals: number;
+  totalEarnings: number;
+  pendingRewards: number;
+}
+
+export interface ChatMessage {
+  id: string;
+  message: string;
+  sender: 'user' | 'bot';
+  time: string;
+}
